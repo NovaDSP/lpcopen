@@ -424,14 +424,14 @@
           <GroupName>lib</GroupName>
           <Files>
             <File>
-              <FileName>lib_4330.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_lib\lib_4330.lib</FilePath>
-            </File>
-            <File>
               <FileName>usb_43xx.lib</FileName>
               <FileType>4</FileType>
               <FilePath>..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_usb\usb_43xx.lib</FilePath>
+            </File>
+            <File>
+              <FileName>lib_4330.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_lib\lib_4330.lib</FilePath>
             </File>
           </Files>
         </Group>

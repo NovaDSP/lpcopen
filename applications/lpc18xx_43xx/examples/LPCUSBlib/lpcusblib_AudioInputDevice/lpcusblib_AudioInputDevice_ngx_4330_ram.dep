@@ -396,5 +396,5 @@ I (..\..\..\..\..\software\LPCUSBLib\Drivers\USB\Class/StillImageClass.h)(0x518B
 I (r:\apps\keil\ARM\ARMCC\include\stdlib.h)(0x51C819B4)
 I (..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\Lib\..\Descriptors.h)(0x518B9A0C)
 F (..\startup_code\keil_startup_lpc18xx43xx.s)(0x518BAD00)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1"-I r:\apps\keil\ARM\RV31\INC-I r:\apps\keil\ARM\CMSIS\Include-I r:\apps\keil\ARM\Inc\NXP\LPC43xx--pd "NO_CRP SETA 1" --list .\debug\keil_startup_lpc18xx43xx.lst --xref -o .\debug\keil_startup_lpc18xx43xx.o --depend .\debug\keil_startup_lpc18xx43xx.d)
-F (..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_usb\usb_43xx.lib)(0x52E520AF)()
-F (..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_lib\lib_4330.lib)(0x52E520A2)()
+F (..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_usb\usb_43xx.lib)(0x52E527AA)()
+F (..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_lib\lib_4330.lib)(0x52E5279D)()

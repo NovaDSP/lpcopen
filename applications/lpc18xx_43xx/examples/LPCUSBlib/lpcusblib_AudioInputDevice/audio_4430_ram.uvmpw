@@ -9,7 +9,6 @@
 
   <project>
     <PathAndName>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\lib_lpc_boards_18xx_43xx.uvproj</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
@@ -20,6 +19,7 @@
 
   <project>
     <PathAndName>.\lpcusblib_AudioInputDevice.uvproj</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
