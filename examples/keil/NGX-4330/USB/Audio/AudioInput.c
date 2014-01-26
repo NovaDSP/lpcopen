@@ -61,7 +61,8 @@ uint32_t CurrentAudioSampleFrequency = AUDIO_MAX_SAMPLE_FREQ;
 /* Sample Buffer */
 // uint16_t* sample_buffer = NULL;
 PRAGMA_ALIGN_4
-uint16_t sample_buffer[512] ATTR_ALIGNED(4) __BSS(USBRAM_SECTION);
+// JME
+uint16_t sample_buffer[512*CHANNEL_COUNT] ATTR_ALIGNED(4) __BSS(USBRAM_SECTION);
 uint32_t sample_buffer_size = 0;
 
 /*****************************************************************************
@@ -122,9 +123,18 @@ int main(void)
 		if ((Buttons_GetStatus() & BUTTONS_BUTTON1) != Button_State) {
 			int i;
 			Button_State ^= BUTTONS_BUTTON1;
+
+#if (CHANNEL_COUNT == 1)
 			for (i = 0; i < sample_buffer_size / 4; i++) {
 				sample_buffer[i] = (Button_State << 15);
 			}
+#else			
+			// 2 channels
+			for (i = 0; i < sample_buffer_size / 4; i += 2) {
+				sample_buffer[i] = (Button_State << 15);
+				sample_buffer[i+1] = (Button_State << 15);
+			}
+#endif
 		}
 #if !defined(USB_DEVICE_ROM_DRIVER)
 		Audio_Device_USBTask(&Microphone_Audio_Interface);

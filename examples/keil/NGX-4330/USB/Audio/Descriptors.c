@@ -124,7 +124,8 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.TerminalType             = AUDIO_TERMINAL_IN_MIC,
 		.AssociatedOutputTerminal = 0x00,
 
-		.TotalChannels            = 1,
+		// define channel count
+		.TotalChannels            = CHANNEL_COUNT,
 		.ChannelConfig            = 0,
 
 		.ChannelStrIndex          = NO_DESCRIPTOR,
@@ -194,17 +195,19 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.Channels                 = 0x01,
 
 		.SubFrameSize             = 0x02,
-		.BitResolution            = 16,
+		// Bits per sample
+		.BitResolution            = BITS_PER_SAMPLE,
 
 		.TotalDiscreteSampleRates =
 			(sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates) / sizeof(USB_Audio_SampleFreq_t))
 	},
 
 	.Audio_AudioFormatSampleRates = {
-		AUDIO_SAMPLE_FREQ(8000),
-		AUDIO_SAMPLE_FREQ(11025),
-		AUDIO_SAMPLE_FREQ(22050),
-		AUDIO_SAMPLE_FREQ(44100),
+//		JME integral sample rates only	
+//		AUDIO_SAMPLE_FREQ(8000),
+//		AUDIO_SAMPLE_FREQ(11025),
+//		AUDIO_SAMPLE_FREQ(22050),
+//		AUDIO_SAMPLE_FREQ(44100),
 		AUDIO_SAMPLE_FREQ(48000),
 	},
 

@@ -16,7 +16,8 @@ jlinklog.txt
 *.map
 *.crf
 *.JEvans
-*.uvopt
+# potentially dangerous ...
+# *.uvopt
 *.7z
 *.hzs
 *.d

@@ -39,6 +39,10 @@
 extern "C" {
 #endif
 
+// JME
+#define CHANNEL_COUNT 2
+#define BITS_PER_SAMPLE 16
+
 /** @defgroup Audio_Input_Device_Descriptor Class descriptors
  * @ingroup USB_Audio_Input_Device_18xx43xx USB_Audio_Input_Device_17xx40xx
  * @{
