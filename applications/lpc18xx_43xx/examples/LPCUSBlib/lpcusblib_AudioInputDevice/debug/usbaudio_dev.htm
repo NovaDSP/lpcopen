@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\debug\usbaudio_dev.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\debug\usbaudio_dev.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sun Jan 26 15:20:12 2014
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Sun Jan 26 17:06:38 2014
 <BR><P>
 <H3>Maximum Stack Usage =        176 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -413,9 +413,9 @@ Global Symbols
 <P><STRONG><a name="[53]"></a>Board_Init</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, board_ngx_xplorer_18304330.o(i.Board_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = Board_Init &rArr; SystemCoreClockUpdate &rArr; Chip_Clock_GetRate &rArr; Chip_Clock_GetBaseClocktHz &rArr; Chip_Clock_GetClockInputHz &rArr; Chip_Clock_GetMainPLLHz &rArr;  Chip_Clock_GetClockInputHz (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_SCU_PinMuxSet
+<BR>[Calls]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_SCU_PinMuxSet
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_GPIO_WriteDirBit
-<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -490,8 +490,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetMainPLLHz
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetDivRate
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_SetupMainPLLHz
-<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_SetupMainPLLMult
+<BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_SetupMainPLLMult
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_SetupMainPLLHz
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetMainPLLHz
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetBaseClocktHz
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetDivRate
@@ -569,13 +569,13 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Audio_Device_ProcessControlRequest
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_Device_GetStatus
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_Device_GetConfiguration
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Endpoint_Write_Control_Stream_LE
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Endpoint_ConfigureEndpoint
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Endpoint_ClearStatusStage
-<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DcdIrqHandler
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_Device_GetStatus
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_Device_GetConfiguration
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TransferCompleteISR
+<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DcdIrqHandler
 </UL>
 
 <P><STRONG><a name="[6e]"></a>DcdInsertTD</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, endpoint_lpc18xx.o(i.DcdInsertTD))
@@ -585,11 +585,11 @@ Global Symbols
 <P><STRONG><a name="[64]"></a>DcdIrqHandler</STRONG> (Thumb, 284 bytes, Stack size 48 bytes, endpoint_lpc18xx.o(i.DcdIrqHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = DcdIrqHandler &rArr; TransferCompleteISR &rArr; Endpoint_Streaming &rArr; DcdPrepareTD
 </UL>
-<BR>[Calls]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Endpoint_ConfigureEndpoint
+<BR>[Calls]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EVENT_USB_Device_StartOfFrame
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Endpoint_ConfigureEndpoint
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DcdDataTransfer
-<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Reset
-<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EVENT_USB_Device_StartOfFrame
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TransferCompleteISR
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Reset
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB1_IRQHandler
 <LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB0_IRQHandler
@@ -680,8 +680,8 @@ Global Symbols
 <P><STRONG><a name="[4e]"></a>Endpoint_Write_Control_Stream_LE</STRONG> (Thumb, 84 bytes, Stack size 16 bytes, endpointstream.o(i.Endpoint_Write_Control_Stream_LE))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = Endpoint_Write_Control_Stream_LE &rArr; DcdDataTransfer
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DcdDataTransfer
-<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Endpoint_Write_Stream_LE
+<BR>[Calls]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Endpoint_Write_Stream_LE
+<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DcdDataTransfer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Audio_Device_ProcessControlRequest
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_Device_GetDescriptor
@@ -716,11 +716,11 @@ Global Symbols
 <P><STRONG><a name="[71]"></a>HAL_USBInit</STRONG> (Thumb, 162 bytes, Stack size 16 bytes, hal_lpc18xx.o(i.HAL_USBInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = HAL_USBInit &rArr; HAL_Reset
 </UL>
-<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Reset
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetPLLStatus
+<BR>[Calls]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetPLLStatus
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_EnablePLL
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_EnableOpts
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_EnableBaseClock
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_EnableOpts
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Reset
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_CREG_EnableUSB0Phy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_Init
@@ -859,6 +859,21 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
+<P><STRONG><a name="[5b]"></a>Chip_Clock_GetDivRate</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, clock_18xx_43xx.o(i.Chip_Clock_GetDivRate))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8 + In Cycle
+<LI>Call Chain = Chip_Clock_GetDivRate &rArr;  Chip_Clock_GetClockInputHz (Cycle)
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetDividerSource
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetDividerDivisor
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetClockInputHz
+</UL>
+<BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetClockInputHz
+</UL>
+
+<P><STRONG><a name="[60]"></a>Chip_Clock_TestMainPLLMultiplier</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, clock_18xx_43xx.o(i.Chip_Clock_TestMainPLLMultiplier))
+<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_SetupMainPLLHz
+</UL>
+
 <P><STRONG><a name="[56]"></a>Chip_GPIO_ReadPortBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, board_ngx_xplorer_18304330.o(i.Chip_GPIO_ReadPortBit))
 <BR><BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Buttons_GetStatus
 </UL>
@@ -939,21 +954,6 @@ Local Symbols
 
 <P><STRONG><a name="[76]"></a>Chip_CREG_EnableUSB0Phy</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, hal_lpc18xx.o(i.Chip_CREG_EnableUSB0Phy))
 <BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_USBInit
-</UL>
-
-<P><STRONG><a name="[5b]"></a>Chip_Clock_GetDivRate</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, clock_18xx_43xx.o(i.Chip_Clock_GetDivRate))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8 + In Cycle
-<LI>Call Chain = Chip_Clock_GetDivRate &rArr;  Chip_Clock_GetClockInputHz (Cycle)
-</UL>
-<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetDividerSource
-<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetDividerDivisor
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetClockInputHz
-</UL>
-<BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_GetClockInputHz
-</UL>
-
-<P><STRONG><a name="[60]"></a>Chip_Clock_TestMainPLLMultiplier</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, clock_18xx_43xx.o(i.Chip_Clock_TestMainPLLMultiplier))
-<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chip_Clock_SetupMainPLLHz
 </UL>
 <P>
 <H3>

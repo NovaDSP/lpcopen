@@ -7,6 +7,8 @@ xcodebuild.log
 config.json
 test-setup.cmd
 jlinklog.txt
+*.buildlog.htm
+*.JEvans
 *.lib
 *.dep
 *.lst

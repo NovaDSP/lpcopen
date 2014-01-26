@@ -160,14 +160,14 @@
         </DebugOption>
         <Utilities>
           <Flash1>
-            <UseTargetDll>0</UseTargetDll>
+            <UseTargetDll>1</UseTargetDll>
             <UseExternalTool>1</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
             <DriverSelection>4096</DriverSelection>
           </Flash1>
-          <bUseTDR>0</bUseTDR>
+          <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
@@ -401,22 +401,22 @@
             <File>
               <FileName>AudioInput.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\AudioInput.c</FilePath>
+              <FilePath>.\AudioInput.c</FilePath>
             </File>
             <File>
               <FileName>Descriptors.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\Descriptors.c</FilePath>
+              <FilePath>.\Descriptors.c</FilePath>
             </File>
             <File>
               <FileName>UsbRom.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\Lib\UsbRom.c</FilePath>
+              <FilePath>.\UsbRom.c</FilePath>
             </File>
             <File>
               <FileName>keil_startup_lpc18xx43xx.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\startup_code\keil_startup_lpc18xx43xx.s</FilePath>
+              <FilePath>.\keil_startup_lpc18xx43xx.s</FilePath>
             </File>
           </Files>
         </Group>
