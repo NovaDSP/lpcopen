@@ -1,0 +1,11 @@
+--cpu Cortex-M4.fp
+".\debug\audioinput.o"
+".\debug\descriptors.o"
+".\debug\usbrom.o"
+".\debug\keil_startup_lpc18xx43xx.o"
+"..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_usb\usb_43xx.lib"
+"..\..\..\..\LPCUSBlib\lpcusblib_AudioInputDevice\debug_lib\lib_4330.lib"
+--library_type=microlib --strict --scatter ".\debug\usbaudio_dev.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\debug\usbaudio_dev.map" -o .\debug\usbaudio_dev.axf

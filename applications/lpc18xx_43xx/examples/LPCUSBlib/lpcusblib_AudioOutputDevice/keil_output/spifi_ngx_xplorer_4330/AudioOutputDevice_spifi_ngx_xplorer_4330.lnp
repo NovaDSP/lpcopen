@@ -1,0 +1,11 @@
+--cpu Cortex-M4.fp
+".\keil_output\spifi_ngx_xplorer_4330\descriptors.o"
+".\keil_output\spifi_ngx_xplorer_4330\audiooutput.o"
+".\keil_output\spifi_ngx_xplorer_4330\usbrom.o"
+".\keil_output\spifi_ngx_xplorer_4330\keil_startup_lpc18xx43xx.o"
+"..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_output\ngx_xplorer_4330\board_ngx_xplorer_4330.lib"
+"..\..\..\..\..\software\LPCUSBLib\Chips_Support\LPC18xx_43xx\keil_output\LPCUSBlib_LPC43xx_Device\LPCUSBlib_LPC43xx_Device.lib"
+--strict --scatter ".\keil_output\spifi_ngx_xplorer_4330\AudioOutputDevice_spifi_ngx_xplorer_4330.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\keil_output\spifi_ngx_xplorer_4330\AudioOutputDevice_spifi_ngx_xplorer_4330.map" -o .\keil_output\spifi_ngx_xplorer_4330\AudioOutputDevice_spifi_ngx_xplorer_4330.axf
