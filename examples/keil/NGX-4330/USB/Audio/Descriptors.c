@@ -57,8 +57,16 @@ USB_Descriptor_Device_t DeviceDescriptor = {
 
 	.Endpoint0Size          = FIXED_CONTROL_ENDPOINT_SIZE,
 
-	.VendorID               = 0x1fc9,
-	.ProductID              = 0x2047,
+	.VendorID               = 0xFACE,
+#if (CHANNEL_COUNT == 1)
+	.ProductID              = 0xCC01,
+#elif (CHANNEL_COUNT == 2)	
+	.ProductID              = 0xCC02,
+#elif (CHANNEL_COUNT == 4)
+	.ProductID              = 0xCC14,
+#else
+#error Unsupported channel count. Is CHANNEL_COUNT defined?
+#endif
 	.ReleaseNumber          = VERSION_BCD(00.02),
 
 	.ManufacturerStrIndex   = 0x01,
@@ -85,7 +93,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 
 		.ConfigAttributes         = (USB_CONFIG_ATTR_BUSPOWERED | USB_CONFIG_ATTR_SELFPOWERED),
 
-		.MaxPowerConsumption      = USB_CONFIG_POWER_MA(100)
+		.MaxPowerConsumption      = USB_CONFIG_POWER_MA(200)
 	},
 
 	.Audio_ControlInterface = {
@@ -192,7 +200,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_FormatType,
 
 		.FormatType               = 0x01,
-		.Channels                 = 0x01,
+		.Channels                 = CHANNEL_COUNT,
 
 		.SubFrameSize             = 0x02,
 		// Bits per sample
@@ -204,10 +212,11 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 
 	.Audio_AudioFormatSampleRates = {
 //		JME integral sample rates only	
-//		AUDIO_SAMPLE_FREQ(8000),
-//		AUDIO_SAMPLE_FREQ(11025),
-//		AUDIO_SAMPLE_FREQ(22050),
-//		AUDIO_SAMPLE_FREQ(44100),
+//		No, keep these for testing control interface is working
+		AUDIO_SAMPLE_FREQ(8000),
+		AUDIO_SAMPLE_FREQ(11025),
+		AUDIO_SAMPLE_FREQ(22050),
+		AUDIO_SAMPLE_FREQ(44100),
 		AUDIO_SAMPLE_FREQ(48000),
 	},
 
@@ -269,21 +278,21 @@ USB_Descriptor_String_t *ManufacturerStringPtr = (USB_Descriptor_String_t *) Man
 uint8_t ProductString[] = {
 	USB_STRING_LEN(26),
 	DTYPE_String,
-	WBVAL('L'),
-	WBVAL('P'),
 	WBVAL('C'),
+	WBVAL('h'),
+	WBVAL('o'),
+	WBVAL('r'),
+	WBVAL('d'),
+	WBVAL('i'),
+	WBVAL('a'),
+	WBVAL(' '),
+	WBVAL('U'),
+	WBVAL('1'),
+	WBVAL('6'),
+	WBVAL(' '),
 	WBVAL('U'),
 	WBVAL('S'),
 	WBVAL('B'),
-	WBVAL('l'),
-	WBVAL('i'),
-	WBVAL('b'),
-	WBVAL(' '),
-	WBVAL('A'),
-	WBVAL('u'),
-	WBVAL('d'),
-	WBVAL('i'),
-	WBVAL('o'),
 	WBVAL(' '),
 	WBVAL('I'),
 	WBVAL('n'),

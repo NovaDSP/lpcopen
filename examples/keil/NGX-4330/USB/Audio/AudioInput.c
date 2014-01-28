@@ -128,12 +128,20 @@ int main(void)
 			for (i = 0; i < sample_buffer_size / 4; i++) {
 				sample_buffer[i] = (Button_State << 15);
 			}
-#else			
-			// 2 channels
+#elif (CHANNEL_COUNT == 2)
 			for (i = 0; i < sample_buffer_size / 4; i += 2) {
 				sample_buffer[i] = (Button_State << 15);
 				sample_buffer[i+1] = (Button_State << 15);
 			}
+#elif (CHANNEL_COUNT == 4)
+			for (i = 0; i < sample_buffer_size / 4; i += 4) {
+				sample_buffer[i] = (Button_State << 15);
+				sample_buffer[i+1] = (Button_State << 15);
+				sample_buffer[i+2] = (Button_State << 15);
+				sample_buffer[i+3] = (Button_State << 15);
+			}
+#else
+#error Unsupported channel count. Is CHANNEL_COUNT defined?
 #endif
 		}
 #if !defined(USB_DEVICE_ROM_DRIVER)
