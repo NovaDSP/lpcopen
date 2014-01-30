@@ -30,7 +30,7 @@
  */
 
 #define  __INCLUDE_FROM_USB_DRIVER
-#include "..\AudioOutput.h"
+#include "AudioOutput.h"
 
 #ifdef __cplusplus
 extern "C" {

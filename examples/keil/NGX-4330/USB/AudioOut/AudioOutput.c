@@ -48,6 +48,8 @@ USB_ClassInfo_Audio_Device_t Speaker_Audio_Interface = {
 	},
 };
 
+#define TICKRATE_HZ 1
+
 /** Max Sample Frequency. */
 #define AUDIO_MAX_SAMPLE_FREQ   48000
 /** if audio buffer count is over this value, i2s will run in higher speed */
@@ -320,6 +322,46 @@ void I2S0_IRQHandler(void)
 	}
 }
 
+void TIMER1_IRQHandler(void)
+{
+	static bool On = false;
+
+	if (Chip_TIMER_MatchPending(LPC_TIMER1, 1)) 
+	{
+		Chip_TIMER_ClearMatch(LPC_TIMER1, 1);
+		On = (bool) !On;
+		Board_LED_Set(1, On);
+	}
+}
+
+void InitTimer()
+{
+	//
+	uint32_t timerFreq = 0;
+	/* Enable timer 1 clock and reset it */
+	Chip_TIMER_Init(LPC_TIMER1);
+	Chip_RGU_TriggerReset(RGU_TIMER1_RST);
+	while (Chip_RGU_InReset(RGU_TIMER1_RST)) 
+	{
+		// NOP
+	}
+
+	/* Get timer 1 peripheral clock rate */
+	timerFreq = Chip_Clock_GetRate(CLK_MX_TIMER1);
+
+	/* Timer setup for match and interrupt at TICKRATE_HZ */
+	Chip_TIMER_Reset(LPC_TIMER1);
+	Chip_TIMER_MatchEnableInt(LPC_TIMER1, 1);
+	Chip_TIMER_SetMatch(LPC_TIMER1, 1, (timerFreq / TICKRATE_HZ));
+	Chip_TIMER_ResetOnMatchEnable(LPC_TIMER1, 1);
+	Chip_TIMER_Enable(LPC_TIMER1);
+
+	/* Enable timer interrupt */
+	NVIC_EnableIRQ(TIMER1_IRQn);
+	NVIC_ClearPendingIRQ(TIMER1_IRQn);
+}
+
+
 /** This callback function provides iso buffer address for HAL iso transfer processing.
  */
 uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t *last_packet_size) {
@@ -340,6 +382,10 @@ int main(void)
 
 	SetupHardware();
 
+	InitTimer();
+	
+	Board_LED_Set(0, 0);
+	
 	audio_Confg.ChannelNumber = 2;	//stereo
 	audio_Confg.WordWidth = 16;	//16 bits	
 	/* Build I2S config table */
@@ -400,13 +446,14 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 
 	ConfigSuccess &= Audio_Device_ConfigureEndpoints(&Speaker_Audio_Interface);
 
-	//	LEDs_SetAllLEDs(ConfigSuccess ? LEDMASK_USB_READY : LEDMASK_USB_ERROR);
+	Board_LED_Set(0, 1);
 }
 
 /** Event handler for the library USB Control Request reception event. */
 void EVENT_USB_Device_ControlRequest(void)
 {
 	Audio_Device_ProcessControlRequest(&Speaker_Audio_Interface);
+	Board_LED_Set(1, 1);
 }
 
 void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t *const AudioInterfaceInfo)
