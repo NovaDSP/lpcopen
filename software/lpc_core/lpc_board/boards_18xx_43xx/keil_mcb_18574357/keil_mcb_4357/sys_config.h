@@ -48,7 +48,7 @@
 // #define DEBUG_SEMIHOSTING'
 
 /* Board UART used for debug output */
-#define DEBUG_UART LPC_USART3
+#define DEBUG_UART LPC_USART0
 
 /* Crystal frequency into device */
 #define CRYSTAL_MAIN_FREQ_IN 12000000

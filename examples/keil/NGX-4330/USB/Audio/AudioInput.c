@@ -58,6 +58,9 @@ USB_ClassInfo_Audio_Device_t Microphone_Audio_Interface =
 //
 #define TICKRATE_HZ 1
 
+#define BLUELED 1
+#define GREENLED 0
+
 /** Max Sample Frequency. */
 #define AUDIO_MAX_SAMPLE_FREQ   48000
 /** Current audio sampling frequency of the streaming audio endpoint. */
@@ -120,7 +123,7 @@ void TIMER1_IRQHandler(void)
 	{
 		Chip_TIMER_ClearMatch(LPC_TIMER1, 1);
 		On = (bool) !On;
-		Board_LED_Set(1, On);
+		Board_LED_Set(BLUELED, On);
 	}
 }
 
@@ -147,8 +150,8 @@ void InitTimer()
 	Chip_TIMER_Enable(LPC_TIMER1);
 
 	/* Enable timer interrupt */
-	NVIC_EnableIRQ(TIMER1_IRQn);
-	NVIC_ClearPendingIRQ(TIMER1_IRQn);
+//	NVIC_EnableIRQ(TIMER1_IRQn);
+//	NVIC_ClearPendingIRQ(TIMER1_IRQn);
 }
 
 
@@ -162,7 +165,12 @@ int main(void)
 	
 	InitTimer();
 	
-	Board_LED_Set(0, 0);
+	Board_LED_Set(GREENLED, 0);
+	
+	//Board_Debug_Init();
+	
+	//Board_UARTPutSTR("------------Main-------------\n");
+	USB_Device_EnableSOFEvents();
 	
 	// sample_buffer = (uint16_t*)Audio_Get_ISO_Buffer_Address(0);
 #if defined(USB_DEVICE_ROM_DRIVER)
@@ -209,13 +217,13 @@ int main(void)
 /** Event handler for the library USB Connection event. */
 void EVENT_USB_Device_Connect(void)
 {
-	Board_LED_Set(0, 1);
+	Board_LED_Set(GREENLED, 1);
 }
 
 /** Event handler for the library USB Disconnection event. */
 void EVENT_USB_Device_Disconnect(void)
 {
-	Board_LED_Set(0, 0);
+	Board_LED_Set(GREENLED, 0);
 }
 
 /** Event handler for the library USB Configuration Changed event. */
@@ -224,13 +232,50 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 	bool ConfigSuccess = true;
 	ConfigSuccess &= Audio_Device_ConfigureEndpoints(&Microphone_Audio_Interface);
 	//
-	Board_LED_Set(0, 1);
+/*
+	if (USB_Device_ConfigurationNumber == 0)
+	{
+		Board_LED_Set(GREENLED, false);	
+	}
+	else
+	{
+		Board_LED_Set(GREENLED, true);
+	}
+*/
 }
 
 /** Event handler for the library USB Control Request reception event. */
 void EVENT_USB_Device_ControlRequest(void)
 {
 	Audio_Device_ProcessControlRequest(&Microphone_Audio_Interface);
+}
+
+//-----------------------------------------------------------------------------
+// Indicates if streaming has started ...
+void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t *const AudioInterfaceInfo)
+{
+	if (AudioInterfaceInfo->State.InterfaceEnabled)
+	{
+		Board_LED_Set(GREENLED, 1);
+	}
+	else
+	{
+		Board_LED_Set(GREENLED, 0);
+	}
+}
+
+static uint32_t counter = 0;
+static bool lit = false;
+//-----------------------------------------------------------------------------
+// void USB_Event_Stub(void)
+void EVENT_USB_Device_StartOfFrame(void)
+{
+	counter++;
+	if (counter %  (6 * 1000) == 0)
+	{
+		lit = !lit;
+		Board_LED_Set(BLUELED, lit);
+	}
 }
 
 /** Audio class driver callback for the setting and retrieval of streaming endpoint properties. This callback must be implemented

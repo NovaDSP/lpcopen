@@ -47,7 +47,8 @@
  *  number of device configurations. The descriptor is read out by the USB host when the enumeration
  *  process begins.
  */
-USB_Descriptor_Device_t DeviceDescriptor = {
+USB_Descriptor_Device_t DeviceDescriptor =
+{
 	.Header                 = {.Size = sizeof(USB_Descriptor_Device_t), .Type = DTYPE_Device},
 
 	.USBSpecification       = VERSION_BCD(02.00),
@@ -60,7 +61,7 @@ USB_Descriptor_Device_t DeviceDescriptor = {
 	.VendorID               = 0xFACE,
 #if (CHANNEL_COUNT == 1)
 	.ProductID              = 0xCC01,
-#elif (CHANNEL_COUNT == 2)	
+#elif (CHANNEL_COUNT == 2)
 	.ProductID              = 0xCC02,
 #elif (CHANNEL_COUNT == 4)
 	.ProductID              = 0xCC14,
@@ -81,7 +82,8 @@ USB_Descriptor_Device_t DeviceDescriptor = {
  *  and endpoints. The descriptor is read out by the USB host during the enumeration process when selecting
  *  a configuration so that the host may correctly communicate with the USB device.
  */
-USB_Descriptor_Configuration_t ConfigurationDescriptor = {
+USB_Descriptor_Configuration_t ConfigurationDescriptor =
+{
 	.Config = {
 		.Header                   = {.Size = sizeof(USB_Descriptor_Configuration_Header_t), .Type = DTYPE_Configuration},
 
@@ -117,8 +119,8 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 
 		.ACSpecification          = VERSION_BCD(01.00),
 		.TotalLength              = (sizeof(USB_Audio_Descriptor_Interface_AC_t) +
-									 sizeof(USB_Audio_Descriptor_InputTerminal_t) +
-									 sizeof(USB_Audio_Descriptor_OutputTerminal_t)),
+		sizeof(USB_Audio_Descriptor_InputTerminal_t) +
+		sizeof(USB_Audio_Descriptor_OutputTerminal_t)),
 
 		.InCollection             = 1,
 		.InterfaceNumber          = 1,
@@ -153,6 +155,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.TerminalStrIndex         = NO_DESCRIPTOR
 	},
 
+	// selected when device is told to stop streaming. isoch packets no longer sent
 	.Audio_StreamInterface_Alt0 = {
 		.Header                   = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
 
@@ -168,6 +171,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.InterfaceStrIndex        = NO_DESCRIPTOR
 	},
 
+	// selected when device is told to start streaming. isoch packets required
 	.Audio_StreamInterface_Alt1 = {
 		.Header                   = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
 
@@ -183,6 +187,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.InterfaceStrIndex        = NO_DESCRIPTOR
 	},
 
+	//
 	.Audio_StreamInterface_SPC = {
 		.Header                   = {.Size = sizeof(USB_Audio_Descriptor_Interface_AS_t), .Type = DTYPE_CSInterface},
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_General,
@@ -194,9 +199,11 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 	},
 
 	.Audio_AudioFormat = {
-		.Header                   = {.Size = sizeof(USB_Audio_Descriptor_Format_t) +
-											 sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates),
-									 .Type = DTYPE_CSInterface},
+		.Header                   = {
+			.Size = sizeof(USB_Audio_Descriptor_Format_t) +
+			sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates),
+			.Type = DTYPE_CSInterface
+		},
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_FormatType,
 
 		.FormatType               = 0x01,
@@ -207,11 +214,11 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.BitResolution            = BITS_PER_SAMPLE,
 
 		.TotalDiscreteSampleRates =
-			(sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates) / sizeof(USB_Audio_SampleFreq_t))
+		(sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates) / sizeof(USB_Audio_SampleFreq_t))
 	},
 
 	.Audio_AudioFormatSampleRates = {
-//		JME integral sample rates only	
+//		JME integral sample rates only
 //		No, keep these for testing control interface is working
 		AUDIO_SAMPLE_FREQ(8000),
 		AUDIO_SAMPLE_FREQ(11025),
@@ -231,8 +238,8 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		},
 
 		.Refresh                  = 0,
-		.SyncEndpointNumber       = 0
-	},
+		 .SyncEndpointNumber       = 0
+	                             },
 
 	.Audio_StreamEndpoint_SPC = {
 		.Header                   =
@@ -245,37 +252,40 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.LockDelay                = 0x0000
 	},
 	.Audio_Termination = 0x00
-};
+                     };
 
 /** Language descriptor structure. This descriptor, located in FLASH memory, is returned when the host requests
  *  the string descriptor with index 0 (the first index). It is actually an array of 16-bit integers, which indicate
  *  via the language ID table available at USB.org what languages the device supports for its string descriptors.
  */
-uint8_t LanguageString[] = {
+uint8_t LanguageString[] =
+{
 	USB_STRING_LEN(1),
 	DTYPE_String,
 	WBVAL(LANGUAGE_ID_ENG),
 };
-USB_Descriptor_String_t *LanguageStringPtr = (USB_Descriptor_String_t *) LanguageString;
+USB_Descriptor_String_t* LanguageStringPtr = (USB_Descriptor_String_t*) LanguageString;
 
 /** Manufacturer descriptor string. This is a Unicode string containing the manufacturer's details in human readable
  *  form, and is read out upon request by the host when the appropriate string ID is requested, listed in the Device
  *  Descriptor.
  */
-uint8_t ManufacturerString[] = {
+uint8_t ManufacturerString[] =
+{
 	USB_STRING_LEN(3),
 	DTYPE_String,
 	WBVAL('N'),
 	WBVAL('X'),
 	WBVAL('P'),
 };
-USB_Descriptor_String_t *ManufacturerStringPtr = (USB_Descriptor_String_t *) ManufacturerString;
+USB_Descriptor_String_t* ManufacturerStringPtr = (USB_Descriptor_String_t*) ManufacturerString;
 
 /** Product descriptor string. This is a Unicode string containing the product's details in human readable form,
  *  and is read out upon request by the host when the appropriate string ID is requested, listed in the Device
  *  Descriptor.
  */
-uint8_t ProductString[] = {
+uint8_t ProductString[] =
+{
 	USB_STRING_LEN(26),
 	DTYPE_String,
 	WBVAL('C'),
@@ -305,7 +315,7 @@ uint8_t ProductString[] = {
 	WBVAL('m'),
 	WBVAL('o'),
 };
-USB_Descriptor_String_t *ProductStringPtr = (USB_Descriptor_String_t *) ProductString;
+USB_Descriptor_String_t* ProductStringPtr = (USB_Descriptor_String_t*) ProductString;
 
 /*****************************************************************************
  * Private functions
@@ -322,48 +332,42 @@ USB_Descriptor_String_t *ProductStringPtr = (USB_Descriptor_String_t *) ProductS
  *  USB host.
  */
 uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
-									const uint16_t wValue,
-									const uint8_t wIndex,
-									const void * *const DescriptorAddress)
+                                    const uint16_t wValue,
+                                    const uint8_t wIndex,
+                                    const void * *const DescriptorAddress)
 {
 	const uint8_t  DescriptorType   = (wValue >> 8);
 	const uint8_t  DescriptorNumber = (wValue & 0xFF);
-
-	const void *Address = NULL;
+	const void* Address = NULL;
 	uint16_t    Size    = NO_DESCRIPTOR;
-
-	switch (DescriptorType) {
+	switch (DescriptorType)
+	{
 	case DTYPE_Device:
 		Address = &DeviceDescriptor;
 		Size    = sizeof(USB_Descriptor_Device_t);
 		break;
-
 	case DTYPE_Configuration:
 		Address = &ConfigurationDescriptor;
 		Size    = sizeof(USB_Descriptor_Configuration_t);
 		break;
-
 	case DTYPE_String:
-		switch (DescriptorNumber) {
+		switch (DescriptorNumber)
+		{
 		case 0x00:
 			Address = LanguageStringPtr;
 			Size    = pgm_read_byte(&LanguageStringPtr->Header.Size);
 			break;
-
 		case 0x01:
 			Address = ManufacturerStringPtr;
 			Size    = pgm_read_byte(&ManufacturerStringPtr->Header.Size);
 			break;
-
 		case 0x02:
 			Address = ProductStringPtr;
 			Size    = pgm_read_byte(&ProductStringPtr->Header.Size);
 			break;
 		}
-
 		break;
 	}
-
 	*DescriptorAddress = Address;
 	return Size;
 }

@@ -65,7 +65,10 @@ void Board_Debug_Init(void)
 void Board_UARTPutChar(char ch)
 {
 #if defined(DEBUG_UART)
-	while (Chip_UART_SendByte(DEBUG_UART, (uint8_t) ch) == ERROR) {}
+	while (Chip_UART_SendByte(DEBUG_UART, (uint8_t) ch) == ERROR) 
+	{
+		// NOP
+	}
 #endif
 }
 
