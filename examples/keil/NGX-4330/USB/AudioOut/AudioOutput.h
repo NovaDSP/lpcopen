@@ -36,6 +36,9 @@
 		#include "USB.h"
 		#include <stdlib.h>
 		#include "Descriptors.h"
+		
+#include "settings.h"
+		
 #ifdef __cplusplus
 extern "C" {
 #endif

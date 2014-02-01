@@ -199,10 +199,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>2</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>218</TopLine>
-      <CurrentLine>245</CurrentLine>
+      <TopLine>83</TopLine>
+      <CurrentLine>98</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\AudioInput.c</PathWithFileName>
       <FilenameWithoutPath>AudioInput.c</FilenameWithoutPath>
@@ -247,10 +247,10 @@
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>37</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>141</TopLine>
+      <CurrentLine>142</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\keil_startup_lpc18xx43xx.s</PathWithFileName>
       <FilenameWithoutPath>keil_startup_lpc18xx43xx.s</FilenameWithoutPath>
@@ -321,8 +321,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\lpc_core\lpc_ip\adc_001.c</PathWithFileName>
       <FilenameWithoutPath>adc_001.c</FilenameWithoutPath>
@@ -705,8 +705,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\adc_18xx_43xx.c</PathWithFileName>
       <FilenameWithoutPath>adc_18xx_43xx.c</FilenameWithoutPath>
@@ -1007,10 +1007,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>30</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>59</TopLine>
-      <CurrentLine>72</CurrentLine>
+      <TopLine>140</TopLine>
+      <CurrentLine>148</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board_ngx_xplorer_18304330.c</PathWithFileName>
       <FilenameWithoutPath>board_ngx_xplorer_18304330.c</FilenameWithoutPath>
@@ -1025,8 +1025,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>230</TopLine>
+      <CurrentLine>243</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\sysinit_ngx_xplorer_18304330.c</PathWithFileName>
       <FilenameWithoutPath>sysinit_ngx_xplorer_18304330.c</FilenameWithoutPath>
@@ -1105,8 +1105,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rgu_18xx_43xx.c</PathWithFileName>
       <FilenameWithoutPath>rgu_18xx_43xx.c</FilenameWithoutPath>
@@ -1255,10 +1255,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>40</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>2</TopLine>
-      <CurrentLine>31</CurrentLine>
+      <TopLine>11</TopLine>
+      <CurrentLine>29</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\LPCUSBLib\Drivers\USB\Core\Events.c</PathWithFileName>
       <FilenameWithoutPath>Events.c</FilenameWithoutPath>
@@ -1367,10 +1367,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>1</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>46</TopLine>
-      <CurrentLine>64</CurrentLine>
+      <TopLine>52</TopLine>
+      <CurrentLine>53</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\LPCUSBLib\Drivers\USB\Core\USBTask.c</PathWithFileName>
       <FilenameWithoutPath>USBTask.c</FilenameWithoutPath>
@@ -1545,8 +1545,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\LPCUSBLib\Drivers\USB\Core\HAL\LPC18XX\HAL_LPC18xx.c</PathWithFileName>
       <FilenameWithoutPath>HAL_LPC18xx.c</FilenameWithoutPath>

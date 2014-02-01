@@ -37,6 +37,8 @@
 extern "C" {
 #endif
 
+#include "settings.h"
+
 /** @defgroup Audio_Output_Device_Descriptor Class descriptors
  * @ingroup LPC18xx_43xx_Audio_Output_Device
  * @{

@@ -116,7 +116,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.TerminalType             = AUDIO_TERMINAL_STREAMING,
 		.AssociatedOutputTerminal = 0x00,
 
-		.TotalChannels            = 2,
+		.TotalChannels            = CHANNELS,
 		.ChannelConfig            = (AUDIO_CHANNEL_LEFT_FRONT | AUDIO_CHANNEL_RIGHT_FRONT),
 
 		.ChannelStrIndex          = NO_DESCRIPTOR,
@@ -183,7 +183,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor = {
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_FormatType,
 
 		.FormatType               = 0x01,
-		.Channels                 = 0x02,
+		.Channels                 = CHANNELS,
 
 		.SubFrameSize             = 0x02,
 		.BitResolution            = 16,
@@ -243,11 +243,15 @@ USB_Descriptor_String_t *LanguageStringPtr = (USB_Descriptor_String_t *) Languag
  *  Descriptor.
  */
 uint8_t ManufacturerString[] = {
-	USB_STRING_LEN(3),
+	USB_STRING_LEN(7),
 	DTYPE_String,
-	WBVAL('N'),
-	WBVAL('X'),
-	WBVAL('P'),
+	WBVAL('C'),
+	WBVAL('h'),
+	WBVAL('o'),
+	WBVAL('r'),
+	WBVAL('d'),
+	WBVAL('i'),
+	WBVAL('a'),
 };
 USB_Descriptor_String_t *ManufacturerStringPtr = (USB_Descriptor_String_t *) ManufacturerString;
 
@@ -258,30 +262,30 @@ USB_Descriptor_String_t *ManufacturerStringPtr = (USB_Descriptor_String_t *) Man
 uint8_t ProductString[] = {
 	USB_STRING_LEN(24),
 	DTYPE_String,
-	WBVAL('L'),
-	WBVAL('P'),
 	WBVAL('C'),
+	WBVAL('h'),
+	WBVAL('o'),
+	WBVAL('r'),
+	WBVAL('d'),
+	WBVAL('i'),
+	WBVAL('a'),
+	WBVAL(' '),
+	WBVAL('U'),
+	WBVAL('1'),
+	WBVAL('6'),
+	WBVAL(' '),
 	WBVAL('U'),
 	WBVAL('S'),
 	WBVAL('B'),
-	WBVAL('l'),
-	WBVAL('i'),
-	WBVAL('b'),
-	WBVAL(' '),
-	WBVAL('A'),
-	WBVAL('u'),
-	WBVAL('d'),
-	WBVAL('i'),
-	WBVAL('o'),
 	WBVAL(' '),
 	WBVAL('O'),
 	WBVAL('u'),
 	WBVAL('t'),
 	WBVAL(' '),
-	WBVAL('D'),
-	WBVAL('e'),
-	WBVAL('m'),
-	WBVAL('o'),
+	WBVAL('4'),
+	WBVAL('3'),
+	WBVAL('3'),
+	WBVAL('0'),
 };
 USB_Descriptor_String_t *ProductStringPtr = (USB_Descriptor_String_t *) ProductString;
 

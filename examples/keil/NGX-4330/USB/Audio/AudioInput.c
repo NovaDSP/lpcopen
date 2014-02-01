@@ -70,7 +70,10 @@ uint32_t CurrentAudioSampleFrequency = AUDIO_MAX_SAMPLE_FREQ;
 PRAGMA_ALIGN_4
 // JME
 uint16_t sample_buffer[512*CHANNEL_COUNT] ATTR_ALIGNED(4) __BSS(USBRAM_SECTION);
-uint32_t sample_buffer_size = 0;
+uint32_t sample_buffer_size = 512*CHANNEL_COUNT*sizeof(uint16_t);
+
+//
+int modulo = 6 * 500;
 
 /*****************************************************************************
  * Private functions
@@ -92,21 +95,27 @@ static void SetupHardware(void)
 void Audio_Reset_Data_Buffer(void)
 {}
 
-void Audio_Init(uint32_t samplefreq)
-{
-	CurrentAudioSampleFrequency = samplefreq;
-	sample_buffer_size = samplefreq * sizeof(uint16_t) / 1000;
-}
-
 /** This callback function provides iso buffer address for HAL iso transfer processing.
  * for ISO In EP, this function also returns the size of buffer, depend on SampleFrequency.
  */
+
+// LED state 
+bool iso_state = false; 
+// ISO packet callback counter
+int iso_packets = 0; 
 uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t* packet_size)
 {
 	/* Check if this is audio stream endpoint */
 	*packet_size = sample_buffer_size;
 	if ((EPNum & 0x7F) == AUDIO_STREAM_EPNUM)
 	{
+		iso_packets++;
+		if (iso_packets % modulo == 0)
+		{
+			iso_state = !iso_state;
+			// should flash at sub-multiple of blue SOF LED
+			Board_LED_Set(GREENLED, iso_state);
+		}
 		return (uint32_t) &sample_buffer[0];
 	}
 	else
@@ -203,6 +212,14 @@ int main(void)
 				sample_buffer[i+2] = (Button_State << 15);
 				sample_buffer[i+3] = (Button_State << 15);
 			}
+#elif (CHANNEL_COUNT == 6)
+			{
+			
+			}
+#elif (CHANNEL_COUNT == 12)
+			{
+			
+			}
 #else
 #error Unsupported channel count. Is CHANNEL_COUNT defined?
 #endif
@@ -271,7 +288,7 @@ static bool lit = false;
 void EVENT_USB_Device_StartOfFrame(void)
 {
 	counter++;
-	if (counter %  (6 * 1000) == 0)
+	if (counter % modulo == 0)
 	{
 		lit = !lit;
 		Board_LED_Set(BLUELED, lit);

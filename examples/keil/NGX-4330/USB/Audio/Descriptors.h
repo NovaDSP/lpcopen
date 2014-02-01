@@ -40,7 +40,7 @@ extern "C" {
 #endif
 
 // JME
-#define CHANNEL_COUNT 4
+#define CHANNEL_COUNT 12
 #define BITS_PER_SAMPLE 16
 
 /** @defgroup Audio_Input_Device_Descriptor Class descriptors

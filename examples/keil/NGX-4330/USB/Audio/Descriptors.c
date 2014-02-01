@@ -64,7 +64,11 @@ USB_Descriptor_Device_t DeviceDescriptor =
 #elif (CHANNEL_COUNT == 2)
 	.ProductID              = 0xCC02,
 #elif (CHANNEL_COUNT == 4)
-	.ProductID              = 0xCC14,
+	.ProductID              = 0xCC04,
+#elif (CHANNEL_COUNT == 6)
+	.ProductID              = 0xCC06,
+#elif (CHANNEL_COUNT == 12)
+	.ProductID              = 0xCC12,
 #else
 #error Unsupported channel count. Is CHANNEL_COUNT defined?
 #endif
@@ -135,6 +139,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		.AssociatedOutputTerminal = 0x00,
 
 		// define channel count
+		// JME does this mean total audio channels or terminal channels?
 		.TotalChannels            = CHANNEL_COUNT,
 		.ChannelConfig            = 0,
 
@@ -272,11 +277,15 @@ USB_Descriptor_String_t* LanguageStringPtr = (USB_Descriptor_String_t*) Language
  */
 uint8_t ManufacturerString[] =
 {
-	USB_STRING_LEN(3),
+	USB_STRING_LEN(7),
 	DTYPE_String,
-	WBVAL('N'),
-	WBVAL('X'),
-	WBVAL('P'),
+	WBVAL('C'),
+	WBVAL('h'),
+	WBVAL('o'),
+	WBVAL('r'),
+	WBVAL('d'),
+	WBVAL('i'),
+	WBVAL('a'),
 };
 USB_Descriptor_String_t* ManufacturerStringPtr = (USB_Descriptor_String_t*) ManufacturerString;
 
@@ -286,7 +295,11 @@ USB_Descriptor_String_t* ManufacturerStringPtr = (USB_Descriptor_String_t*) Manu
  */
 uint8_t ProductString[] =
 {
-	USB_STRING_LEN(26),
+#if (CHANNEL_COUNT == 12)
+	USB_STRING_LEN(12),
+#else
+	USB_STRING_LEN(11),
+#endif	
 	DTYPE_String,
 	WBVAL('C'),
 	WBVAL('h'),
@@ -296,24 +309,20 @@ uint8_t ProductString[] =
 	WBVAL('i'),
 	WBVAL('a'),
 	WBVAL(' '),
-	WBVAL('U'),
-	WBVAL('1'),
+#if (CHANNEL_COUNT == 2)
+	WBVAL('2'),
+#elif (CHANNEL_COUNT == 4)	
+	WBVAL('4'),
+#elif (CHANNEL_COUNT == 6)	
 	WBVAL('6'),
-	WBVAL(' '),
-	WBVAL('U'),
-	WBVAL('S'),
-	WBVAL('B'),
-	WBVAL(' '),
-	WBVAL('I'),
-	WBVAL('n'),
-	WBVAL('p'),
-	WBVAL('u'),
-	WBVAL('t'),
-	WBVAL(' '),
-	WBVAL('D'),
-	WBVAL('e'),
-	WBVAL('m'),
-	WBVAL('o'),
+#elif (CHANNEL_COUNT == 12)	
+	WBVAL('1'),
+	WBVAL('2'),
+#else	
+#error Unsupported channel count. Is CHANNEL_COUNT defined?
+#endif
+	WBVAL('C'),
+	WBVAL('H'),
 };
 USB_Descriptor_String_t* ProductStringPtr = (USB_Descriptor_String_t*) ProductString;
 
