@@ -201,8 +201,8 @@
       <Focus>0</Focus>
       <ColumnNumber>2</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>83</TopLine>
-      <CurrentLine>98</CurrentLine>
+      <TopLine>193</TopLine>
+      <CurrentLine>198</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\AudioInput.c</PathWithFileName>
       <FilenameWithoutPath>AudioInput.c</FilenameWithoutPath>
@@ -217,8 +217,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>236</TopLine>
+      <CurrentLine>248</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Descriptors.c</PathWithFileName>
       <FilenameWithoutPath>Descriptors.c</FilenameWithoutPath>
@@ -279,10 +279,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>14</ColumnNumber>
+      <ColumnNumber>21</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>35</TopLine>
-      <CurrentLine>36</CurrentLine>
+      <TopLine>34</TopLine>
+      <CurrentLine>43</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Descriptors.h</PathWithFileName>
       <FilenameWithoutPath>Descriptors.h</FilenameWithoutPath>
@@ -1009,7 +1009,7 @@
       <Focus>0</Focus>
       <ColumnNumber>30</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>140</TopLine>
+      <TopLine>142</TopLine>
       <CurrentLine>148</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board_ngx_xplorer_18304330.c</PathWithFileName>
@@ -1025,7 +1025,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>230</TopLine>
+      <TopLine>224</TopLine>
       <CurrentLine>243</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\sysinit_ngx_xplorer_18304330.c</PathWithFileName>
@@ -1161,7 +1161,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>40</TopLine>
+      <TopLine>51</TopLine>
       <CurrentLine>52</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\LPCUSBLib\Drivers\USB\Class\Device\AudioClassDevice.h</PathWithFileName>
@@ -1257,7 +1257,7 @@
       <Focus>0</Focus>
       <ColumnNumber>40</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>11</TopLine>
+      <TopLine>1</TopLine>
       <CurrentLine>29</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\LPCUSBLib\Drivers\USB\Core\Events.c</PathWithFileName>
@@ -1369,8 +1369,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>52</TopLine>
-      <CurrentLine>53</CurrentLine>
+      <TopLine>45</TopLine>
+      <CurrentLine>51</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\LPCUSBLib\Drivers\USB\Core\USBTask.c</PathWithFileName>
       <FilenameWithoutPath>USBTask.c</FilenameWithoutPath>
@@ -1561,8 +1561,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>90</TopLine>
-      <CurrentLine>91</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\software\LPCUSBLib\Drivers\USB\Core\DCD\LPC18XX\Endpoint_LPC18xx.c</PathWithFileName>
       <FilenameWithoutPath>Endpoint_LPC18xx.c</FilenameWithoutPath>

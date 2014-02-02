@@ -309,7 +309,9 @@ uint8_t ProductString[] =
 	WBVAL('i'),
 	WBVAL('a'),
 	WBVAL(' '),
-#if (CHANNEL_COUNT == 2)
+#if (CHANNEL_COUNT == 1)
+	WBVAL('1'),
+#elif (CHANNEL_COUNT == 2)
 	WBVAL('2'),
 #elif (CHANNEL_COUNT == 4)	
 	WBVAL('4'),

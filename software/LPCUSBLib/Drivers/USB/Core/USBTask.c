@@ -50,6 +50,7 @@ volatile uint8_t     USB_DeviceState[MAX_USB_CORE];
 #endif
 
 void USB_USBTask(uint8_t corenum, uint8_t mode)
+
 {
 	#if defined(USB_HOST_ONLY)
  		USB_HostTask(corenum);
