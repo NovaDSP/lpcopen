@@ -74,8 +74,8 @@ USB_Descriptor_Device_t DeviceDescriptor =
 #endif
 	.ReleaseNumber          = VERSION_BCD(00.02),
 
-	.ManufacturerStrIndex   = 0x01,
-	.ProductStrIndex        = 0x02,
+	.ManufacturerStrIndex   = eManufacturer,
+	.ProductStrIndex        = eProduct,
 	.SerialNumStrIndex      = NO_DESCRIPTOR,
 
 	.NumberOfConfigurations = FIXED_NUM_CONFIGURATIONS
@@ -143,7 +143,8 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		.TotalChannels            = CHANNEL_COUNT,
 		.ChannelConfig            = 0,
 
-		.ChannelStrIndex          = NO_DESCRIPTOR,
+		// JME
+		.ChannelStrIndex          = eChannelNames,
 		.TerminalStrIndex         = NO_DESCRIPTOR
 	},
 
@@ -328,6 +329,33 @@ uint8_t ProductString[] =
 };
 USB_Descriptor_String_t* ProductStringPtr = (USB_Descriptor_String_t*) ProductString;
 
+uint8_t ChannelStrings[] =
+{
+	USB_STRING_LEN(5),
+	DTYPE_String,
+	WBVAL('I'),
+	WBVAL('P'),
+	WBVAL(' '),
+	WBVAL('0'),
+	WBVAL('1'),
+};
+USB_Descriptor_String_t* ChannelNamesStringPtr = (USB_Descriptor_String_t*) ChannelStrings;
+
+uint8_t AltMan[] =
+{
+	USB_STRING_LEN(7),
+	DTYPE_String,
+	WBVAL('C'),
+	WBVAL('h'),
+	WBVAL('o'),
+	WBVAL('r'),
+	WBVAL('d'),
+	WBVAL('i'),
+	WBVAL('a'),
+};
+
+USB_Descriptor_String_t* AltManDesc = (USB_Descriptor_String_t*) AltMan;
+
 /*****************************************************************************
  * Private functions
  ****************************************************************************/
@@ -364,17 +392,25 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 	case DTYPE_String:
 		switch (DescriptorNumber)
 		{
-		case 0x00:
+		case eLanguage:
 			Address = LanguageStringPtr;
 			Size    = pgm_read_byte(&LanguageStringPtr->Header.Size);
 			break;
-		case 0x01:
+		case eManufacturer:
 			Address = ManufacturerStringPtr;
 			Size    = pgm_read_byte(&ManufacturerStringPtr->Header.Size);
 			break;
-		case 0x02:
+		case eProduct:
 			Address = ProductStringPtr;
 			Size    = pgm_read_byte(&ProductStringPtr->Header.Size);
+			break;
+		case eChannelNames:
+			Address = ChannelNamesStringPtr;
+			Size    = pgm_read_byte(&ChannelNamesStringPtr->Header.Size);
+			break;
+		case eAltMan:
+			Address = AltManDesc;
+			Size    = pgm_read_byte(&AltManDesc->Header.Size);
 			break;
 		}
 		break;
