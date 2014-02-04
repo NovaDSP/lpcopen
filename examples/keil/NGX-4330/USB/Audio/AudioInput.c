@@ -441,6 +441,12 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 			}
 		}
 	}
+	// is this a 
+	else if (EndpointAddress == (ENDPOINT_DIR_IN | Microphone_Audio_Interface.Config.ControlInterfaceNumber))
+	{
+		// fake it
+		return true;
+	}
 	return false;
 }
 

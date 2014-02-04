@@ -43,6 +43,10 @@ extern "C" {
 #define CHANNEL_COUNT 1
 #define BITS_PER_SAMPLE 16
 
+// set this to 1 to experiment with device controls
+// like volume etc.
+#define USE_FEATURE 0
+
 typedef enum { eLanguage, eAltMan, eProduct, eChannelNames, eManufacturer } StringDescriptors;
 
 /** @defgroup Audio_Input_Device_Descriptor Class descriptors
@@ -78,7 +82,12 @@ typedef struct {
 	USB_Descriptor_Interface_t                Audio_ControlInterface;
 	USB_Audio_Descriptor_Interface_AC_t       Audio_ControlInterface_SPC;
 	USB_Audio_Descriptor_InputTerminal_t      Audio_InputTerminal;
-	USB_Audio_Descriptor_OutputTerminal_t     Audio_OutputTerminal;
+
+#if (USE_FEATURE == 1)
+	USB_Audio_Descriptor_FeatureUnit_t		Audio_FeatureUnit;
+#endif	
+
+	USB_Audio_Descriptor_OutputTerminal_t	Audio_OutputTerminal;
 
 	/* Audio Streaming Interface */
 	USB_Descriptor_Interface_t                Audio_StreamInterface_Alt0;

@@ -74,7 +74,8 @@ USB_Descriptor_Device_t DeviceDescriptor =
 #endif
 	.ReleaseNumber          = VERSION_BCD(00.02),
 
-	.ManufacturerStrIndex   = eManufacturer,
+	//.ManufacturerStrIndex   = eManufacturer,
+	.ManufacturerStrIndex   = eAltMan,
 	.ProductStrIndex        = eProduct,
 	.SerialNumStrIndex      = NO_DESCRIPTOR,
 
@@ -148,6 +149,28 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		.TerminalStrIndex         = NO_DESCRIPTOR
 	},
 
+#if (USE_FEATURE == 1)
+	.Audio_FeatureUnit = 
+	{
+		// Regular descriptor header containing the descriptor's type and length.
+		.Header = {
+			.Size = sizeof(USB_Audio_Descriptor_FeatureUnit_t), 
+			.Type = DTYPE_CSInterface
+		},
+		// Sub type value used to distinguish between audio class-specific descriptors,must be @ref AUDIO_DSUBTYPE_CSInterface_Feature
+		.Subtype = AUDIO_DSUBTYPE_CSInterface_Feature, 
+		// ID value of this feature unit - must be a unique value within the device.
+		.UnitID = 2, 
+		// Source ID value of the audio source input into this feature unit.
+		.SourceID = 1, 
+		// Size of each element in the \c ChannelControls array.
+		.ControlSize = 1, 
+		// Feature masks for the control channel, and each separate audio channel.
+		.ChannelControls = { 0, 0, 0}, 
+		// Index of a string descriptor describing this descriptor within the device.
+		.FeatureUnitStrIndex = 0 
+	},
+#endif	
 	.Audio_OutputTerminal = {
 		.Header                   = {.Size = sizeof(USB_Audio_Descriptor_OutputTerminal_t), .Type = DTYPE_CSInterface},
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_OutputTerminal,
