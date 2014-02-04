@@ -464,6 +464,8 @@
 			uint8_t  bInterfaceNumbers; /**< Interface number of the associated Audio Streaming interface. */
 		} ATTR_PACKED USB_Audio_StdDescriptor_Interface_AC_t;
 
+//	JME audit:moved application dependent?
+#if 0
 		/** @brief Audio class-specific Feature Unit Descriptor (nxpUSBlib naming conventions).
 		 *
 		 *  Type define for an Audio class-specific Feature Unit descriptor. This indicates to the host what features
@@ -485,10 +487,13 @@
 			uint8_t                 SourceID; /**< Source ID value of the audio source input into this feature unit. */
 
 			uint8_t                 ControlSize; /**< Size of each element in the \c ChannelControls array. */
+			
+			// JME - this value 
 			uint8_t                 ChannelControls[3]; /**< Feature masks for the control channel, and each separate audio channel. */
 
 			uint8_t                 FeatureUnitStrIndex; /**< Index of a string descriptor describing this descriptor within the device. */
 		} ATTR_PACKED USB_Audio_Descriptor_FeatureUnit_t;
+#endif
 
 		/** @brief Audio class-specific Feature Unit Descriptor (USB-IF naming conventions).
 		 *

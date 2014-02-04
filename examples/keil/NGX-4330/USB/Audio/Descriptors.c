@@ -166,7 +166,27 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		// Size of each element in the \c ChannelControls array.
 		.ControlSize = 1, 
 		// Feature masks for the control channel, and each separate audio channel.
-		.ChannelControls = { 0, 0, 0}, 
+#if (CHANNEL_COUNT == 1)
+		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME }, 
+#elif (CHANNEL_COUNT == 2)
+		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME }, 
+#elif (CHANNEL_COUNT == 4)
+		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME }, 
+#elif (CHANNEL_COUNT == 6)
+		.ChannelControls = { 
+			FEATURE_VOLUME, // master
+			FEATURE_VOLUME, // channel 1
+			FEATURE_VOLUME, 
+			FEATURE_VOLUME, 
+			FEATURE_VOLUME, 
+			FEATURE_VOLUME,
+			FEATURE_VOLUME,	// channel 6 
+		}, 
+#elif (CHANNEL_COUNT == 12)
+		.ChannelControls = { 0 },
+#else
+#error Unsupported channel count. Is CHANNEL_COUNT defined?
+#endif
 		// Index of a string descriptor describing this descriptor within the device.
 		.FeatureUnitStrIndex = 0 
 	},

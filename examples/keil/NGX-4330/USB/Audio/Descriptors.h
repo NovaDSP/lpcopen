@@ -42,10 +42,11 @@ extern "C" {
 // JME
 #define CHANNEL_COUNT 1
 #define BITS_PER_SAMPLE 16
-
+//
+#define FEATURE_VOLUME (1 << 1)
 // set this to 1 to experiment with device controls
 // like volume etc.
-#define USE_FEATURE 0
+#define USE_FEATURE 1
 
 typedef enum { eLanguage, eAltMan, eProduct, eChannelNames, eManufacturer } StringDescriptors;
 
@@ -69,6 +70,39 @@ typedef enum { eLanguage, eAltMan, eProduct, eChannelNames, eManufacturer } Stri
  *        USB models will result in unavoidable distorted output.
  */
 #define AUDIO_STREAM_EPSIZE          ENDPOINT_MAX_SIZE(AUDIO_STREAM_EPNUM)
+
+
+		/** @brief Audio class-specific Feature Unit Descriptor (nxpUSBlib naming conventions).
+		 *
+		 *  Type define for an Audio class-specific Feature Unit descriptor. This indicates to the host what features
+		 *  are present in the device's audio stream for basic control, such as per-channel volume. See the USB Audio
+		 *  specification for more details.
+		 *
+		 *  @see @ref USB_Audio_StdDescriptor_FeatureUnit_t for the version of this type with standard element names.
+		 *
+		 *  @note Regardless of CPU architecture, these values should be stored as little endian.
+		 */
+		typedef ATTR_IAR_PACKED struct
+		{
+			USB_Descriptor_Header_t Header; /**< Regular descriptor header containing the descriptor's type and length. */
+			uint8_t                 Subtype; /**< Sub type value used to distinguish between audio class-specific descriptors,
+			                                  *   must be @ref AUDIO_DSUBTYPE_CSInterface_Feature.
+			                                  */
+
+			uint8_t                 UnitID; /**< ID value of this feature unit - must be a unique value within the device. */
+			uint8_t                 SourceID; /**< Source ID value of the audio source input into this feature unit. */
+
+			// Size of each element in the \c ChannelControls array.
+			// JME audit: what does this mean ???
+			uint8_t ControlSize; 
+			
+			// JME - this value is a bitmask - one for master, one per 'channel'
+			// Feature masks for the control channel, and each separate audio channel.
+			uint8_t ChannelControls[CHANNEL_COUNT+1]; 
+			// Index of a string descriptor describing this descriptor within the device.
+			uint8_t FeatureUnitStrIndex; 
+		} ATTR_PACKED USB_Audio_Descriptor_FeatureUnit_t;
+
 
 /**
  * @brief Type define for the device configuration descriptor structure. This must be defined in the
