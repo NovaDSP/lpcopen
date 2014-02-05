@@ -281,7 +281,9 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 
 			.EndpointAddress     = (ENDPOINT_DIR_IN | AUDIO_STREAM_EPNUM),
 			.Attributes          = (EP_TYPE_ISOCHRONOUS | ENDPOINT_ATTR_SYNC | ENDPOINT_USAGE_DATA),
-			.EndpointSize        = AUDIO_STREAM_EPSIZE,
+			//.EndpointSize        = AUDIO_STREAM_EPSIZE,
+			// JME make EP 1024 bytes
+			.EndpointSize        = EP_SIZE_BYTES,
 			.PollingIntervalMS   = 0x01
 		},
 

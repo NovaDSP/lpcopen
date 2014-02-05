@@ -40,7 +40,10 @@ extern "C" {
 #endif
 
 // JME
-#define CHANNEL_COUNT 40
+//
+#define EP_SIZE_BYTES 1024
+//
+#define CHANNEL_COUNT 48
 // valid sizes are 2 and 3 for 16 nd 24 bit respectively
 #define BYTES_PER_SAMPLE 3
 //
