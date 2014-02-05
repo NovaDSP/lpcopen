@@ -183,18 +183,17 @@ int iso_packets = 0;
 int iso_index = 0;
 
 //-----------------------------------------------------------------------------
-//
-const int const_samples = 6;
-int16_t data[const_samples] = { 32767,0,0,0,0,0 };
+// we assume that on SOF interrput we send N channels * sizeof sample to isoch EP
+
+int16_t data[CHANNEL_COUNT] = { 0 };
 
 //-----------------------------------------------------------------------------
 // this is actually returning a pointer to the data buffer to be transferred
 uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t* packet_size)
 {
-	/* Check if this is audio stream endpoint */
-	//*packet_size = sample_buffer_size;
-	*packet_size = const_samples * sizeof(int16_t);
-	//
+	// how large is my buffer in *bytes*
+	*packet_size = CHANNEL_COUNT * sizeof(int16_t);
+	// Check if this is audio stream endpoint
 	if ((EPNum & 0x7F) == AUDIO_STREAM_EPNUM)
 	{
 		iso_packets++;
@@ -204,8 +203,7 @@ uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t* packet
 			// should flash at sub-multiple of blue SOF LED
 			Board_LED_Set(GREENLED, iso_state);
 		}
-		//
-		//
+		// return the audio data buffer
 		return (uint32_t) &data[0];
 	}
 	else

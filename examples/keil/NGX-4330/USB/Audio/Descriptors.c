@@ -69,6 +69,10 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	.ProductID              = 0xCC06,
 #elif (CHANNEL_COUNT == 12)
 	.ProductID              = 0xCC12,
+#elif (CHANNEL_COUNT == 24)
+	.ProductID              = 0xCC24,
+#elif (CHANNEL_COUNT == 36)
+	.ProductID              = 0xCC36,
 #else
 #error Unsupported channel count. Is CHANNEL_COUNT defined?
 #endif
@@ -366,6 +370,12 @@ uint8_t ProductString[] =
 #elif (CHANNEL_COUNT == 12)	
 	WBVAL('1'),
 	WBVAL('2'),
+#elif (CHANNEL_COUNT == 24)	
+	WBVAL('2'),
+	WBVAL('4'),
+#elif (CHANNEL_COUNT == 36)	
+	WBVAL('3'),
+	WBVAL('6'),
 #else	
 #error Unsupported channel count. Is CHANNEL_COUNT defined?
 #endif

@@ -40,7 +40,8 @@ extern "C" {
 #endif
 
 // JME
-#define CHANNEL_COUNT 1
+#define CHANNEL_COUNT 24
+// 
 #define BITS_PER_SAMPLE 16
 //
 #define FEATURE_VOLUME (1 << 1)
