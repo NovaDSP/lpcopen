@@ -166,7 +166,27 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		// Size of each element in the \c ChannelControls array.
 		.ControlSize = 1, 
 		// Feature masks for the control channel, and each separate audio channel.
-		.ChannelControls = { 0, 0, 0}, 
+#if (CHANNEL_COUNT == 1)
+		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME }, 
+#elif (CHANNEL_COUNT == 2)
+		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME }, 
+#elif (CHANNEL_COUNT == 4)
+		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME }, 
+#elif (CHANNEL_COUNT == 6)
+		.ChannelControls = { 
+			FEATURE_VOLUME, // master
+			FEATURE_VOLUME, // channel 1
+			FEATURE_VOLUME, 
+			FEATURE_VOLUME, 
+			FEATURE_VOLUME, 
+			FEATURE_VOLUME,
+			FEATURE_VOLUME,	// channel 6 
+		}, 
+#elif (CHANNEL_COUNT == 12)
+		.ChannelControls = { 0 },
+#else
+#error Unsupported channel count. Is CHANNEL_COUNT defined?
+#endif
 		// Index of a string descriptor describing this descriptor within the device.
 		.FeatureUnitStrIndex = 0 
 	},
@@ -234,25 +254,27 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 			.Type = DTYPE_CSInterface
 		},
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_FormatType,
-
+		//
 		.FormatType               = 0x01,
+		//
 		.Channels                 = CHANNEL_COUNT,
-
+		//
 		.SubFrameSize             = 0x02,
 		// Bits per sample
 		.BitResolution            = BITS_PER_SAMPLE,
-
-		.TotalDiscreteSampleRates =
-		(sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates) / sizeof(USB_Audio_SampleFreq_t))
+		// how many sample rates do we support?
+		.TotalDiscreteSampleRates = 1,
+		//.TotalDiscreteSampleRates =
+		//(sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates) / sizeof(USB_Audio_SampleFreq_t))
 	},
 
 	.Audio_AudioFormatSampleRates = {
 //		JME integral sample rates only
 //		No, keep these for testing control interface is working
-		AUDIO_SAMPLE_FREQ(8000),
-		AUDIO_SAMPLE_FREQ(11025),
-		AUDIO_SAMPLE_FREQ(22050),
-		AUDIO_SAMPLE_FREQ(44100),
+//		AUDIO_SAMPLE_FREQ(8000),
+//		AUDIO_SAMPLE_FREQ(11025),
+//		AUDIO_SAMPLE_FREQ(22050),
+//		AUDIO_SAMPLE_FREQ(44100),
 		AUDIO_SAMPLE_FREQ(48000),
 	},
 

@@ -157,11 +157,7 @@ uint32_t sample_buffer_size = buffer_size;
 //
 int modulo = 6 * 500;
 
-
-/*****************************************************************************
- * Private functions
- ****************************************************************************/
-
+//-----------------------------------------------------------------------------
 /* Configures the board hardware and chip peripherals for the demo's
    functionality. */
 static void SetupHardware(void)
@@ -171,10 +167,7 @@ static void SetupHardware(void)
 	USB_Init(Microphone_Audio_Interface.Config.PortNumber, USB_MODE_Device);
 }
 
-/*****************************************************************************
- * Public functions
- ****************************************************************************/
-
+//-----------------------------------------------------------------------------
 void Audio_Reset_Data_Buffer(void)
 {}
 
@@ -189,16 +182,12 @@ int iso_packets = 0;
 //
 int iso_index = 0;
 
-// how much data in *samples*? @256 this means 512 bytes of data per microframe
-const int data_size = 12;
-
-// amout of data in *bytes*
-int byte_size = data_size * CHANNEL_COUNT * sizeof(uint16_t);
-
+//-----------------------------------------------------------------------------
 //
 const int const_samples = 6;
 int16_t data[const_samples] = { 32767,0,0,0,0,0 };
 
+//-----------------------------------------------------------------------------
 // this is actually returning a pointer to the data buffer to be transferred
 uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t* packet_size)
 {
@@ -224,7 +213,7 @@ uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t* packet
 		return 0;
 	}
 }
-
+//-----------------------------------------------------------------------------
 void TIMER1_IRQHandler(void)
 {
 	static bool On = false;
@@ -237,6 +226,7 @@ void TIMER1_IRQHandler(void)
 	}
 }
 
+//-----------------------------------------------------------------------------
 void InitTimer()
 {
 	//
@@ -264,7 +254,7 @@ void InitTimer()
 //	NVIC_ClearPendingIRQ(TIMER1_IRQn);
 }
 
-
+//-----------------------------------------------------------------------------
 /** Main program entry point. This routine contains the overall program flow, including initial
  *  setup of all components and the main program loop.
  */
@@ -292,38 +282,6 @@ int main(void)
 		/* Generate Square Wave at 1kHz */
 		if ((Buttons_GetStatus() & BUTTONS_BUTTON1) != Button_State)
 		{
-			int i;
-			Button_State ^= BUTTONS_BUTTON1;
-#if (CHANNEL_COUNT == 1)
-			for (i = 0; i < sample_buffer_size / 4; i++)
-			{
-				sample_buffer[i] = (Button_State << 15);
-			}
-#elif (CHANNEL_COUNT == 2)
-			for (i = 0; i < sample_buffer_size / 4; i += 2)
-			{
-				sample_buffer[i] = (Button_State << 15);
-				sample_buffer[i+1] = (Button_State << 15);
-			}
-#elif (CHANNEL_COUNT == 4)
-			for (i = 0; i < sample_buffer_size / 4; i += 4)
-			{
-				sample_buffer[i] = (Button_State << 15);
-				sample_buffer[i+1] = (Button_State << 15);
-				sample_buffer[i+2] = (Button_State << 15);
-				sample_buffer[i+3] = (Button_State << 15);
-			}
-#elif (CHANNEL_COUNT == 6)
-			{
-			
-			}
-#elif (CHANNEL_COUNT == 12)
-			{
-			
-			}
-#else
-#error Unsupported channel count. Is CHANNEL_COUNT defined?
-#endif
 		}
 #if !defined(USB_DEVICE_ROM_DRIVER)
 		Audio_Device_USBTask(&Microphone_Audio_Interface);
@@ -332,18 +290,21 @@ int main(void)
 	}
 }
 
+//-----------------------------------------------------------------------------
 /** Event handler for the library USB Connection event. */
 void EVENT_USB_Device_Connect(void)
 {
 	Board_LED_Set(GREENLED, 1);
 }
 
+//-----------------------------------------------------------------------------
 /** Event handler for the library USB Disconnection event. */
 void EVENT_USB_Device_Disconnect(void)
 {
 	Board_LED_Set(GREENLED, 0);
 }
 
+//-----------------------------------------------------------------------------
 /** Event handler for the library USB Configuration Changed event. */
 void EVENT_USB_Device_ConfigurationChanged(void)
 {
@@ -362,6 +323,7 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 */
 }
 
+//-----------------------------------------------------------------------------
 /** Event handler for the library USB Control Request reception event. */
 void EVENT_USB_Device_ControlRequest(void)
 {
@@ -382,10 +344,12 @@ void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t *const Audi
 	}
 }
 
-static uint32_t counter = 0;
-static bool lit = false;
 //-----------------------------------------------------------------------------
 // void USB_Event_Stub(void)
+
+static uint32_t counter = 0;
+static bool lit = false;
+
 void EVENT_USB_Device_StartOfFrame(void)
 {
 	counter++;
@@ -396,6 +360,7 @@ void EVENT_USB_Device_StartOfFrame(void)
 	}
 }
 
+//-----------------------------------------------------------------------------
 /** Audio class driver callback for the setting and retrieval of streaming endpoint properties. This callback must be implemented
  *  in the user application to handle property manipulations on streaming audio endpoints.
  */
@@ -425,7 +390,7 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 					{
 						return false;
 					}
-					sample_buffer_size = CurrentAudioSampleFrequency * sizeof(uint16_t) / 1000;
+					// JME adjust buffer size here.
 				}
 				return true;
 			case AUDIO_REQ_GetCurrent:
@@ -441,15 +406,10 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 			}
 		}
 	}
-	// is this a 
-	else if (EndpointAddress == (ENDPOINT_DIR_IN | Microphone_Audio_Interface.Config.ControlInterfaceNumber))
-	{
-		// fake it
-		return true;
-	}
 	return false;
 }
 
+//-----------------------------------------------------------------------------
 /** Audio class driver callback for the setting and retrieval of streaming interface properties. This callback must be implemented
  *  in the user application to handle property manipulations on streaming audio interfaces.
  *
