@@ -373,7 +373,8 @@ uint8_t ProductString[] =
 	WBVAL('4'),
 	WBVAL('8'),
 #else	
-#error Unsupported channel count. Is CHANNEL_COUNT defined?
+	WBVAL('N'),
+	WBVAL('N'),
 #endif
 	WBVAL('C'),
 	WBVAL('H'),
