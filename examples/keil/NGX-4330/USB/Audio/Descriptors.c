@@ -58,13 +58,14 @@ USB_Descriptor_Device_t DeviceDescriptor =
 
 	.Endpoint0Size          = FIXED_CONTROL_ENDPOINT_SIZE,
 
+	// this belongs to OMG ...
 	.VendorID               = 0xFACE,
 	
 	// persuade Windows to re-install drivers when we change configuration
 #if BYTES_PER_SAMPLE == 2	
-	.ProductID              = 0xC200 + CHANNEL_COUNT,
+	.ProductID              = 1600 + CHANNEL_COUNT,
 #elif BYTES_PER_SAMPLE == 3	
-	.ProductID              = 0xC300 + CHANNEL_COUNT,
+	.ProductID              = 2400 + CHANNEL_COUNT,
 #else
 	#error unsupported sample size
 #endif	
@@ -337,7 +338,7 @@ USB_Descriptor_String_t* ManufacturerStringPtr = (USB_Descriptor_String_t*) Manu
  */
 uint8_t ProductString[] =
 {
-#if (CHANNEL_COUNT == 12)
+#if (CHANNEL_COUNT >= 10)
 	USB_STRING_LEN(12),
 #else
 	USB_STRING_LEN(11),
@@ -368,6 +369,9 @@ uint8_t ProductString[] =
 #elif (CHANNEL_COUNT == 36)	
 	WBVAL('3'),
 	WBVAL('6'),
+#elif (CHANNEL_COUNT == 48)	
+	WBVAL('4'),
+	WBVAL('8'),
 #else	
 #error Unsupported channel count. Is CHANNEL_COUNT defined?
 #endif
