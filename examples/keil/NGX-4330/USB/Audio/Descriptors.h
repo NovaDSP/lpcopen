@@ -43,7 +43,7 @@ extern "C" {
 //
 #define EP_SIZE_BYTES 1024
 //
-#define CHANNEL_COUNT 48
+#define CHANNEL_COUNT 32
 // valid sizes are 2 and 3 for 16 nd 24 bit respectively
 #define BYTES_PER_SAMPLE 3
 //

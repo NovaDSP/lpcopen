@@ -368,9 +368,9 @@ uint8_t ProductString[] =
 #elif (CHANNEL_COUNT == 24)	
 	WBVAL('2'),
 	WBVAL('4'),
-#elif (CHANNEL_COUNT == 36)	
+#elif (CHANNEL_COUNT == 32)	
 	WBVAL('3'),
-	WBVAL('6'),
+	WBVAL('2'),
 #elif (CHANNEL_COUNT == 48)	
 	WBVAL('4'),
 	WBVAL('8'),

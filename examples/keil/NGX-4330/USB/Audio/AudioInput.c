@@ -201,7 +201,7 @@ uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t* packet
 		{
 			iso_state = !iso_state;
 			// should flash at sub-multiple of blue SOF LED
-			Board_LED_Set(GREENLED, iso_state);
+			// Board_LED_Set(GREENLED, iso_state);
 		}
 		// return the audio data buffer
 		return (uint32_t) &data[0];
