@@ -59,23 +59,15 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	.Endpoint0Size          = FIXED_CONTROL_ENDPOINT_SIZE,
 
 	.VendorID               = 0xFACE,
-#if (CHANNEL_COUNT == 1)
-	.ProductID              = 0xCC01,
-#elif (CHANNEL_COUNT == 2)
-	.ProductID              = 0xCC02,
-#elif (CHANNEL_COUNT == 4)
-	.ProductID              = 0xCC04,
-#elif (CHANNEL_COUNT == 6)
-	.ProductID              = 0xCC06,
-#elif (CHANNEL_COUNT == 12)
-	.ProductID              = 0xCC12,
-#elif (CHANNEL_COUNT == 24)
-	.ProductID              = 0xCC24,
-#elif (CHANNEL_COUNT == 36)
-	.ProductID              = 0xCC36,
+	
+	// persuade Windows to re-install drivers when we change configuration
+#if BYTES_PER_SAMPLE == 2	
+	.ProductID              = 0xC200 + CHANNEL_COUNT,
+#elif BYTES_PER_SAMPLE == 3	
+	.ProductID              = 0xC300 + CHANNEL_COUNT,
 #else
-#error Unsupported channel count. Is CHANNEL_COUNT defined?
-#endif
+	#error unsupported sample size
+#endif	
 	.ReleaseNumber          = VERSION_BCD(00.02),
 
 	//.ManufacturerStrIndex   = eManufacturer,
@@ -262,10 +254,10 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		.FormatType               = 0x01,
 		//
 		.Channels                 = CHANNEL_COUNT,
-		//
-		.SubFrameSize             = 0x02,
-		// Bits per sample
-		.BitResolution            = BITS_PER_SAMPLE,
+		// 2 bytes per subframe for 16bit, 3 for 24 bit
+		.SubFrameSize             = BYTES_PER_SAMPLE,
+		// Bits per sample, i.e 3 * 8 for 24 bit audio
+		.BitResolution            = BYTES_PER_SAMPLE * 8,
 		// how many sample rates do we support?
 		.TotalDiscreteSampleRates = 1,
 		//.TotalDiscreteSampleRates =

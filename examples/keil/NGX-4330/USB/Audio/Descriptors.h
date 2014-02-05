@@ -40,9 +40,9 @@ extern "C" {
 #endif
 
 // JME
-#define CHANNEL_COUNT 24
-// 
-#define BITS_PER_SAMPLE 16
+#define CHANNEL_COUNT 6
+// valid sizes are 2 and 3 for 16 nd 24 bit respectively
+#define BYTES_PER_SAMPLE 3
 //
 #define FEATURE_VOLUME (1 << 1)
 // set this to 1 to experiment with device controls
