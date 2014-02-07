@@ -55,6 +55,8 @@ USB_ClassInfo_Audio_Device_t Microphone_Audio_Interface =
 	},
 };
 
+// for runtime modification
+extern USB_Descriptor_Configuration_t ConfigurationDescriptor;
 //
 #define TICKRATE_HZ 1
 
@@ -186,27 +188,25 @@ int iso_index = 0;
 // we assume that on SOF interrput we send N channels * sizeof sample to isoch EP
 
 #if (CHANNEL_COUNT == 2 && BYTES_PER_SAMPLE == 2)
+
+// i.e. signed 16 bit samples, interleaved on channel basis
 int16_t data[CHANNEL_COUNT*SAMPLE_COUNT] = 
 { 
-	32767,32767,
+	500,1000,
 	0,0,
-	-32766,-32766,
+	-500,-1000,
 	0,0,
-	32767,32767,
-	0,0,
-	-32766,-32766,
+	500,1000,
 	0,0,
 };
 #elif (CHANNEL_COUNT == 6 && BYTES_PER_SAMPLE == 2)
 int16_t data[CHANNEL_COUNT*SAMPLE_COUNT] = 
 { 
-	32767,32767,32767,32767,32767,32767,
+	100,200,300,400,500,600,
 	0,0,0,0,0,0,
-	-32766,-32766,-32766,-32766,-32766,-32766,
+	-100,-200,-300,-400,-500,-600,
 	0,0,0,0,0,0,
-	32767,32767,32767,32767,32767,32767,
-	0,0,0,0,0,0,
-	-32766,-32766,-32766,-32766,-32766,-32766,
+	100,200,300,400,500,600,
 	0,0,0,0,0,0,
 };
 #else
@@ -291,7 +291,21 @@ int main(void)
 	
 	Board_LED_Set(GREENLED, 0);
 	
-	//Board_Debug_Init();
+	// this can be played with in the debugger ...
+	bool use_channel_mask = (USE_CHANNEL_MASK == 1);
+	// the default mask according to the spec can be zero
+	uint32_t mask = 0;
+	// set the channel mask at run-time
+	if (use_channel_mask)
+	{
+		// set a bit for each channel
+		for (int i = 0; i < CHANNEL_COUNT; i++)
+		{
+			mask |= (1 << i);
+		}
+	}
+	// now set the mask.
+	ConfigurationDescriptor.Audio_InputTerminal.ChannelConfig = mask;
 	
 	//Board_UARTPutSTR("------------Main-------------\n");
 	USB_Device_EnableSOFEvents();

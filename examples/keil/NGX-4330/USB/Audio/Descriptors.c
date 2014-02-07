@@ -139,18 +139,8 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		// define channel count
 		// JME does this mean total audio channels or terminal channels?
 		.TotalChannels            = CHANNEL_COUNT,
-#if USE_CHANNEL_MASK == 1		
-#if CHANNEL_COUNT == 2
-		// Mac interprets this correctly
-		.ChannelConfig            = (1 << 1) | (1 << 0),
-#elif CHANNEL_COUNT == 6
-		.ChannelConfig            = (1 << 5) | ( 1<< 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0),
-#else
-#error	Channel mask use only supported for 2 and 6 channels		
-#endif
-#else
+		// this is set at runtime.		
 		.ChannelConfig            = 0,
-#endif		
 		// JME
 		.ChannelStrIndex          = eChannelNames,
 		.TerminalStrIndex         = NO_DESCRIPTOR

@@ -14,7 +14,7 @@
 
 // JME this is channel independent
 // do not change for purposes of resolving channel mask issue
-#define SAMPLE_COUNT 8
+#define SAMPLE_COUNT 6
 
 // valid sizes are 2 and 3 for 16 and 24 bit respectively
 // do not change for purposes of resolving channel mask issue
