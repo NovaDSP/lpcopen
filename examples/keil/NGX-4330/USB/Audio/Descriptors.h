@@ -35,22 +35,16 @@
 
 #include "USB.h"
 
+#ifndef CONFIG_H
+#include "config.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// JME
-//
-#define EP_SIZE_BYTES 1024
-//
-#define CHANNEL_COUNT 32
-// valid sizes are 2 and 3 for 16 nd 24 bit respectively
-#define BYTES_PER_SAMPLE 3
 //
 #define FEATURE_VOLUME (1 << 1)
-// set this to 1 to experiment with device controls
-// like volume etc.
-#define USE_FEATURE 0
 //
 typedef enum 
 { 

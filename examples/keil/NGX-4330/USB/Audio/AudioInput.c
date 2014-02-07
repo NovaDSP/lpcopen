@@ -185,14 +185,40 @@ int iso_index = 0;
 //-----------------------------------------------------------------------------
 // we assume that on SOF interrput we send N channels * sizeof sample to isoch EP
 
+#if (CHANNEL_COUNT == 2 && BYTES_PER_SAMPLE == 2)
+int16_t data[CHANNEL_COUNT*SAMPLE_COUNT] = 
+{ 
+	32767,32767,
+	0,0,
+	-32766,-32766,
+	0,0,
+	32767,32767,
+	0,0,
+	-32766,-32766,
+	0,0,
+};
+#elif (CHANNEL_COUNT == 6 && BYTES_PER_SAMPLE == 2)
+int16_t data[CHANNEL_COUNT*SAMPLE_COUNT] = 
+{ 
+	32767,32767,32767,32767,32767,32767,
+	0,0,0,0,0,0,
+	-32766,-32766,-32766,-32766,-32766,-32766,
+	0,0,0,0,0,0,
+	32767,32767,32767,32767,32767,32767,
+	0,0,0,0,0,0,
+	-32766,-32766,-32766,-32766,-32766,-32766,
+	0,0,0,0,0,0,
+};
+#else
+// in any other configuration simply send zeroes
 int8_t data[CHANNEL_COUNT * BYTES_PER_SAMPLE] = { 0 };
+#endif
 
 //-----------------------------------------------------------------------------
 // this is actually returning a pointer to the data buffer to be transferred
 uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t* packet_size)
 {
-	// how large is my buffer in *bytes*
-	*packet_size = CHANNEL_COUNT * BYTES_PER_SAMPLE;
+	*packet_size = CHANNEL_COUNT * SAMPLE_COUNT * BYTES_PER_SAMPLE;
 	// Check if this is audio stream endpoint
 	if ((EPNum & 0x7F) == AUDIO_STREAM_EPNUM)
 	{
