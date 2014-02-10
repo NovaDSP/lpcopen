@@ -166,7 +166,6 @@ static void SetupHardware(void)
 {
 	Board_Init();
 	Board_Buttons_Init();
-	USB_Init(Microphone_Audio_Interface.Config.PortNumber, USB_MODE_Device);
 }
 
 //-----------------------------------------------------------------------------
@@ -208,6 +207,16 @@ int16_t data[CHANNEL_COUNT*SAMPLE_COUNT] =
 	0,0,0,0,0,0,
 	100,200,300,400,500,600,
 	0,0,0,0,0,0,
+};
+#elif (CHANNEL_COUNT == 12 && BYTES_PER_SAMPLE == 2)
+int16_t data[CHANNEL_COUNT*SAMPLE_COUNT] = 
+{ 
+	100,200,300,400,500,600,700,800,900,1000,1100,1200,
+	0,0,0,0,0,0,0,0,0,0,0,0,
+	-100,-200,-300,-400,-500,-600,-700,-800,-900,-1000,-1100,-1200,
+	0,0,0,0,0,0,0,0,0,0,0,0,
+	100,200,300,400,500,600,700,800,900,1000,1100,1200,
+	0,0,0,0,0,0,0,0,0,0,0,0,
 };
 #else
 // in any other configuration simply send zeroes
@@ -306,9 +315,28 @@ int main(void)
 	}
 	// now set the mask.
 	ConfigurationDescriptor.Audio_InputTerminal.ChannelConfig = mask;
+
+	/* Enable timer interrupt */
+	NVIC_EnableIRQ(TIMER1_IRQn);
+	NVIC_ClearPendingIRQ(TIMER1_IRQn);
+
+	// wait. do not connect until button 1 is pressed
+		for (;;)
+		{
+			if ((Buttons_GetStatus() & BUTTONS_BUTTON1) != Button_State)
+			{
+			Board_LED_Set(GREENLED, 1);
+				break;
+			}
+		}
+
+	// stop the timer IRQ
+	NVIC_DisableIRQ(TIMER1_IRQn);		
 	
-	//Board_UARTPutSTR("------------Main-------------\n");
+	USB_Init(Microphone_Audio_Interface.Config.PortNumber, USB_MODE_Device);
 	USB_Device_EnableSOFEvents();
+
+
 	
 	// sample_buffer = (uint16_t*)Audio_Get_ISO_Buffer_Address(0);
 #if defined(USB_DEVICE_ROM_DRIVER)

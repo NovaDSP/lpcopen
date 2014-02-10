@@ -51,7 +51,8 @@ USB_Descriptor_Device_t DeviceDescriptor =
 {
 	.Header                 = {.Size = sizeof(USB_Descriptor_Device_t), .Type = DTYPE_Device},
 
-	.USBSpecification       = VERSION_BCD(02.00),
+//	.USBSpecification       = VERSION_BCD(02.00),
+	.USBSpecification       = VERSION_BCD(01.01),
 	.Class                  = USB_CSCP_NoDeviceClass,
 	.SubClass               = USB_CSCP_NoDeviceSubclass,
 	.Protocol               = USB_CSCP_NoDeviceProtocol,
@@ -74,7 +75,7 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	//.ManufacturerStrIndex   = eManufacturer,
 	.ManufacturerStrIndex   = eAltMan,
 	.ProductStrIndex        = eProduct,
-	.SerialNumStrIndex      = NO_DESCRIPTOR,
+	.SerialNumStrIndex      = eSerial,
 
 	.NumberOfConfigurations = FIXED_NUM_CONFIGURATIONS
 };
@@ -142,7 +143,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		// this is set at runtime.		
 		.ChannelConfig            = 0,
 		// JME
-		.ChannelStrIndex          = eChannelNames,
+		.ChannelStrIndex          = NO_DESCRIPTOR,
 		.TerminalStrIndex         = NO_DESCRIPTOR
 	},
 
@@ -297,9 +298,15 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		.Subtype                  = AUDIO_DSUBTYPE_CSEndpoint_General,
 
 		.Attributes               = (AUDIO_EP_ACCEPTS_SMALL_PACKETS | AUDIO_EP_SAMPLE_FREQ_CONTROL),
-
-		.LockDelayUnits           = 0x00,
-		.LockDelay                = 0x0000
+		
+		// USBAudio1.0 P62
+		// The bLockDelayUnitsand wLockDelayfields are only applicable for synchronous and adaptive
+		// endpoints. For asynchronous endpoints, the clock is generated internally in the audio function and is
+		// completely independent. In this case, bLockDelayUnits and wLockDelay must be set to zero
+		// Indicates the units used for the	wLockDelay field: 0: Undefined 1: Milliseconds	2: Decoded PCM samples 3..255: Reserved
+		.LockDelayUnits           = ePCMSamples,
+		// table 4.21 in USB1.0. i.e. 2 samples for lock
+		.LockDelay                = 2
 	},
 	.Audio_Termination = 0x00
                      };
@@ -410,6 +417,21 @@ uint8_t AltMan[] =
 
 USB_Descriptor_String_t* AltManDesc = (USB_Descriptor_String_t*) AltMan;
 
+uint8_t DescSerial[] =
+{
+	USB_STRING_LEN(7),
+	DTYPE_String,
+	WBVAL('0'),
+	WBVAL('1'),
+	WBVAL('1'),
+	WBVAL('1'),
+	WBVAL('2'),
+	WBVAL('2'),
+	WBVAL('2'),
+};
+
+USB_Descriptor_String_t* pDescSerial = (USB_Descriptor_String_t*) DescSerial;
+
 /*****************************************************************************
  * Private functions
  ****************************************************************************/
@@ -465,6 +487,10 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 		case eAltMan:
 			Address = AltManDesc;
 			Size    = pgm_read_byte(&AltManDesc->Header.Size);
+			break;
+		case eSerial:
+			Address = pDescSerial;
+			Size    = pgm_read_byte(&pDescSerial->Header.Size);
 			break;
 		}
 		break;

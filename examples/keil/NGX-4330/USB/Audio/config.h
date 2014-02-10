@@ -8,9 +8,9 @@
 #define CONFIG_H
 
 //#define CHANNEL_COUNT 32
-#define CHANNEL_COUNT 6
+#define CHANNEL_COUNT 2
 // set to 1 to use channel mask, set to 0 to zero it out
-#define USE_CHANNEL_MASK 1
+#define USE_CHANNEL_MASK 0
 
 // JME this is channel independent
 // do not change for purposes of resolving channel mask issue

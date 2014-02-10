@@ -52,9 +52,16 @@ typedef enum
 	eAltMan, 
 	eProduct, 
 	eChannelNames, 
-	eManufacturer 
+	eManufacturer,
+	eSerial
 } StringDescriptors;
 
+typedef enum
+{
+	eUndefined,
+	eMilliseconds,
+	ePCMSamples,
+} LockDelayUnits;
 /** @defgroup Audio_Input_Device_Descriptor Class descriptors
  * @ingroup USB_Audio_Input_Device_18xx43xx USB_Audio_Input_Device_17xx40xx
  * @{

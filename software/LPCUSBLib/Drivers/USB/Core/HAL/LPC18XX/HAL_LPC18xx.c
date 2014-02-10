@@ -117,7 +117,9 @@ void HAL_USBInit(uint8_t corenum)
 		/* set OTG transcever in proper state, device is present
 		   on the port(CCS=1), port enable/disable status change(PES=1). */
 		LPC_USB0->OTGSC = (1 << 3) | (1 << 0) /*| (1<<16)| (1<<24)| (1<<25)| (1<<26)| (1<<27)| (1<<28)| (1<<29)| (1<<30)*/;
-		#if (USB_FORCED_FULLSPEED)
+//		#if (USB_FORCED_FULLSPEED)
+// JME try full speed
+		#if 1
 		LPC_USB0->PORTSC1_D |= (1 << 24);
 		#endif
 	}
