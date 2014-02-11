@@ -51,8 +51,8 @@ USB_Descriptor_Device_t DeviceDescriptor =
 {
 	.Header                 = {.Size = sizeof(USB_Descriptor_Device_t), .Type = DTYPE_Device},
 
-//	.USBSpecification       = VERSION_BCD(02.00),
-	.USBSpecification       = VERSION_BCD(01.01),
+	.USBSpecification       = VERSION_BCD(02.00),
+//	.USBSpecification       = VERSION_BCD(01.01),
 	.Class                  = USB_CSCP_NoDeviceClass,
 	.SubClass               = USB_CSCP_NoDeviceSubclass,
 	.Protocol               = USB_CSCP_NoDeviceProtocol,
@@ -134,7 +134,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_InputTerminal,
 
 		.TerminalID               = 0x01,
-		.TerminalType             = AUDIO_TERMINAL_IN_MIC,
+		.TerminalType             = DIGITAL_AUDIO_INTERFACE,
 		.AssociatedOutputTerminal = 0x00,
 
 		// define channel count
@@ -375,9 +375,9 @@ uint8_t ProductString[] =
 #elif (CHANNEL_COUNT == 24)	
 	WBVAL('2'),
 	WBVAL('4'),
-#elif (CHANNEL_COUNT == 32)	
+#elif (CHANNEL_COUNT == 36)	
 	WBVAL('3'),
-	WBVAL('2'),
+	WBVAL('6'),
 #elif (CHANNEL_COUNT == 48)	
 	WBVAL('4'),
 	WBVAL('8'),

@@ -184,6 +184,9 @@
 
 		/** Terminal type constant for an Audio class terminal descriptor. See the Audio class specification for more details. */
 		#define AUDIO_TERMINAL_OUT_LOWFREQ         0x0307
+		
+		// JME Digital Audio Interface
+		#define DIGITAL_AUDIO_INTERFACE         0x0602
 		//@}
 
 		/** Convenience macro to fill a 24-bit @ref USB_Audio_SampleFreq_t structure with the given sample rate as a 24-bit number.
