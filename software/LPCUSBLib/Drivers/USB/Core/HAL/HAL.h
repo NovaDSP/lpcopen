@@ -62,7 +62,7 @@
  * @param  	corenum		: USB port number
  * @return 	Nothing
  */
-void HAL_USBInit(uint8_t corenum);
+void HAL_USBInit(uint8_t corenum,uint8_t fullspeed);
 
 /**
  * @brief  	This function usage is opposite to HAL_USBInit

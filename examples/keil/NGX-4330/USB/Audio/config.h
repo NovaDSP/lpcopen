@@ -8,7 +8,7 @@
 #define CONFIG_H
 
 // if 1 then we will set to full-speed (12MBS)
-//#define FULL_SPEED
+#define USE_FULL_SPEED 0
 
 // verified working W7x64 WASAPI USB3 hub
 // #define CHANNEL_COUNT 12

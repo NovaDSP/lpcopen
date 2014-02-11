@@ -36,8 +36,8 @@
 volatile uint8_t USB_CurrentMode[MAX_USB_CORE];
 volatile bool Mem_IsInitialized = false;
 
-
-void USB_Init(uint8_t corenum, uint8_t mode)
+// JME added fullspeed
+void USB_Init(uint8_t corenum, uint8_t mode,uint8_t use_fullspeed)
 {
 #if defined(USB_CAN_BE_HOST)	
 	if (mode == USB_MODE_Host && Mem_IsInitialized == false)
@@ -47,7 +47,7 @@ void USB_Init(uint8_t corenum, uint8_t mode)
 	}
 #endif
 	USB_CurrentMode[corenum] = mode;
-	HAL_USBInit(corenum);
+	HAL_USBInit(corenum,use_fullspeed);
 	USB_ResetInterface(corenum, mode);
 	USB_IsInitialized = true;
 }

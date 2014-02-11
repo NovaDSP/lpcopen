@@ -50,9 +50,11 @@
 USB_Descriptor_Device_t DeviceDescriptor =
 {
 	.Header                 = {.Size = sizeof(USB_Descriptor_Device_t), .Type = DTYPE_Device},
-
+#if USE_FULL_SPEED == 1	
+	.USBSpecification       = VERSION_BCD(01.01),
+#else	
 	.USBSpecification       = VERSION_BCD(02.00),
-//	.USBSpecification       = VERSION_BCD(01.01),
+#endif	
 	.Class                  = USB_CSCP_NoDeviceClass,
 	.SubClass               = USB_CSCP_NoDeviceSubclass,
 	.Protocol               = USB_CSCP_NoDeviceProtocol,

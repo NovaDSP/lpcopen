@@ -230,7 +230,8 @@
 		 *
 		 *  \see @ref Group_Device for the \c USB_DEVICE_OPT_* masks.
 		 */
-		void USB_Init(uint8_t corenum, uint8_t mode);
+		 // JME added fullspeed flag
+		void USB_Init(uint8_t corenum, uint8_t mode,uint8_t use_fullspeed);
 
 		/** Shuts down the USB interface. This turns off the USB interface after deallocating all USB FIFO
 		 *  memory, endpoints and pipes. When turned off, no USB functionality can be used until the interface

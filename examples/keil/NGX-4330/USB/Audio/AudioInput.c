@@ -190,6 +190,7 @@ void InitTimer()
 int main(void)
 {
 	int i = 0;
+	
 	// we loop at startup until SW2 is pressed
 	uint32_t Button_State = 0;
 	
@@ -262,7 +263,7 @@ int main(void)
 	NVIC_DisableIRQ(TIMER1_IRQn);		
 	//
 	// Initialize the USB audio driver
-	USB_Init(Microphone_Audio_Interface.Config.PortNumber, USB_MODE_Device);
+	USB_Init(Microphone_Audio_Interface.Config.PortNumber, USB_MODE_Device,USE_FULL_SPEED);
 
 	// enable SOF interrupt
 	USB_Device_EnableSOFEvents();

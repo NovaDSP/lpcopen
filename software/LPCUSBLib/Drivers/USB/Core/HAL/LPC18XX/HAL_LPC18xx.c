@@ -63,7 +63,7 @@ IP_USBHS_001_T * const USB_REG_BASE_ADDR[LPC18_43_MAX_USB_CORE] = {LPC_USB0, LPC
 /* Support for USB0 and USB1, 2 cores */
 static bool coreEnabled[2];
 
-void HAL_USBInit(uint8_t corenum)
+void HAL_USBInit(uint8_t corenum,uint8_t use_fullspeed)
 {
 	/* Just exit if already enabled */
 	if (!coreEnabled[corenum]) {
@@ -117,10 +117,12 @@ void HAL_USBInit(uint8_t corenum)
 		/* set OTG transcever in proper state, device is present
 		   on the port(CCS=1), port enable/disable status change(PES=1). */
 		LPC_USB0->OTGSC = (1 << 3) | (1 << 0) /*| (1<<16)| (1<<24)| (1<<25)| (1<<26)| (1<<27)| (1<<28)| (1<<29)| (1<<30)*/;
-	#if (USB_FORCED_FULLSPEED)
-// JME try full speed
-		LPC_USB0->PORTSC1_D |= (1 << 24);
-	#endif
+		// for MacOS
+		if (use_fullspeed)
+		{
+			// JME try full speed
+			LPC_USB0->PORTSC1_D |= (1 << 24);
+		}
 	}
 	HAL_Reset(corenum);
 #endif
