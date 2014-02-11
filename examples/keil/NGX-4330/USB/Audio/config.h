@@ -7,17 +7,23 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-// if 1 then we will set to full-speed (12MBS)
+// if 1 then we will set to full-speed (12MBS) 
+// if 0 then we run at default hispeed (480MBS)
 #define USE_FULL_SPEED 0
 
+// the default is 12 channels ...
+
 // verified working W7x64 WASAPI USB3 hub
-// #define CHANNEL_COUNT 12
+#define CHANNEL_COUNT 12
 
 // verified working W7x64 WASAPI USB3 hub
 //#define CHANNEL_COUNT 24
 
 // verified working W7x64 WASAPI USB3 hub
-#define CHANNEL_COUNT 36
+// #define CHANNEL_COUNT 36
+
+// verified working W7x64 WASAPI USB3 hub
+// #define CHANNEL_COUNT 48
 
 // valid sizes are 2 and 3 for 16 and 24 bit respectively
 // do not change for purposes of resolving channel mask issue
