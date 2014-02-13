@@ -1332,6 +1332,16 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>linker</GroupName>
+          <Files>
+            <File>
+              <FileName>usbaudio_dev.sct</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\debug\usbaudio_dev.sct</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
   </Targets>

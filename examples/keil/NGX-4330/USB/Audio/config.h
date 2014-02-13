@@ -10,11 +10,11 @@
 // if 1 then we will set to full-speed (12MBS) 
 // if 0 then we run at default hispeed (480MBS)
 
-#define USE_FULL_SPEED 1
+//#define USE_FULL_SPEED 1
 
-//#define USE_FULL_SPEED 0
+#define USE_FULL_SPEED 0
 
-#define CHANNEL_COUNT 8
+#define CHANNEL_COUNT 4
 
 // the default is 12 channels ...
 

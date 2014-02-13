@@ -52,11 +52,11 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	.Header                 = {.Size = sizeof(USB_Descriptor_Device_t), .Type = DTYPE_Device},
 
 // full speed. Drop back to flagging as USB 1.1 (?)	
-#if USE_FULL_SPEED == 1	
-	.USBSpecification       = VERSION_BCD(01.01),
-#else	
-	.USBSpecification       = VERSION_BCD(02.00),
-#endif	
+// #if USE_FULL_SPEED == 1	
+	.USBSpecification       = VERSION_BCD(01.10),
+//#else	
+//	.USBSpecification       = VERSION_BCD(02.00),
+//#endif	
 
 	.Class                  = USB_CSCP_NoDeviceClass,
 	.SubClass               = USB_CSCP_NoDeviceSubclass,
