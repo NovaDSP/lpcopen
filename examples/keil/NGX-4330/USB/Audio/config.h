@@ -10,11 +10,11 @@
 // if 1 then we will set to full-speed (12MBS) 
 // if 0 then we run at default hispeed (480MBS)
 
-//#define USE_FULL_SPEED 1
+#define USE_FULL_SPEED 1
 
-#define USE_FULL_SPEED 0
+//#define USE_FULL_SPEED 0
 
-#define CHANNEL_COUNT 4
+#define CHANNEL_COUNT 6
 
 // the default is 12 channels ...
 
@@ -36,6 +36,9 @@
 
 // sets the isoch endpoint size
 #define EP_SIZE_BYTES 1024
+
+// how many sample rates do we support?
+#define SUPPORTED_SAMPLE_RATES 1
 
 // set to 1 to use channel mask, set to 0 to zero it out
 #define USE_CHANNEL_MASK 0

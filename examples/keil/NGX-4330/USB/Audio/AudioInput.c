@@ -39,6 +39,15 @@
  * Private types/enumerations/variables
  ****************************************************************************/
 
+const int code_count = 16;
+
+typedef struct ReqLogger_T
+{
+	int Count;
+	int Property[code_count];
+	int Parameter[code_count];
+} ReqLogger;
+
 /*****************************************************************************
  * Public types/enumerations/variables
  ****************************************************************************/
@@ -205,6 +214,7 @@ int main(void)
 	
 	// this can be played with in the debugger ...
 	bool use_channel_mask = (USE_CHANNEL_MASK == 1);
+	//bool use_channel_mask = (CHANNEL_COUNT <= 8);
 	// the default mask according to the spec can be zero
 	uint32_t mask = 0;
 	// set the channel mask at run-time
@@ -410,6 +420,9 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
  *  in the user application to handle property manipulations on streaming audio interfaces.
  *
  */
+
+static ReqLogger rlIP;
+
 bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
         const uint8_t Property,
         const uint8_t EntityAddress,
@@ -417,6 +430,11 @@ bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t*
         uint16_t* const DataLength,
         uint8_t* Data)
 {
+/*
+	rlIP.Property[rlIP.Count] = Property;
+	rlIP.Parameter[rlIP.Count++] = Parameter;
+	rlIP.Count %= code_count;
+*/
 	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
 	return false;
 }

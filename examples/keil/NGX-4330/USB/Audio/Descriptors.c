@@ -32,6 +32,7 @@
  * this code.
  */
 
+
 #include "Descriptors.h"
 
 /*****************************************************************************
@@ -52,11 +53,11 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	.Header                 = {.Size = sizeof(USB_Descriptor_Device_t), .Type = DTYPE_Device},
 
 // full speed. Drop back to flagging as USB 1.1 (?)	
-// #if USE_FULL_SPEED == 1	
+#if USE_FULL_SPEED == 1	
 	.USBSpecification       = VERSION_BCD(01.10),
-//#else	
-//	.USBSpecification       = VERSION_BCD(02.00),
-//#endif	
+#else	
+	.USBSpecification       = VERSION_BCD(02.00),
+#endif	
 
 	.Class                  = USB_CSCP_NoDeviceClass,
 	.SubClass               = USB_CSCP_NoDeviceSubclass,
@@ -69,13 +70,13 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	
 	// persuade Windows to re-install drivers when we change configuration
 #if BYTES_PER_SAMPLE == 2	
-	.ProductID              = 1600 + CHANNEL_COUNT,
+	.ProductID              = 1500 + CHANNEL_COUNT,
 #elif BYTES_PER_SAMPLE == 3	
-	.ProductID              = 2400 + CHANNEL_COUNT,
+	.ProductID              = 2300 + CHANNEL_COUNT,
 #else
 	#error unsupported sample size
 #endif	
-	.ReleaseNumber          = VERSION_BCD(00.02),
+	.ReleaseNumber          = VERSION_BCD(02.18),
 
 	//.ManufacturerStrIndex   = eManufacturer,
 	.ManufacturerStrIndex   = eAltMan,
@@ -92,56 +93,65 @@ USB_Descriptor_Device_t DeviceDescriptor =
  */
 USB_Descriptor_Configuration_t ConfigurationDescriptor =
 {
-	.Config = {
-		.Header                   = {.Size = sizeof(USB_Descriptor_Configuration_Header_t), .Type = DTYPE_Configuration},
-
-		.TotalConfigurationSize   = sizeof(USB_Descriptor_Configuration_t) - 1,		// termination byte not included in size
+	.Config = 
+	{
+		.Header                   = 
+		{
+		.Size = sizeof(USB_Descriptor_Configuration_Header_t), 
+		.Type = DTYPE_Configuration
+		},
+		// termination byte not included in size
+		.TotalConfigurationSize   = sizeof(USB_Descriptor_Configuration_t) - 1,
 		.TotalInterfaces          = 2,
-
 		.ConfigurationNumber      = 1,
 		.ConfigurationStrIndex    = NO_DESCRIPTOR,
-
 		.ConfigAttributes         = (USB_CONFIG_ATTR_BUSPOWERED | USB_CONFIG_ATTR_SELFPOWERED),
-
 		.MaxPowerConsumption      = USB_CONFIG_POWER_MA(200)
 	},
 
-	.Audio_ControlInterface = {
-		.Header                   = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
-
+	.Audio_ControlInterface = 
+	{
+		.Header = 
+		{
+		.Size = sizeof(USB_Descriptor_Interface_t), 
+		.Type = DTYPE_Interface
+		},
 		.InterfaceNumber          = 0,
 		.AlternateSetting         = 0,
-
 		.TotalEndpoints           = 0,
-
 		.Class                    = AUDIO_CSCP_AudioClass,
 		.SubClass                 = AUDIO_CSCP_ControlSubclass,
 		.Protocol                 = AUDIO_CSCP_ControlProtocol,
-
 		.InterfaceStrIndex        = NO_DESCRIPTOR
 	},
 
-	.Audio_ControlInterface_SPC = {
-		.Header                   = {.Size = sizeof(USB_Audio_Descriptor_Interface_AC_t), .Type = DTYPE_CSInterface},
-		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_Header,
-
-		.ACSpecification          = VERSION_BCD(01.00),
-		.TotalLength              = (sizeof(USB_Audio_Descriptor_Interface_AC_t) +
-		sizeof(USB_Audio_Descriptor_InputTerminal_t) +
-		sizeof(USB_Audio_Descriptor_OutputTerminal_t)),
-
+	/*.Audio_ControlInterface_SPC = */
+	{
+		/*.Header = */
+		{
+		/*.Size = */ sizeof(ConfigurationDescriptor.Audio_ControlInterface_SPC),
+		/*.Type = */ DTYPE_CSInterface
+		},
+		.Subtype = AUDIO_DSUBTYPE_CSInterface_Header,
+		.ACSpecification = VERSION_BCD(01.00),
+		.TotalLength = (sizeof(USB_Audio_Descriptor_Interface_AC_t) +
+						sizeof(USB_Audio_Descriptor_InputTerminal_t) +
+						sizeof(USB_Audio_Descriptor_OutputTerminal_t)),
 		.InCollection             = 1,
 		.InterfaceNumber          = 1,
 	},
 
-	.Audio_InputTerminal = {
-		.Header                   = {.Size = sizeof(USB_Audio_Descriptor_InputTerminal_t), .Type = DTYPE_CSInterface},
+	/*.Audio_InputTerminal = */
+	{
+		/*.Header = */
+		{
+		/* .Size = */ sizeof(ConfigurationDescriptor.Audio_InputTerminal),
+		/* .Type = */ DTYPE_CSInterface
+		},
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_InputTerminal,
-
 		.TerminalID               = 0x01,
 		.TerminalType             = DIGITAL_AUDIO_INTERFACE,
 		.AssociatedOutputTerminal = 0x00,
-
 		// define channel count
 		// JME does this mean total audio channels or terminal channels?
 		.TotalChannels            = CHANNEL_COUNT,
@@ -152,126 +162,92 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		.TerminalStrIndex         = NO_DESCRIPTOR
 	},
 
-#if (USE_FEATURE == 1)
-	.Audio_FeatureUnit = 
-	{
-		// Regular descriptor header containing the descriptor's type and length.
-		.Header = {
-			.Size = sizeof(USB_Audio_Descriptor_FeatureUnit_t), 
-			.Type = DTYPE_CSInterface
-		},
-		// Sub type value used to distinguish between audio class-specific descriptors,must be @ref AUDIO_DSUBTYPE_CSInterface_Feature
-		.Subtype = AUDIO_DSUBTYPE_CSInterface_Feature, 
-		// ID value of this feature unit - must be a unique value within the device.
-		.UnitID = 2, 
-		// Source ID value of the audio source input into this feature unit.
-		.SourceID = 1, 
-		// Size of each element in the \c ChannelControls array.
-		.ControlSize = 1, 
-		// Feature masks for the control channel, and each separate audio channel.
-#if (CHANNEL_COUNT == 1)
-		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME }, 
-#elif (CHANNEL_COUNT == 2)
-		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME }, 
-#elif (CHANNEL_COUNT == 4)
-		.ChannelControls = { FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME, FEATURE_VOLUME }, 
-#elif (CHANNEL_COUNT == 6)
-		.ChannelControls = { 
-			FEATURE_VOLUME, // master
-			FEATURE_VOLUME, // channel 1
-			FEATURE_VOLUME, 
-			FEATURE_VOLUME, 
-			FEATURE_VOLUME, 
-			FEATURE_VOLUME,
-			FEATURE_VOLUME,	// channel 6 
-		}, 
-#elif (CHANNEL_COUNT == 12)
-		.ChannelControls = { 0 },
-#else
-#error Unsupported channel count. Is CHANNEL_COUNT defined?
-#endif
-		// Index of a string descriptor describing this descriptor within the device.
-		.FeatureUnitStrIndex = 0 
-	},
-#endif	
-	.Audio_OutputTerminal = {
-		.Header                   = {.Size = sizeof(USB_Audio_Descriptor_OutputTerminal_t), .Type = DTYPE_CSInterface},
-		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_OutputTerminal,
 
+	.Audio_OutputTerminal = 
+	{
+		.Header                   = 
+		{
+		.Size = sizeof(USB_Audio_Descriptor_OutputTerminal_t), 
+		.Type = DTYPE_CSInterface
+		},
+		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_OutputTerminal,
 		.TerminalID               = 0x02,
 		.TerminalType             = AUDIO_TERMINAL_STREAMING,
 		.AssociatedInputTerminal  = 0x00,
-
 		.SourceID                 = 0x01,
-
 		.TerminalStrIndex         = NO_DESCRIPTOR
 	},
 
 	// selected when device is told to stop streaming. isoch packets no longer sent
-	.Audio_StreamInterface_Alt0 = {
-		.Header                   = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
+	.Audio_StreamInterface_Alt0 = 
+	{
+		.Header                   = 
+		{
+			.Size = sizeof(USB_Descriptor_Interface_t), 
+			.Type = DTYPE_Interface
+		},
 
 		.InterfaceNumber          = 1,
 		.AlternateSetting         = 0,
-
 		.TotalEndpoints           = 0,
-
 		.Class                    = AUDIO_CSCP_AudioClass,
 		.SubClass                 = AUDIO_CSCP_AudioStreamingSubclass,
 		.Protocol                 = AUDIO_CSCP_StreamingProtocol,
-
 		.InterfaceStrIndex        = NO_DESCRIPTOR
 	},
 
 	// selected when device is told to start streaming. isoch packets required
-	.Audio_StreamInterface_Alt1 = {
-		.Header                   = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
+	.Audio_StreamInterface_Alt1 = 
+	{
+		.Header = 
+		{
+		.Size = sizeof(USB_Descriptor_Interface_t), 
+		.Type = DTYPE_Interface
+		},
 
 		.InterfaceNumber          = 1,
 		.AlternateSetting         = 1,
-
 		.TotalEndpoints           = 1,
-
 		.Class                    = AUDIO_CSCP_AudioClass,
 		.SubClass                 = AUDIO_CSCP_AudioStreamingSubclass,
 		.Protocol                 = AUDIO_CSCP_StreamingProtocol,
-
 		.InterfaceStrIndex        = NO_DESCRIPTOR
 	},
 
 	//
-	.Audio_StreamInterface_SPC = {
-		.Header                   = {.Size = sizeof(USB_Audio_Descriptor_Interface_AS_t), .Type = DTYPE_CSInterface},
+	.Audio_StreamInterface_SPC = 
+	{
+		.Header = 
+		{
+		.Size = sizeof(USB_Audio_Descriptor_Interface_AS_t), 
+		.Type = DTYPE_CSInterface
+		},
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_General,
-
 		.TerminalLink             = 0x02,
-
 		.FrameDelay               = 1,
 		.AudioFormat              = 0x0001
 	},
 
-	.Audio_AudioFormat = {
-		.Header                   = {
-			.Size = sizeof(USB_Audio_Descriptor_Format_t) +
-			sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates),
-			.Type = DTYPE_CSInterface
+	.Audio_AudioFormat = 
+	{
+		// .Header = 
+		{
+			/* .Size = */ sizeof(USB_Audio_Descriptor_Format_t) + sizeof(USB_Audio_SampleFreq_t) * SUPPORTED_SAMPLE_RATES,
+			/* .Type = */ DTYPE_CSInterface
 		},
-		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_FormatType,
-		//
-		.FormatType               = 0x01,
-		//
-		.Channels                 = CHANNEL_COUNT,
+		/*.Subtype = */ AUDIO_DSUBTYPE_CSInterface_FormatType,
+		/* .FormatType = */ FORMAT_TYPE_1,
+		/* .Channels = */ CHANNEL_COUNT,
 		// 2 bytes per subframe for 16bit, 3 for 24 bit
-		.SubFrameSize             = BYTES_PER_SAMPLE,
+		/* .SubFrameSize = */ BYTES_PER_SAMPLE,
 		// Bits per sample, i.e 3 * 8 for 24 bit audio
-		.BitResolution            = BYTES_PER_SAMPLE * 8,
+		/* .BitResolution = */ BYTES_PER_SAMPLE * sizeof(uint8_t),
 		// how many sample rates do we support?
-		.TotalDiscreteSampleRates = 1,
-		//.TotalDiscreteSampleRates =
-		//(sizeof(ConfigurationDescriptor.Audio_AudioFormatSampleRates) / sizeof(USB_Audio_SampleFreq_t))
+		/* .TotalDiscreteSampleRates = */ SUPPORTED_SAMPLE_RATES,
 	},
 
-	.Audio_AudioFormatSampleRates = {
+	//.Audio_AudioFormatSampleRates = 
+	{
 //		JME integral sample rates only
 //		No, keep these for testing control interface is working
 //		AUDIO_SAMPLE_FREQ(8000),
@@ -281,10 +257,15 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		AUDIO_SAMPLE_FREQ(48000),
 	},
 
-	.Audio_StreamEndpoint = {
-		.Endpoint = {
-			.Header              = {.Size = sizeof(USB_Audio_Descriptor_StreamEndpoint_Std_t), .Type = DTYPE_Endpoint},
-
+	.Audio_StreamEndpoint = 
+	{
+		.Endpoint = 
+		{
+			.Header = 
+			{
+			.Size = sizeof(USB_Audio_Descriptor_StreamEndpoint_Std_t), 
+			.Type = DTYPE_Endpoint
+			},
 			.EndpointAddress     = (ENDPOINT_DIR_IN | AUDIO_STREAM_EPNUM),
 			.Attributes          = (EP_TYPE_ISOCHRONOUS | ENDPOINT_ATTR_SYNC | ENDPOINT_USAGE_DATA),
 			//.EndpointSize        = AUDIO_STREAM_EPSIZE,
@@ -292,29 +273,30 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 			.EndpointSize        = EP_SIZE_BYTES,
 			.PollingIntervalMS   = 0x01
 		},
-
 		.Refresh                  = 0,
-		 .SyncEndpointNumber       = 0
-	                             },
+		.SyncEndpointNumber       = 0
+	},
 
-	.Audio_StreamEndpoint_SPC = {
-		.Header                   =
-		{.Size = sizeof(USB_Audio_Descriptor_StreamEndpoint_Spc_t), .Type = DTYPE_CSEndpoint},
-		.Subtype                  = AUDIO_DSUBTYPE_CSEndpoint_General,
-
-		.Attributes               = (AUDIO_EP_ACCEPTS_SMALL_PACKETS | AUDIO_EP_SAMPLE_FREQ_CONTROL),
-		
+	.Audio_StreamEndpoint_SPC = 
+	{
+		.Header = 
+		{
+		.Size = sizeof(USB_Audio_Descriptor_StreamEndpoint_Spc_t), 
+		.Type = DTYPE_CSEndpoint
+		},
+		.Subtype = AUDIO_DSUBTYPE_CSEndpoint_General,
+		.Attributes = (AUDIO_EP_ACCEPTS_SMALL_PACKETS | AUDIO_EP_SAMPLE_FREQ_CONTROL),
 		// USBAudio1.0 P62
 		// The bLockDelayUnitsand wLockDelayfields are only applicable for synchronous and adaptive
 		// endpoints. For asynchronous endpoints, the clock is generated internally in the audio function and is
 		// completely independent. In this case, bLockDelayUnits and wLockDelay must be set to zero
 		// Indicates the units used for the	wLockDelay field: 0: Undefined 1: Milliseconds	2: Decoded PCM samples 3..255: Reserved
-		.LockDelayUnits           = ePCMSamples,
+		.LockDelayUnits = ePCMSamples,
 		// table 4.21 in USB1.0. i.e. 2 samples for lock
-		.LockDelay                = 2
+		.LockDelay = 2
 	},
 	.Audio_Termination = 0x00
-                     };
+};
 
 /** Language descriptor structure. This descriptor, located in FLASH memory, is returned when the host requests
  *  the string descriptor with index 0 (the first index). It is actually an array of 16-bit integers, which indicate
@@ -374,6 +356,11 @@ uint8_t ProductString[] =
 	WBVAL('4'),
 #elif (CHANNEL_COUNT == 6)	
 	WBVAL('6'),
+#elif (CHANNEL_COUNT == 8)	
+	WBVAL('8'),
+#elif (CHANNEL_COUNT == 10)	
+	WBVAL('1'),
+	WBVAL('0'),
 #elif (CHANNEL_COUNT == 12)	
 	WBVAL('1'),
 	WBVAL('2'),

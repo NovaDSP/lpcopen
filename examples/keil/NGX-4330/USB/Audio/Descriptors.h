@@ -45,6 +45,7 @@ extern "C" {
 
 //
 #define FEATURE_VOLUME (1 << 1)
+#define FORMAT_TYPE_1 0x01
 //
 typedef enum 
 { 
@@ -121,29 +122,27 @@ typedef enum
  *        application code, as the configuration descriptor contains several sub-descriptors which
  *        vary between devices, and which describe the device's usage to the host.
  */
-typedef struct {
-	USB_Descriptor_Configuration_Header_t     Config;
-
+typedef struct 
+{
+	USB_Descriptor_Configuration_Header_t	Config;
 	/* Audio Control Interface */
-	USB_Descriptor_Interface_t                Audio_ControlInterface;
-	USB_Audio_Descriptor_Interface_AC_t       Audio_ControlInterface_SPC;
-	USB_Audio_Descriptor_InputTerminal_t      Audio_InputTerminal;
-
-#if (USE_FEATURE == 1)
-	USB_Audio_Descriptor_FeatureUnit_t		Audio_FeatureUnit;
-#endif	
-
+	USB_Descriptor_Interface_t				Audio_ControlInterface;
+	USB_Audio_Descriptor_Interface_AC_t		Audio_ControlInterface_SPC;
+	USB_Audio_Descriptor_InputTerminal_t	Audio_InputTerminal;
 	USB_Audio_Descriptor_OutputTerminal_t	Audio_OutputTerminal;
 
 	/* Audio Streaming Interface */
-	USB_Descriptor_Interface_t                Audio_StreamInterface_Alt0;
-	USB_Descriptor_Interface_t                Audio_StreamInterface_Alt1;
-	USB_Audio_Descriptor_Interface_AS_t       Audio_StreamInterface_SPC;
-	USB_Audio_Descriptor_Format_t             Audio_AudioFormat;
-	USB_Audio_SampleFreq_t                    Audio_AudioFormatSampleRates[5];
+	USB_Descriptor_Interface_t				Audio_StreamInterface_Alt0;
+	USB_Descriptor_Interface_t				Audio_StreamInterface_Alt1;
+	USB_Audio_Descriptor_Interface_AS_t		Audio_StreamInterface_SPC;
+	USB_Audio_Descriptor_Format_t			Audio_AudioFormat;
+	// no. you utter fucking knuckleheads. do not hardwire size!
+	USB_Audio_SampleFreq_t                    Audio_AudioFormatSampleRates[SUPPORTED_SAMPLE_RATES];
 	USB_Audio_Descriptor_StreamEndpoint_Std_t Audio_StreamEndpoint;
 	USB_Audio_Descriptor_StreamEndpoint_Spc_t Audio_StreamEndpoint_SPC;
+	// this is zero filled and must not be included in size calculations
 	unsigned char                             Audio_Termination;
+	
 } USB_Descriptor_Configuration_t;
 
 /**
