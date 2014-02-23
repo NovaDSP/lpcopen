@@ -69,10 +69,14 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	.VendorID               = 0xFACE,
 	
 	// persuade Windows to re-install drivers when we change configuration
-#if BYTES_PER_SAMPLE == 2	
-	.ProductID              = 1500 + CHANNEL_COUNT,
-#elif BYTES_PER_SAMPLE == 3	
-	.ProductID              = 2300 + CHANNEL_COUNT,
+#if BYTES_PER_SAMPLE == 2 && USE_FULL_SPEED == 1
+	.ProductID              = 1601 + CHANNEL_COUNT,
+#elif BYTES_PER_SAMPLE == 2 && USE_FULL_SPEED == 0
+	.ProductID              = 1602 + CHANNEL_COUNT,
+#elif BYTES_PER_SAMPLE == 3	 && USE_FULL_SPEED == 1	
+	.ProductID              = 2401 + CHANNEL_COUNT,
+#elif BYTES_PER_SAMPLE == 3	 && USE_FULL_SPEED == 0
+	.ProductID              = 2402 + CHANNEL_COUNT,
 #else
 	#error unsupported sample size
 #endif	
@@ -150,12 +154,12 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		},
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_InputTerminal,
 		.TerminalID               = 0x01,
-		.TerminalType             = DIGITAL_AUDIO_INTERFACE,
-		.AssociatedOutputTerminal = 0x00,
+		// .TerminalType             = DIGITAL_AUDIO_INTERFACE,
+		/*.TerminalType             = */ AUDIO_TERMINAL_IN_MIC,
+		/*.AssociatedOutputTerminal = */ 0x00,
 		// define channel count
-		// JME does this mean total audio channels or terminal channels?
 		.TotalChannels            = CHANNEL_COUNT,
-		// this is set at runtime.		
+		// this is set at runtime. determines if the device gives hints for spatial location
 		.ChannelConfig            = 0,
 		// JME
 		.ChannelStrIndex          = NO_DESCRIPTOR,
@@ -255,26 +259,30 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 //		AUDIO_SAMPLE_FREQ(22050),
 //		AUDIO_SAMPLE_FREQ(44100),
 		AUDIO_SAMPLE_FREQ(48000),
+		// this is just to persuade Windows to display
+		// an 'advanced' tab ...
+		AUDIO_SAMPLE_FREQ(44100),	
+		AUDIO_SAMPLE_FREQ(22050),
+		AUDIO_SAMPLE_FREQ(11025),
+		AUDIO_SAMPLE_FREQ(8000),		
 	},
 
 	.Audio_StreamEndpoint = 
 	{
-		.Endpoint = 
+		/*.Endpoint = */
 		{
-			.Header = 
+			/*.Header = */
 			{
-			.Size = sizeof(USB_Audio_Descriptor_StreamEndpoint_Std_t), 
-			.Type = DTYPE_Endpoint
+			/*.Size = */ sizeof(USB_Audio_Descriptor_StreamEndpoint_Std_t), 
+			/*.Type = */ DTYPE_Endpoint
 			},
-			.EndpointAddress     = (ENDPOINT_DIR_IN | AUDIO_STREAM_EPNUM),
-			.Attributes          = (EP_TYPE_ISOCHRONOUS | ENDPOINT_ATTR_SYNC | ENDPOINT_USAGE_DATA),
-			//.EndpointSize        = AUDIO_STREAM_EPSIZE,
-			// JME make EP 1024 bytes
-			.EndpointSize        = EP_SIZE_BYTES,
-			.PollingIntervalMS   = 0x01
+			/*.EndpointAddress = */ (ENDPOINT_DIR_IN | AUDIO_STREAM_EPNUM),
+			/* .Attributes     = */ (EP_TYPE_ISOCHRONOUS | ENDPOINT_ATTR_SYNC | ENDPOINT_USAGE_DATA),
+			/*.EndpointSize = */ EP_SIZE_BYTES,
+			/*.PollingIntervalMS = */ 0x01
 		},
-		.Refresh                  = 0,
-		.SyncEndpointNumber       = 0
+		/*.Refresh            = */ 0,
+		/*.SyncEndpointNumber = */ 0
 	},
 
 	.Audio_StreamEndpoint_SPC = 
@@ -335,9 +343,9 @@ USB_Descriptor_String_t* ManufacturerStringPtr = (USB_Descriptor_String_t*) Manu
 uint8_t ProductString[] =
 {
 #if (CHANNEL_COUNT >= 10)
-	USB_STRING_LEN(12),
+	USB_STRING_LEN(15),
 #else
-	USB_STRING_LEN(11),
+	USB_STRING_LEN(14),
 #endif	
 	DTYPE_String,
 	WBVAL('C'),
@@ -379,6 +387,14 @@ uint8_t ProductString[] =
 #endif
 	WBVAL('C'),
 	WBVAL('H'),
+	WBVAL(' '),
+#if USE_FULL_SPEED == 1
+	WBVAL('F'),
+	WBVAL('S'),
+#else	
+	WBVAL('H'),
+	WBVAL('S'),
+#endif	
 };
 USB_Descriptor_String_t* ProductStringPtr = (USB_Descriptor_String_t*) ProductString;
 
@@ -411,15 +427,22 @@ USB_Descriptor_String_t* AltManDesc = (USB_Descriptor_String_t*) AltMan;
 
 uint8_t DescSerial[] =
 {
-	USB_STRING_LEN(7),
+#if USE_FULL_SPEED == 0
+	USB_STRING_LEN(5),
 	DTYPE_String,
+	WBVAL('4'),
+	WBVAL('8'),
 	WBVAL('0'),
-	WBVAL('1'),
-	WBVAL('1'),
+	WBVAL('.'),
+	WBVAL('0'),
+#else 
+	USB_STRING_LEN(4),
+	DTYPE_String,
 	WBVAL('1'),
 	WBVAL('2'),
-	WBVAL('2'),
-	WBVAL('2'),
+	WBVAL('.'),
+	WBVAL('0'),
+#endif	
 };
 
 USB_Descriptor_String_t* pDescSerial = (USB_Descriptor_String_t*) DescSerial;

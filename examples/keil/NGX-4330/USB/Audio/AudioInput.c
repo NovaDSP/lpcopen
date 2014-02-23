@@ -165,6 +165,10 @@ void TIMER1_IRQHandler(void)
 }
 
 //-----------------------------------------------------------------------------
+static int mode = 0;
+static int oldmode = 0;
+
+//-----------------------------------------------------------------------------
 // Set up all the initial timer IRQ stuff
 void InitTimer()
 {
@@ -193,6 +197,7 @@ void InitTimer()
 //	NVIC_ClearPendingIRQ(TIMER1_IRQn);
 }
 
+char buf[8];
 //-----------------------------------------------------------------------------
 // Main program entry point. This routine contains the overall program flow, including initial
  // setup of all components and the main program loop.
@@ -230,11 +235,8 @@ int main(void)
 	ConfigurationDescriptor.Audio_InputTerminal.ChannelConfig = mask;
 
 	Board_Debug_Init();
-	Board_UARTPutChar('\n');
-	Board_UARTPutChar('.');
-	Board_UARTPutChar('.');
-	Board_UARTPutChar('.');
-	Board_UARTPutChar('\n');
+	
+	Board_UARTPutSTR("Press SW1 to connect device to host\n");
 	
 	// Enable timer interrupt
 	NVIC_EnableIRQ(TIMER1_IRQn);
@@ -278,15 +280,20 @@ int main(void)
 	// enable SOF interrupt
 	USB_Device_EnableSOFEvents();
 
+	Board_UARTPutSTR("Device is connected to host\n");
+
 #if defined(USB_DEVICE_ROM_DRIVER)
 	UsbdAdc_Init(&Microphone_Audio_Interface);
 #endif
 	for (;;)
 	{
 		//
-		if ((Buttons_GetStatus() & BUTTONS_BUTTON1) != Button_State)
+		//if ((Buttons_GetStatus() & BUTTONS_BUTTON1) != Button_State)
+		if (mode != oldmode)
 		{
-		
+			oldmode = mode;
+			sprintf(buf,"%d\r\n",oldmode);
+			Board_UARTPutSTR(buf);
 		}
 		
 #if !defined(USB_DEVICE_ROM_DRIVER)
@@ -343,10 +350,12 @@ void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t *const Audi
 	if (AudioInterfaceInfo->State.InterfaceEnabled)
 	{
 		Board_LED_Set(GREENLED, 1);
+		mode = 1;
 	}
 	else
 	{
 		Board_LED_Set(GREENLED, 0);
+		mode = 2;
 	}
 }
 
@@ -398,6 +407,7 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 					}
 					// JME adjust buffer size here.
 				}
+				Chip_UART_SendByte(LPC_USART0,'1');
 				return true;
 			case AUDIO_REQ_GetCurrent:
 				/* Check if we are just testing for a valid property, or actually reading it */
@@ -408,10 +418,12 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 					Data[1] = (CurrentAudioSampleFrequency >> 8);
 					Data[0] = (CurrentAudioSampleFrequency &  0xFF);
 				}
+				Chip_UART_SendByte(LPC_USART0,'2');
 				return true;
 			}
 		}
 	}
+	Chip_UART_SendByte(LPC_USART0,'3');
 	return false;
 }
 
@@ -436,5 +448,6 @@ bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t*
 	rlIP.Count %= code_count;
 */
 	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
+	mode = 4;
 	return false;
 }

@@ -438,6 +438,11 @@
               <FileType>5</FileType>
               <FilePath>.\config.h</FilePath>
             </File>
+            <File>
+              <FileName>sys_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330\sys_config.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
