@@ -261,12 +261,10 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		AUDIO_SAMPLE_FREQ(48000),
 		// this is just to persuade Windows to display
 		// an 'advanced' tab ...
-/*
 		AUDIO_SAMPLE_FREQ(44100),	
 		AUDIO_SAMPLE_FREQ(22050),
 		AUDIO_SAMPLE_FREQ(11025),
 		AUDIO_SAMPLE_FREQ(8000),		
-*/
 	},
 
 	.Audio_StreamEndpoint = 

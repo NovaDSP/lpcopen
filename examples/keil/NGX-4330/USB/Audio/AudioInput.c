@@ -124,6 +124,11 @@ const int SAMPLE_COUNT = 6;
 // in any other configuration simply send zeroes
 int16_t data[CHANNEL_COUNT * SAMPLE_COUNT] = { 0 };
 
+void DebugChar(char tch)
+{
+	Chip_UART_SendByte(LPC_USART0,tch);
+	Chip_UART_SendByte(LPC_USART0,'\n');
+}
 
 //-----------------------------------------------------------------------------
 // Called on every SOF interrupt. Thus 8KHz at high-speed and 1KHz at full-speed
@@ -236,7 +241,7 @@ int main(void)
 
 	Board_Debug_Init();
 	
-	Board_UARTPutSTR("Press SW1 to connect device to host\n");
+	Board_UARTPutSTR("----------Device initialized--------\n");
 	
 	// Enable timer interrupt
 	NVIC_EnableIRQ(TIMER1_IRQn);
@@ -352,11 +357,13 @@ void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t *const Audi
 	if (AudioInterfaceInfo->State.InterfaceEnabled)
 	{
 		Board_LED_Set(GREENLED, 1);
+		DebugChar('E');
 		mode = 1;
 	}
 	else
 	{
 		Board_LED_Set(GREENLED, 0);
+		DebugChar('D');
 		mode = 2;
 	}
 }
@@ -408,8 +415,12 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 						return false;
 					}
 					// JME adjust buffer size here.
+					DebugChar('6');
 				}
-				mode = 4;
+				else
+				{
+					DebugChar('7');
+				}
 				return true;
 			case AUDIO_REQ_GetCurrent:
 				/* Check if we are just testing for a valid property, or actually reading it */
@@ -419,8 +430,12 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 					Data[2] = (CurrentAudioSampleFrequency >> 16);
 					Data[1] = (CurrentAudioSampleFrequency >> 8);
 					Data[0] = (CurrentAudioSampleFrequency &  0xFF);
+					DebugChar('8');
 				}
-				mode = 5;
+				else
+				{
+					DebugChar('9');
+				}
 				return true;
 			}
 		}
@@ -450,6 +465,7 @@ bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t*
 	rlIP.Count %= code_count;
 */
 	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
+	DebugChar('P');
 	mode = 7;
 	return false;
 }
