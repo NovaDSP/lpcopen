@@ -177,7 +177,8 @@ void Board_ENET_GetMacADDR(uint8_t *mcaddr)
 void Board_Init(void)
 {
 	/* Sets up DEBUG UART */
-	DEBUGINIT();
+	// JME No. There are no clocks at this point ...
+	// DEBUGINIT();
 
 	/* Updates SystemCoreClock global var with current clock speed */
 	SystemCoreClockUpdate();
@@ -194,6 +195,9 @@ void Board_Init(void)
 
 	/* Initialize LEDs */
 	Board_LED_Init();
+
+	/* Sets up DEBUG UART */
+	DEBUGINIT();
 }
 
 void Board_I2C_Init(I2C_ID_T id)

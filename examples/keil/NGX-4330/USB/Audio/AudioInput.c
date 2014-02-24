@@ -249,6 +249,8 @@ int main(void)
 		value += step;
 	}
 
+	Board_UARTPutSTR("Press SW1 to connect unit ...\n");
+	
 	// wait. do not connect until button 1 is pressed
 	for (;;)
 	{
