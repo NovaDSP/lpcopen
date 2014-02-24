@@ -407,7 +407,7 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 					}
 					// JME adjust buffer size here.
 				}
-				Chip_UART_SendByte(LPC_USART0,'1');
+				mode = 4;
 				return true;
 			case AUDIO_REQ_GetCurrent:
 				/* Check if we are just testing for a valid property, or actually reading it */
@@ -418,12 +418,12 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 					Data[1] = (CurrentAudioSampleFrequency >> 8);
 					Data[0] = (CurrentAudioSampleFrequency &  0xFF);
 				}
-				Chip_UART_SendByte(LPC_USART0,'2');
+				mode = 5;
 				return true;
 			}
 		}
 	}
-	Chip_UART_SendByte(LPC_USART0,'3');
+	mode = 6;
 	return false;
 }
 
@@ -448,6 +448,6 @@ bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t*
 	rlIP.Count %= code_count;
 */
 	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
-	mode = 4;
+	mode = 7;
 	return false;
 }

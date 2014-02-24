@@ -11,12 +11,12 @@
 // if 0 then we run at default hispeed (480MBS)
 
 // Mac
-#define USE_FULL_SPEED 1
-#define CHANNEL_COUNT 6
+//#define USE_FULL_SPEED 1
+//#define CHANNEL_COUNT 6
 
 // Windows/Linux
-//#define USE_FULL_SPEED 0
-//#define CHANNEL_COUNT 12
+#define USE_FULL_SPEED 0
+#define CHANNEL_COUNT 12
 
 // the default is 12 channels ...
 
