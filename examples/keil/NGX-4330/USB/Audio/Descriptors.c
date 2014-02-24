@@ -245,7 +245,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		// 2 bytes per subframe for 16bit, 3 for 24 bit
 		/* .SubFrameSize = */ BYTES_PER_SAMPLE,
 		// Bits per sample, i.e 3 * 8 for 24 bit audio
-		/* .BitResolution = */ BYTES_PER_SAMPLE * sizeof(uint8_t),
+		/* .BitResolution = */ BYTES_PER_SAMPLE * 8,
 		// how many sample rates do we support?
 		/* .TotalDiscreteSampleRates = */ SUPPORTED_SAMPLE_RATES,
 	},
