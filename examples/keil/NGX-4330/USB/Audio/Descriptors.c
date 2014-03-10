@@ -154,8 +154,7 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		},
 		.Subtype                  = AUDIO_DSUBTYPE_CSInterface_InputTerminal,
 		.TerminalID               = 0x01,
-		// .TerminalType             = DIGITAL_AUDIO_INTERFACE,
-		/*.TerminalType             = */ AUDIO_TERMINAL_IN_MIC,
+		.TerminalType             = DIGITAL_AUDIO_INTERFACE,
 		/*.AssociatedOutputTerminal = */ 0x00,
 		// define channel count
 		.TotalChannels            = CHANNEL_COUNT,
@@ -262,9 +261,9 @@ USB_Descriptor_Configuration_t ConfigurationDescriptor =
 		// this is just to persuade Windows to display
 		// an 'advanced' tab ...
 		AUDIO_SAMPLE_FREQ(44100),	
-		AUDIO_SAMPLE_FREQ(22050),
-		AUDIO_SAMPLE_FREQ(11025),
-		AUDIO_SAMPLE_FREQ(8000),		
+//		AUDIO_SAMPLE_FREQ(22050),
+//		AUDIO_SAMPLE_FREQ(11025),
+//		AUDIO_SAMPLE_FREQ(8000),		
 	},
 
 	.Audio_StreamEndpoint = 

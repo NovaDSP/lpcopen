@@ -34,20 +34,17 @@
 
 #include "AudioInput.h"
 #include <limits.h>
+#include "FreeRTOS.h"
+#include "task.h"
+#include "ringbuf.h"
 
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
 
-const int code_count = 16;
-
-typedef struct ReqLogger_T
-{
-	int Count;
-	int Property[code_count];
-	int Parameter[code_count];
-} ReqLogger;
-
+ringBufS rb;
+ringBufS* prb = 0;
+ 
 /*****************************************************************************
  * Public types/enumerations/variables
  ****************************************************************************/
@@ -85,18 +82,18 @@ PRAGMA_ALIGN_4
 //
 int modulo = 6 * 500;
 
-//-----------------------------------------------------------------------------
-/* Configures the board hardware and chip peripherals for the demo's
-   functionality. */
-static void SetupHardware(void)
-{
-	Board_Init();
-	Board_Buttons_Init();
-}
+// some bitmasks to try and work out what is happening to us
+#define MODE_ENABLED 8
+#define MODE_MASK (0xFFFFFFFF & (1 << MODE_ENABLED))
+#define FS_48K		7
+#define FS_44K1		6
+#define FS_BAD		5
 
 //-----------------------------------------------------------------------------
 void Audio_Reset_Data_Buffer(void)
-{}
+{
+
+}
 
 /** This callback function provides iso buffer address for HAL iso transfer processing.
  * for ISO In EP, this function also returns the size of buffer, depend on SampleFrequency.
@@ -124,9 +121,21 @@ const int SAMPLE_COUNT = 6;
 // in any other configuration simply send zeroes
 int16_t data[CHANNEL_COUNT * SAMPLE_COUNT] = { 0 };
 
+//-----------------------------------------------------------------------------
 void DebugChar(char tch)
 {
 	Chip_UART_SendByte(LPC_USART0,tch);
+	Chip_UART_SendByte(LPC_USART0,'\n');
+}
+
+//-----------------------------------------------------------------------------
+// Append new line ...
+void DebugPuts(void* p,char* ptch)
+{
+	while (ptch && *ptch)
+	{
+		Chip_UART_SendByte(LPC_USART0,*ptch++);
+	}	
 	Chip_UART_SendByte(LPC_USART0,'\n');
 }
 
@@ -170,55 +179,32 @@ void TIMER1_IRQHandler(void)
 }
 
 //-----------------------------------------------------------------------------
-static int mode = 0;
-static int oldmode = 0;
+static uint32_t mode = 0;
+static uint32_t oldmode = 0;
+char buf[8];
 
-//-----------------------------------------------------------------------------
-// Set up all the initial timer IRQ stuff
-void InitTimer()
+/* UART (or output) thread */
+void UARTTask(void* pvParameters)
 {
-	//
-	uint32_t timerFreq = 0;
-	/* Enable timer 1 clock and reset it */
-	Chip_TIMER_Init(LPC_TIMER1);
-	Chip_RGU_TriggerReset(RGU_TIMER1_RST);
-	while (Chip_RGU_InReset(RGU_TIMER1_RST)) 
+	int tickCnt = 0;
+
+	while (1) 
 	{
-		// NOP
+		DEBUGOUT("Tick: %d \r\n", tickCnt);
+		tickCnt++;
+
+		/* About a 1s delay here */
+		vTaskDelay(configTICK_RATE_HZ);
 	}
-
-	/* Get timer 1 peripheral clock rate */
-	timerFreq = Chip_Clock_GetRate(CLK_MX_TIMER1);
-
-	/* Timer setup for match and interrupt at TICKRATE_HZ */
-	Chip_TIMER_Reset(LPC_TIMER1);
-	Chip_TIMER_MatchEnableInt(LPC_TIMER1, 1);
-	Chip_TIMER_SetMatch(LPC_TIMER1, 1, (timerFreq / TICKRATE_HZ));
-	Chip_TIMER_ResetOnMatchEnable(LPC_TIMER1, 1);
-	Chip_TIMER_Enable(LPC_TIMER1);
-
-	/* Enable timer interrupt */
-//	NVIC_EnableIRQ(TIMER1_IRQn);
-//	NVIC_ClearPendingIRQ(TIMER1_IRQn);
 }
 
-char buf[8];
 //-----------------------------------------------------------------------------
-// Main program entry point. This routine contains the overall program flow, including initial
- // setup of all components and the main program loop.
-int main(void)
+void AudioTask(void* pvParameters)
 {
 	int i = 0;
 	
 	// we loop at startup until SW2 is pressed
 	uint32_t Button_State = 0;
-	
-	// set up hardware
-	SetupHardware();
-	
-	// and ticker timer at 1hz
-	InitTimer();
-	
 	// switch off green LED
 	Board_LED_Set(GREENLED, false);
 	
@@ -236,6 +222,11 @@ int main(void)
 			mask |= (1 << i);
 		}
 	}
+
+	// initialize the ring buffer struct
+	// this is a bit pathetic in 2014 but ...
+	prb = ringBufS_init(&rb);
+	
 	// now set the mask.
 	ConfigurationDescriptor.Audio_InputTerminal.ChannelConfig = mask;
 
@@ -289,12 +280,8 @@ int main(void)
 
 	Board_UARTPutSTR("Device is connected to host\n");
 
-#if defined(USB_DEVICE_ROM_DRIVER)
-	UsbdAdc_Init(&Microphone_Audio_Interface);
-#endif
 	for (;;)
 	{
-		//
 		//if ((Buttons_GetStatus() & BUTTONS_BUTTON1) != Button_State)
 		if (mode != oldmode)
 		{
@@ -303,12 +290,70 @@ int main(void)
 			Board_UARTPutSTR(buf);
 		}
 		
-#if !defined(USB_DEVICE_ROM_DRIVER)
 		Audio_Device_USBTask(&Microphone_Audio_Interface);
 		USB_USBTask(Microphone_Audio_Interface.Config.PortNumber, USB_MODE_Device);
-#endif
 	}
 }
+
+//-----------------------------------------------------------------------------
+// Set up all the initial timer IRQ stuff
+void InitTimer()
+{
+	//
+	uint32_t timerFreq = 0;
+	/* Enable timer 1 clock and reset it */
+	Chip_TIMER_Init(LPC_TIMER1);
+	Chip_RGU_TriggerReset(RGU_TIMER1_RST);
+	while (Chip_RGU_InReset(RGU_TIMER1_RST)) 
+	{
+		// NOP
+	}
+
+	/* Get timer 1 peripheral clock rate */
+	timerFreq = Chip_Clock_GetRate(CLK_MX_TIMER1);
+
+	/* Timer setup for match and interrupt at TICKRATE_HZ */
+	Chip_TIMER_Reset(LPC_TIMER1);
+	Chip_TIMER_MatchEnableInt(LPC_TIMER1, 1);
+	Chip_TIMER_SetMatch(LPC_TIMER1, 1, (timerFreq / TICKRATE_HZ));
+	Chip_TIMER_ResetOnMatchEnable(LPC_TIMER1, 1);
+	Chip_TIMER_Enable(LPC_TIMER1);
+
+	/* Enable timer interrupt */
+//	NVIC_EnableIRQ(TIMER1_IRQn);
+//	NVIC_ClearPendingIRQ(TIMER1_IRQn);
+}
+
+//-----------------------------------------------------------------------------
+// Main program entry point. This routine contains the overall program flow, including initial
+ // setup of all components and the main program loop.
+int main(void)
+{
+	// set up hardware
+	Board_Init();
+	
+	Board_Buttons_Init();
+	
+	// and ticker timer at 1hz
+//	InitTimer();
+
+	//
+	xTaskCreate(AudioTask, (signed char *) "AudioTask",
+				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
+				(xTaskHandle *) NULL);
+
+	//
+	xTaskCreate(UARTTask, (signed char *) "UARTTask",
+				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
+				(xTaskHandle *) NULL);
+
+	/* Start the scheduler */
+	vTaskStartScheduler();
+
+	/* Should never arrive here */
+	return 1;
+}	
+
 
 //-----------------------------------------------------------------------------
 /** Event handler for the library USB Connection event. */
@@ -357,14 +402,14 @@ void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t *const Audi
 	if (AudioInterfaceInfo->State.InterfaceEnabled)
 	{
 		Board_LED_Set(GREENLED, 1);
-		DebugChar('E');
-		mode = 1;
+		// enabled
+		mode |= MODE_ENABLED;
 	}
 	else
 	{
 		Board_LED_Set(GREENLED, 0);
-		DebugChar('D');
-		mode = 2;
+		// disabled
+		mode &= ~MODE_ENABLED;
 	}
 }
 
@@ -388,7 +433,9 @@ void EVENT_USB_Device_StartOfFrame(void)
 /** Audio class driver callback for the setting and retrieval of streaming endpoint properties. This callback must be implemented
  *  in the user application to handle property manipulations on streaming audio endpoints.
  */
-bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
+bool 
+CALLBACK_Audio_Device_GetSetEndpointProperty(
+		USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
         const uint8_t EndpointProperty,
         const uint8_t EndpointAddress,
         const uint8_t EndpointControl,
@@ -410,16 +457,31 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 					/* Set the new sampling frequency to the value given by the host */
 					CurrentAudioSampleFrequency =
 					    (((uint32_t) Data[2] << 16) | ((uint32_t) Data[1] << 8) | (uint32_t) Data[0]);
-					if (CurrentAudioSampleFrequency > AUDIO_MAX_SAMPLE_FREQ)
+					// if (CurrentAudioSampleFrequency > AUDIO_MAX_SAMPLE_FREQ)
+					// fake a bad sample rate
+					switch (CurrentAudioSampleFrequency)
 					{
-						return false;
+						case 48000:
+							//DebugChar('1');
+							mode &= MODE_ENABLED;
+							mode |= FS_48K;
+						break;
+						case 44100:
+							//DebugChar('2');
+							mode &= MODE_ENABLED;
+							mode |= FS_44K1;
+						break;
+						default:
+							//DebugChar('3');
+							mode &= MODE_ENABLED;
+							mode |= FS_BAD;
+						break;
 					}
-					// JME adjust buffer size here.
-					DebugChar('6');
 				}
 				else
 				{
-					DebugChar('7');
+					//DebugChar('4');
+					mode = 4;
 				}
 				return true;
 			case AUDIO_REQ_GetCurrent:
@@ -430,17 +492,28 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
 					Data[2] = (CurrentAudioSampleFrequency >> 16);
 					Data[1] = (CurrentAudioSampleFrequency >> 8);
 					Data[0] = (CurrentAudioSampleFrequency &  0xFF);
-					DebugChar('8');
 				}
 				else
 				{
-					DebugChar('9');
+
 				}
 				return true;
+			default:
+				// other end point property
+				DebugPuts(prb,"OEPP");
 			}
 		}
+		else
+		{
+			// other end point control
+			DebugPuts(prb,"OEPC");
+		}
 	}
-	mode = 6;
+	else
+	{
+		// other end point address
+		DebugPuts(prb,"OEPA");
+	}
 	return false;
 }
 
@@ -450,7 +523,6 @@ bool CALLBACK_Audio_Device_GetSetEndpointProperty(USB_ClassInfo_Audio_Device_t* 
  *
  */
 
-static ReqLogger rlIP;
 
 bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
         const uint8_t Property,
@@ -459,13 +531,7 @@ bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t*
         uint16_t* const DataLength,
         uint8_t* Data)
 {
-/*
-	rlIP.Property[rlIP.Count] = Property;
-	rlIP.Parameter[rlIP.Count++] = Parameter;
-	rlIP.Count %= code_count;
-*/
 	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
-	DebugChar('P');
-	mode = 7;
+	ringBufS_put(prb,'i');
 	return false;
 }

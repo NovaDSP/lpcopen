@@ -144,7 +144,15 @@ uint8_t Endpoint_Write_Control_Stream_BE(const void *const Buffer,
 uint8_t Endpoint_Read_Control_Stream_LE(uint8_t corenum, void *const Buffer,
 										uint16_t Length)
 {
-	while (!Endpoint_IsOUTReceived(corenum)) ;	// FIXME: this safe checking is fine for LPC18xx
+	// JME don't like the look of this ....
+	//while (!Endpoint_IsOUTReceived(corenum)) // FIXME: this safe checking is fine for LPC18xx
+	for (;;)
+	{
+		if (Endpoint_IsOUTReceived(corenum) != 0)
+		{
+			break;
+		}
+	}
 	Endpoint_Read_Stream_LE(corenum, Buffer, Length, NULL);		// but hangs LPC17xx --> comment out
 	Endpoint_ClearOUT(corenum);
 	return ENDPOINT_RWCSTREAM_NoError;
