@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="Audio"
+	ProjectGUID="{B61F7D9A-657B-4A27-B016-FBBBA896EA34}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="1"
+			UseOfMFC="1"
+			CharacterSet="2">
+			<Tool Name="VCCLCOMPILERTOOL" 			PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;"
+			AdditionalIncludeDirectories="$(ProjectDir);$(ProjectDir)descriptors;$(ProjectDir)freertos;$(ProjectDir)freertos\include;"
+			Optimization="0"
+			MinimalRebuild="true"
+			BasicRuntimeChecks="3"
+			RuntimeLibrary="1"
+			UsePrecompiledHeader="true"
+			WarningLevel="3"
+			Detect64BitPortabilityProblems="false"
+			DebugInformationFormat="4"
+/>
+			<Tool Name="VCCustomBuildTool"/>
+			<Tool Name="VCLibrarianTool"/>
+			<Tool Name= "$VCLINKERTOOL"/>
+			<Tool Name="VCMIDLTool"/>
+			<Tool Name="VCPostBuildEventTool"/>
+			<Tool Name="VCPreBuildEventTool"/>
+			<Tool Name="VCPreLinkEventTool"/>
+			<Tool Name="VCResourceCompilerTool"/>
+			<Tool Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool Name="VCXMLDataGeneratorTool"/>
+			<Tool Name="VCWebDeploymentTool"/>
+			<Tool Name="VCManagedWrapperGeneratorTool"/>
+			<Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="1"
+			UseOfMFC="1"
+			CharacterSet="2">
+			<Tool Name="VCCLCOMPILERTOOL" 			PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;"
+			AdditionalIncludeDirectories="$(ProjectDir);$(ProjectDir)descriptors;$(ProjectDir)freertos;$(ProjectDir)freertos\include;"
+			Optimization="0"
+			MinimalRebuild="true"
+			BasicRuntimeChecks="3"
+			RuntimeLibrary="0"
+			UsePrecompiledHeader="true"
+			WarningLevel="3"
+			Detect64BitPortabilityProblems="false"
+			DebugInformationFormat="4"
+/>
+			<Tool Name="VCCustomBuildTool"/>
+			<Tool Name="VCLibrarianTool"/>
+			<Tool Name= "$VCLINKERTOOL"/>
+			<Tool Name="VCMIDLTool"/>
+			<Tool Name="VCPostBuildEventTool"/>
+			<Tool Name="VCPreBuildEventTool"/>
+			<Tool Name="VCPreLinkEventTool"/>
+			<Tool Name="VCResourceCompilerTool"/>
+			<Tool Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool Name="VCXMLDataGeneratorTool"/>
+			<Tool Name="VCWebDeploymentTool"/>
+			<Tool Name="VCManagedWrapperGeneratorTool"/>
+			<Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{458470B1-48EA-4219-9931-65B0F47B7346}">
+		<File RelativePath=".\adc_user.c"></File>
+		<File RelativePath=".\audioinput.c"></File>
+		<File RelativePath=".\descriptors.c"></File>
+		<File RelativePath=".\main.c"></File>
+		<File RelativePath=".\ringbuf.c"></File>
+		<File RelativePath=".\usbrom.c"></File>
+		<File RelativePath=".\freertos\freertoscommonhooks.c"></File>
+		<File RelativePath=".\freertos\heap_3.c"></File>
+		<File RelativePath=".\freertos\list.c"></File>
+		<File RelativePath=".\freertos\port.c"></File>
+		<File RelativePath=".\freertos\queue.c"></File>
+		<File RelativePath=".\freertos\tasks.c"></File>
+		<File RelativePath=".\freertos\timers.c"></File>
+
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{B3E436EA-987C-4E4E-AFBB-EB2CA9D6DE0C}">
+		<File RelativePath=".\audioinput.h"></File>
+		<File RelativePath=".\config.h"></File>
+		<File RelativePath=".\descriptors.h"></File>
+		<File RelativePath=".\ringbuf.h"></File>
+		<File RelativePath=".\usbrom.h"></File>
+		<File RelativePath=".\descriptors\audio1.h"></File>
+		<File RelativePath=".\descriptors\audio2.h"></File>
+		<File RelativePath=".\freertos\freertoscommonhooks.h"></File>
+		<File RelativePath=".\freertos\freertosconfig.h"></File>
+		<File RelativePath=".\freertos\portmacro.h"></File>
+		<File RelativePath=".\freertos\include\croutine.h"></File>
+		<File RelativePath=".\freertos\include\freertos.h"></File>
+		<File RelativePath=".\freertos\include\list.h"></File>
+		<File RelativePath=".\freertos\include\mpu_wrappers.h"></File>
+		<File RelativePath=".\freertos\include\portable.h"></File>
+		<File RelativePath=".\freertos\include\projdefs.h"></File>
+		<File RelativePath=".\freertos\include\queue.h"></File>
+		<File RelativePath=".\freertos\include\semphr.h"></File>
+		<File RelativePath=".\freertos\include\stackmacros.h"></File>
+		<File RelativePath=".\freertos\include\task.h"></File>
+		<File RelativePath=".\freertos\include\timers.h"></File>
+			
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{19F4FDFB-217A-4595-BAB8-89FC99FE2038}">
+			
+		</Filter>
+		<Filter
+			Name="Misc Files"
+			Filter=""
+			UniqueIdentifier="{272C0F47-842D-4A89-A5CD-C2839950235F}">
+			
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

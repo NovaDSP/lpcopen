@@ -1,63 +1,27 @@
 /*
- * @brief Make your board becomes a USB microphone
- *
- * @note
- * Copyright(C) NXP Semiconductors, 2012
- * Copyright(C) Dean Camera, 2011, 2012
- * All rights reserved.
- *
- * @par
- * Software that is described herein is for illustrative purposes only
- * which provides customers with programming information regarding the
- * LPC products.  This software is supplied "AS IS" without any warranties of
- * any kind, and NXP Semiconductors and its licensor disclaim any and
- * all warranties, express or implied, including all implied warranties of
- * merchantability, fitness for a particular purpose and non-infringement of
- * intellectual property rights.  NXP Semiconductors assumes no responsibility
- * or liability for the use of the software, conveys no license or rights under any
- * patent, copyright, mask work right, or any other intellectual property rights in
- * or to any products. NXP Semiconductors reserves the right to make changes
- * in the software without notification. NXP Semiconductors also makes no
- * representation or warranty that such application will be suitable for the
- * specified use without further testing or modification.
- *
- * @par
- * Permission to use, copy, modify, and distribute this software and its
- * documentation is hereby granted, under NXP Semiconductors' and its
- * licensor's relevant copyrights in the software, without fee, provided that it
- * is used in conjunction with NXP Semiconductors microcontrollers.  This
- * copyright, permission, and disclaimer notice must appear in all copies of
- * this code.
- */
+
+
+
+*/
+
 
 #pragma diag_suppress 368
 
 #include "AudioInput.h"
 #include <limits.h>
 #include "FreeRTOS.h"
+#include "queue.h"
 #include "task.h"
-#include "ringbuf.h"
-
-/*****************************************************************************
- * Private types/enumerations/variables
- ****************************************************************************/
-
-ringBufS rb;
-ringBufS* prb = 0;
- 
-/*****************************************************************************
- * Public types/enumerations/variables
- ****************************************************************************/
 
 /** Audio Class driver interface configuration and state information. This structure is
  *  passed to all Audio Class driver functions, so that multiple instances of the same class
  *  within a device can be differentiated from one another.
  */
-USB_ClassInfo_Audio_Device_t Microphone_Audio_Interface =
+USB_ClassInfo_Audio_Device_t USBAudioIF =
 {
-	.Config = {
+	.Config = 
+	{
 		.StreamingInterfaceNumber = 1,
-
 		.DataINEndpointNumber     = AUDIO_STREAM_EPNUM,
 		.DataINEndpointSize       = AUDIO_STREAM_EPSIZE,
 		.PortNumber             = 0,
@@ -72,8 +36,9 @@ extern USB_Descriptor_Configuration_t ConfigurationDescriptor;
 #define BLUELED 1
 #define GREENLED 0
 
-/** Max Sample Frequency. */
-#define AUDIO_MAX_SAMPLE_FREQ   48000
+//-----------------------------------------------------------------------------
+// Max Sample Frequency.
+const uint32_t AUDIO_MAX_SAMPLE_FREQ = 48000;
 /** Current audio sampling frequency of the streaming audio endpoint. */
 uint32_t CurrentAudioSampleFrequency = AUDIO_MAX_SAMPLE_FREQ;
 /* Sample Buffer */
@@ -90,14 +55,8 @@ int modulo = 6 * 500;
 #define FS_BAD		5
 
 //-----------------------------------------------------------------------------
-void Audio_Reset_Data_Buffer(void)
-{
-
-}
-
-/** This callback function provides iso buffer address for HAL iso transfer processing.
- * for ISO In EP, this function also returns the size of buffer, depend on SampleFrequency.
- */
+// This callback function provides iso buffer address for HAL iso transfer processing.
+// for ISO In EP, this function also returns the size of buffer, depend on SampleFrequency.
 
 // LED state 
 bool iso_state = false; 
@@ -122,27 +81,48 @@ const int SAMPLE_COUNT = 6;
 int16_t data[CHANNEL_COUNT * SAMPLE_COUNT] = { 0 };
 
 //-----------------------------------------------------------------------------
-void DebugChar(char tch)
+typedef enum _state_index
 {
-	Chip_UART_SendByte(LPC_USART0,tch);
-	Chip_UART_SendByte(LPC_USART0,'\n');
-}
+	eEnabled,
+	eDisabled,
+	eGetSampleRate,
+	eGetSampleRateNoData,
+	eSetSampleRate,
+	eSetSampleRateNoData,
+	eGetSetInterfaceProperty,
+	eUnknownEndpointProperty,
+	eOtherEndpointProperty,
+} state_index;
+
+const char* states[] = 
+{
+	"enabled",
+	"disabled",
+	"get sample rate",
+	"get sample rate no data",
+	"set sample rate",
+	"set sample rate no data",
+	"GetSetInterfaceProperty",
+	"Unknown Endpoint Property",
+	"Other Endpoint Property",
+};
 
 //-----------------------------------------------------------------------------
-// Append new line ...
-void DebugPuts(void* p,char* ptch)
+typedef struct _DbgMessage
 {
-	while (ptch && *ptch)
-	{
-		Chip_UART_SendByte(LPC_USART0,*ptch++);
-	}	
-	Chip_UART_SendByte(LPC_USART0,'\n');
-}
+	// pointer to const string
+	const char* psz;
+	uint32_t value;
+	uint32_t flags;
+	
+} DbgMessage;
+
+typedef DbgMessage dbg_message;
 
 //-----------------------------------------------------------------------------
 // Called on every SOF interrupt. Thus 8KHz at high-speed and 1KHz at full-speed
 // this is actually returning a pointer to the data buffer to be transferred
-//
+// JME WTF does this not pass instance pointer?
 uint32_t CALLBACK_HAL_GetISOBufferAddress(const uint32_t EPNum, uint32_t* packet_size)
 {
 	*packet_size = CHANNEL_COUNT * SAMPLE_COUNT * BYTES_PER_SAMPLE;
@@ -179,26 +159,37 @@ void TIMER1_IRQHandler(void)
 }
 
 //-----------------------------------------------------------------------------
-static uint32_t mode = 0;
-static uint32_t oldmode = 0;
-char buf[8];
 
-/* UART (or output) thread */
+
+//-----------------------------------------------------------------------------
+// UART thread. Check queue and see if we got any data from ISR stuff
+// If so format it and push out onto serial port @115K
 void UARTTask(void* pvParameters)
 {
 	int tickCnt = 0;
-
-	while (1) 
+	xQueueHandle qh = (xQueueHandle) USBAudioIF.instance_data;
+	for (;;)
 	{
-		DEBUGOUT("Tick: %d \r\n", tickCnt);
+		if (uxQueueMessagesWaiting(qh))
+		{
+			dbg_message dbm;
+			while (xQueueReceive(qh,&dbm,0))
+			{
+				DEBUGOUT("[%d] %s %d %d\r\n",tickCnt,(dbm.psz ? dbm.psz : "<null>"),dbm.flags, dbm.value);
+			}
+		}
+		else
+		{
+			// DEBUGOUT("[%d]\r\n", tickCnt);
+		}
 		tickCnt++;
-
 		/* About a 1s delay here */
 		vTaskDelay(configTICK_RATE_HZ);
 	}
 }
 
 //-----------------------------------------------------------------------------
+// This polls the USB registers for state change. Not ideal but works for now
 void AudioTask(void* pvParameters)
 {
 	int i = 0;
@@ -223,16 +214,9 @@ void AudioTask(void* pvParameters)
 		}
 	}
 
-	// initialize the ring buffer struct
-	// this is a bit pathetic in 2014 but ...
-	prb = ringBufS_init(&rb);
-	
 	// now set the mask.
 	ConfigurationDescriptor.Audio_InputTerminal.ChannelConfig = mask;
 
-	Board_Debug_Init();
-	
-	Board_UARTPutSTR("----------Device initialized--------\n");
 	
 	// Enable timer interrupt
 	NVIC_EnableIRQ(TIMER1_IRQn);
@@ -258,7 +242,7 @@ void AudioTask(void* pvParameters)
 	}
 
 	Board_UARTPutSTR("Press SW1 to connect unit ...\n");
-	
+
 	// wait. do not connect until button 1 is pressed
 	for (;;)
 	{
@@ -273,25 +257,18 @@ void AudioTask(void* pvParameters)
 	NVIC_DisableIRQ(TIMER1_IRQn);		
 	//
 	// Initialize the USB audio driver
-	USB_Init(Microphone_Audio_Interface.Config.PortNumber, USB_MODE_Device,USE_FULL_SPEED);
+	USB_Init(USBAudioIF.Config.PortNumber, USB_MODE_Device,USE_FULL_SPEED);
 
 	// enable SOF interrupt
 	USB_Device_EnableSOFEvents();
 
 	Board_UARTPutSTR("Device is connected to host\n");
 
+	// JME audit:polled
 	for (;;)
 	{
-		//if ((Buttons_GetStatus() & BUTTONS_BUTTON1) != Button_State)
-		if (mode != oldmode)
-		{
-			oldmode = mode;
-			sprintf(buf,"%d\r\n",oldmode);
-			Board_UARTPutSTR(buf);
-		}
-		
-		Audio_Device_USBTask(&Microphone_Audio_Interface);
-		USB_USBTask(Microphone_Audio_Interface.Config.PortNumber, USB_MODE_Device);
+		Audio_Device_USBTask(&USBAudioIF);
+		USB_USBTask(USBAudioIF.Config.PortNumber, USB_MODE_Device);
 	}
 }
 
@@ -336,16 +313,26 @@ int main(void)
 	
 	// and ticker timer at 1hz
 //	InitTimer();
+	Board_Debug_Init();
+	
+	Board_UARTPutSTR("\n----------Device initialized--------\n");
 
-	//
+	// create the ISR safe qeueue	
+	USBAudioIF.instance_data = xQueueCreate(64,sizeof(DbgMessage));
+	
+	// create the audio test. this currently polls, should eventually be
+	// modified so it waits correctly (power)
 	xTaskCreate(AudioTask, (signed char *) "AudioTask",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
 				(xTaskHandle *) NULL);
 
-	//
+	//  UART thread monitors queue(s) and spits out any debug/tracing
 	xTaskCreate(UARTTask, (signed char *) "UARTTask",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
 				(xTaskHandle *) NULL);
+
+	//
+	Board_UARTPutSTR("vTaskStartScheduler() \n");
 
 	/* Start the scheduler */
 	vTaskStartScheduler();
@@ -356,25 +343,41 @@ int main(void)
 
 
 //-----------------------------------------------------------------------------
-/** Event handler for the library USB Connection event. */
+// Event handler for the library USB Connection event.
 void EVENT_USB_Device_Connect(void)
 {
 	Board_LED_Set(GREENLED, 1);
 }
 
 //-----------------------------------------------------------------------------
-/** Event handler for the library USB Disconnection event. */
+// Event handler for the library USB Disconnection event.
 void EVENT_USB_Device_Disconnect(void)
 {
 	Board_LED_Set(GREENLED, 0);
 }
 
 //-----------------------------------------------------------------------------
-/** Event handler for the library USB Configuration Changed event. */
+static uint32_t counter = 0;
+static bool lit = false;
+
+//-----------------------------------------------------------------------------
+// ISR on each SOF
+void EVENT_USB_Device_StartOfFrame(void)
+{
+	counter++;
+	if (counter % modulo == 0)
+	{
+		lit = !lit;
+		Board_LED_Set(BLUELED, lit);
+	}
+}
+
+//-----------------------------------------------------------------------------
+// Event handler for the library USB Configuration Changed event.
 void EVENT_USB_Device_ConfigurationChanged(void)
 {
 	bool ConfigSuccess = true;
-	ConfigSuccess &= Audio_Device_ConfigureEndpoints(&Microphone_Audio_Interface);
+	ConfigSuccess &= Audio_Device_ConfigureEndpoints(&USBAudioIF);
 	//
 /*
 	if (USB_Device_ConfigurationNumber == 0)
@@ -389,50 +392,41 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 }
 
 //-----------------------------------------------------------------------------
-/** Event handler for the library USB Control Request reception event. */
+// Event handler for the library USB Control Request reception event.
 void EVENT_USB_Device_ControlRequest(void)
 {
-	Audio_Device_ProcessControlRequest(&Microphone_Audio_Interface);
+	Audio_Device_ProcessControlRequest(&USBAudioIF);
 }
 
 //-----------------------------------------------------------------------------
 // Indicates if streaming has started ...
-void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t *const AudioInterfaceInfo)
+void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo)
 {
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	dbg_message dbm = { 0 };
+	xQueueHandle xq = (xQueueHandle)AudioInterfaceInfo->instance_data;
 	if (AudioInterfaceInfo->State.InterfaceEnabled)
 	{
 		Board_LED_Set(GREENLED, 1);
 		// enabled
-		mode |= MODE_ENABLED;
+		dbm.psz = states[eEnabled];
 	}
 	else
 	{
 		Board_LED_Set(GREENLED, 0);
 		// disabled
-		mode &= ~MODE_ENABLED;
+		dbm.psz = states[eDisabled];
 	}
+	//
+	xQueueSendFromISR(xq,&dbm,&xHigherPriorityTaskWoken);
 }
 
 //-----------------------------------------------------------------------------
-// void USB_Event_Stub(void)
+// Audio class driver callback for the setting and retrieval of streaming endpoint properties. 
+// This callback must be implemented in the user application to 
+// handle property manipulations on streaming audio endpoints.
 
-static uint32_t counter = 0;
-static bool lit = false;
 
-void EVENT_USB_Device_StartOfFrame(void)
-{
-	counter++;
-	if (counter % modulo == 0)
-	{
-		lit = !lit;
-		Board_LED_Set(BLUELED, lit);
-	}
-}
-
-//-----------------------------------------------------------------------------
-/** Audio class driver callback for the setting and retrieval of streaming endpoint properties. This callback must be implemented
- *  in the user application to handle property manipulations on streaming audio endpoints.
- */
 bool 
 CALLBACK_Audio_Device_GetSetEndpointProperty(
 		USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
@@ -442,8 +436,12 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
         uint16_t* const DataLength,
         uint8_t* Data)
 {
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	bool ret = false;
+	xQueueHandle xq = (xQueueHandle)AudioInterfaceInfo->instance_data;
+	dbg_message dbm = { 0, 0 };
 	/* Check the requested endpoint to see if a supported endpoint is being manipulated */
-	if (EndpointAddress == (ENDPOINT_DIR_IN | Microphone_Audio_Interface.Config.DataINEndpointNumber))
+	if (EndpointAddress == (ENDPOINT_DIR_IN | USBAudioIF.Config.DataINEndpointNumber))
 	{
 		/* Check the requested control to see if a supported control is being manipulated */
 		if (EndpointControl == AUDIO_EPCONTROL_SamplingFreq)
@@ -454,6 +452,8 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 				/* Check if we are just testing for a valid property, or actually adjusting it */
 				if (DataLength != NULL)
 				{
+					dbm.psz = states[eSetSampleRate];
+					dbm.flags = *DataLength;
 					/* Set the new sampling frequency to the value given by the host */
 					CurrentAudioSampleFrequency =
 					    (((uint32_t) Data[2] << 16) | ((uint32_t) Data[1] << 8) | (uint32_t) Data[0]);
@@ -462,32 +462,28 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 					switch (CurrentAudioSampleFrequency)
 					{
 						case 48000:
-							//DebugChar('1');
-							mode &= MODE_ENABLED;
-							mode |= FS_48K;
+							dbm.value = 48000;
 						break;
 						case 44100:
-							//DebugChar('2');
-							mode &= MODE_ENABLED;
-							mode |= FS_44K1;
+							dbm.value = 44100;
 						break;
 						default:
-							//DebugChar('3');
-							mode &= MODE_ENABLED;
-							mode |= FS_BAD;
+							dbm.value = 999;
 						break;
 					}
 				}
 				else
 				{
-					//DebugChar('4');
-					mode = 4;
+					dbm.psz = states[eSetSampleRateNoData];
 				}
-				return true;
+				ret = true;
+				break;
 			case AUDIO_REQ_GetCurrent:
 				/* Check if we are just testing for a valid property, or actually reading it */
 				if (DataLength != NULL)
 				{
+					dbm.psz = states[eGetSampleRate];
+					dbm.flags = *DataLength;
 					*DataLength = 3;
 					Data[2] = (CurrentAudioSampleFrequency >> 16);
 					Data[1] = (CurrentAudioSampleFrequency >> 8);
@@ -495,35 +491,37 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 				}
 				else
 				{
-
+					dbm.psz = states[eGetSampleRateNoData];
 				}
-				return true;
+				ret = true;
+			break;
 			default:
-				// other end point property
-				DebugPuts(prb,"OEPP");
+				dbm.psz = states[eUnknownEndpointProperty];
+				dbm.value = EndpointProperty;
 			}
 		}
 		else
 		{
 			// other end point control
-			DebugPuts(prb,"OEPC");
+			dbm.psz = states[eOtherEndpointProperty];
+			dbm.value = EndpointControl;
 		}
 	}
 	else
 	{
 		// other end point address
-		DebugPuts(prb,"OEPA");
 	}
-	return false;
+	//
+	xQueueSendFromISR(xq,&dbm,&xHigherPriorityTaskWoken);
+	//
+	return ret;
 }
 
 //-----------------------------------------------------------------------------
-/** Audio class driver callback for the setting and retrieval of streaming interface properties. This callback must be implemented
- *  in the user application to handle property manipulations on streaming audio interfaces.
- *
- */
-
-
+// Audio class driver callback for the setting and retrieval of streaming interface properties. 
+// This callback must be implemented in the user application to handle property 
+// manipulations on streaming audio interfaces.
+//
 bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
         const uint8_t Property,
         const uint8_t EntityAddress,
@@ -532,6 +530,11 @@ bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t*
         uint8_t* Data)
 {
 	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
-	ringBufS_put(prb,'i');
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	xQueueHandle xq = (xQueueHandle)AudioInterfaceInfo->instance_data;
+	dbg_message dbm = { 0, 0 };
+	dbm.psz = states[eGetSetInterfaceProperty];
+	dbm.flags = Parameter;
+	xQueueSendFromISR(xq,&dbm,&xHigherPriorityTaskWoken);
 	return false;
 }

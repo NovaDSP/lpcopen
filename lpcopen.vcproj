@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="lpcopen"
+	ProjectGUID="{493AEBA7-2F28-42E1-A2DE-E013EF5D0C1F}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="1"
+			UseOfMFC="1"
+			CharacterSet="2">
+			<Tool Name="VCCLCOMPILERTOOL" 			PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;"
+			AdditionalIncludeDirectories="$(ProjectDir)examples\keil\ngx-4330\usb\audio;$(ProjectDir)examples\keil\ngx-4330\usb\audio\descriptors;$(ProjectDir)examples\keil\ngx-4330\usb\audio\freertos;$(ProjectDir)examples\keil\ngx-4330\usb\audio\freertos\include;$(ProjectDir)software\lpcusblib;$(ProjectDir)software\lpcusblib\common;$(ProjectDir)software\lpcusblib\doc;$(ProjectDir)software\lpcusblib\drivers\usb;$(ProjectDir)software\lpcusblib\drivers\usb\class;$(ProjectDir)software\lpcusblib\drivers\usb\class\common;$(ProjectDir)software\lpcusblib\drivers\usb\class\device;$(ProjectDir)software\lpcusblib\drivers\usb\class\host;$(ProjectDir)software\lpcusblib\drivers\usb\core;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc11uxx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc17xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc18xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\usbrom;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc11uxx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc17xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc18xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd\ehci;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd\ohci;"
+			Optimization="0"
+			MinimalRebuild="true"
+			BasicRuntimeChecks="3"
+			RuntimeLibrary="1"
+			UsePrecompiledHeader="true"
+			WarningLevel="3"
+			Detect64BitPortabilityProblems="false"
+			DebugInformationFormat="4"
+/>
+			<Tool Name="VCCustomBuildTool"/>
+			<Tool Name="VCLibrarianTool"/>
+			<Tool Name= "$VCLINKERTOOL"/>
+			<Tool Name="VCMIDLTool"/>
+			<Tool Name="VCPostBuildEventTool"/>
+			<Tool Name="VCPreBuildEventTool"/>
+			<Tool Name="VCPreLinkEventTool"/>
+			<Tool Name="VCResourceCompilerTool"/>
+			<Tool Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool Name="VCXMLDataGeneratorTool"/>
+			<Tool Name="VCWebDeploymentTool"/>
+			<Tool Name="VCManagedWrapperGeneratorTool"/>
+			<Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="1"
+			UseOfMFC="1"
+			CharacterSet="2">
+			<Tool Name="VCCLCOMPILERTOOL" 			PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;"
+			AdditionalIncludeDirectories="$(ProjectDir)examples\keil\ngx-4330\usb\audio;$(ProjectDir)examples\keil\ngx-4330\usb\audio\descriptors;$(ProjectDir)examples\keil\ngx-4330\usb\audio\freertos;$(ProjectDir)examples\keil\ngx-4330\usb\audio\freertos\include;$(ProjectDir)software\lpcusblib;$(ProjectDir)software\lpcusblib\common;$(ProjectDir)software\lpcusblib\doc;$(ProjectDir)software\lpcusblib\drivers\usb;$(ProjectDir)software\lpcusblib\drivers\usb\class;$(ProjectDir)software\lpcusblib\drivers\usb\class\common;$(ProjectDir)software\lpcusblib\drivers\usb\class\device;$(ProjectDir)software\lpcusblib\drivers\usb\class\host;$(ProjectDir)software\lpcusblib\drivers\usb\core;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc11uxx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc17xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc18xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\usbrom;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc11uxx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc17xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc18xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd\ehci;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd\ohci;"
+			Optimization="0"
+			MinimalRebuild="true"
+			BasicRuntimeChecks="3"
+			RuntimeLibrary="0"
+			UsePrecompiledHeader="true"
+			WarningLevel="3"
+			Detect64BitPortabilityProblems="false"
+			DebugInformationFormat="4"
+/>
+			<Tool Name="VCCustomBuildTool"/>
+			<Tool Name="VCLibrarianTool"/>
+			<Tool Name= "$VCLINKERTOOL"/>
+			<Tool Name="VCMIDLTool"/>
+			<Tool Name="VCPostBuildEventTool"/>
+			<Tool Name="VCPreBuildEventTool"/>
+			<Tool Name="VCPreLinkEventTool"/>
+			<Tool Name="VCResourceCompilerTool"/>
+			<Tool Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool Name="VCXMLDataGeneratorTool"/>
+			<Tool Name="VCWebDeploymentTool"/>
+			<Tool Name="VCManagedWrapperGeneratorTool"/>
+			<Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{7A5F1856-E382-464D-BBAC-1298CB8F4628}">
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\adc_user.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\audioinput.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\descriptors.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\main.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\ringbuf.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\usbrom.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\freertoscommonhooks.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\heap_3.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\list.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\port.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\queue.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\tasks.c"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\timers.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\hidparser.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\audioclassdevice.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\cdcclassdevice.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\hidclassdevice.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\massstorageclassdevice.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\midiclassdevice.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\rndisclassdevice.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\audioclasshost.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\cdcclasshost.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\hidclasshost.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\massstorageclasshost.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\midiclasshost.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\printerclasshost.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\rndisclasshost.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\stillimageclasshost.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\configdescriptor.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\device.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\devicestandardreq.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\endpoint.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\endpointstream.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\events.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\host.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hoststandardreq.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\pipe.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\pipestream.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\usbcontroller.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\usbmemory.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\usbtask.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\endpoint_lpc11uxx.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\endpoint_lpc17xx.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\endpoint_lpc18xx.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hid.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_msc.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hal\lpc11uxx\hal_lpc11uxx.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hal\lpc17xx\hal_lpc17xx.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hal\lpc18xx\hal_lpc18xx.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hcd\hcd.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hcd\ehci\ehci.c"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hcd\ohci\ohci.c"></File>
+
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{0A2F9842-B4B2-49EB-80BB-1F708FE06A45}">
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\audioinput.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\config.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\descriptors.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\ringbuf.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\usbrom.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\descriptors\audio1.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\descriptors\audio2.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\freertoscommonhooks.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\freertosconfig.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\portmacro.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\croutine.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\freertos.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\list.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\mpu_wrappers.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\portable.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\projdefs.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\queue.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\semphr.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\stackmacros.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\task.h"></File>
+		<File RelativePath=".\examples\keil\ngx-4330\usb\audio\freertos\include\timers.h"></File>
+		<File RelativePath=".\software\lpcusblib\lpcusblibconfig.h"></File>
+		<File RelativePath=".\software\lpcusblib\version.h"></File>
+		<File RelativePath=".\software\lpcusblib\common\attributes.h"></File>
+		<File RelativePath=".\software\lpcusblib\common\common.h"></File>
+		<File RelativePath=".\software\lpcusblib\common\compilerspecific.h"></File>
+		<File RelativePath=".\software\lpcusblib\common\endianness.h"></File>
+		<File RelativePath=".\software\lpcusblib\doc\doxymainpage.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\usb.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\audioclass.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\cdcclass.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\hidclass.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\massstorageclass.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\midiclass.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\printerclass.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\rndisclass.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\stillimageclass.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\audioclasscommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\cdcclasscommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\hidclasscommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\hidparser.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\hidreportdata.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\massstorageclasscommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\midiclasscommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\printerclasscommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\rndisclasscommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\common\stillimageclasscommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\audioclassdevice.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\cdcclassdevice.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\hidclassdevice.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\massstorageclassdevice.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\midiclassdevice.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\device\rndisclassdevice.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\audioclasshost.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\cdcclasshost.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\hidclasshost.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\massstorageclasshost.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\midiclasshost.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\printerclasshost.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\rndisclasshost.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\class\host\stillimageclasshost.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\configdescriptor.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\device.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\devicestandardreq.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\endpoint.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\endpointstream.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\events.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\host.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hoststandardreq.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\otg.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\pipe.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\pipestream.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\stddescriptors.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\stdrequesttype.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\usbcontroller.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\usbinterrupt.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\usbmemory.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\usbmode.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\usbtask.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\endpointcommon.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\device_lpc11uxx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\endpoint_lpc11uxx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\device_lpc17xx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\endpoint_lpc17xx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\device_lpc18xx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\endpoint_lpc18xx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\error.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adc.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdcuser.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_core.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfu.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfuuser.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hid.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hiduser.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hw.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_msc.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_mscuser.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom_api.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hal\hal.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hal\lpc11uxx\hal_lpc11uxx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hal\lpc17xx\hal_lpc17xx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hal\lpc18xx\hal_lpc18xx.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hcd\hcd.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hcd\ehci\ehci.h"></File>
+		<File RelativePath=".\software\lpcusblib\drivers\usb\core\hcd\ohci\ohci.h"></File>
+			
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{928BF189-771B-4A4B-9695-FE7BDBB23034}">
+			
+		</Filter>
+		<Filter
+			Name="Misc Files"
+			Filter=""
+			UniqueIdentifier="{BC27F6B7-7D39-4BFA-8C77-88F424EE9E0F}">
+			
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

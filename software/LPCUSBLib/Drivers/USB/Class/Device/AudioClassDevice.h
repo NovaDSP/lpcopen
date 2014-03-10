@@ -67,9 +67,15 @@
 			 *  Class state structure. An instance of this structure should be made for each Audio interface
 			 *  within the user application, and passed to each of the Audio class driver functions as the
 			 *  \c AudioInterfaceInfo parameter. This stores each Audio interface's configuration and state information.
+			 *
+			 *	JME extended to include user-defined data
 			 */
-			typedef struct
+			 
+			typedef struct _USB_ClassInfo_Audio_Device_t
 			{
+				// JME
+				void* instance_data;
+				
 				const struct
 				{
 					uint8_t  ControlInterfaceNumber; /**< Index of the Audio Control interface within the device this
