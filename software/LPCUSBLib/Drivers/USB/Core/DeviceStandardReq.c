@@ -59,6 +59,7 @@ void USB_Device_ProcessControlRequest(uint8_t corenum)
 
 	Endpoint_GetSetupPackage(corenum, (uint8_t*) &USB_ControlRequest);
 
+	// call into application code
 	EVENT_USB_Device_ControlRequest();
 
 	if (Endpoint_IsSETUPReceived(corenum))
@@ -198,6 +199,7 @@ static void USB_Device_SetConfiguration(uint8_t corenum)
 	else
 	  USB_DeviceState[corenum] = (USB_Device_IsAddressSet()) ? DEVICE_STATE_Configured : DEVICE_STATE_Powered;
 
+	// call into application code
 	EVENT_USB_Device_ConfigurationChanged();
 }
 

@@ -73,9 +73,14 @@ static void USB_DeviceTask(uint8_t corenum)
 
 		Endpoint_SelectEndpoint(corenum, ENDPOINT_CONTROLEP);
 
+		//
 		if (Endpoint_IsSETUPReceived(corenum))
-		  USB_Device_ProcessControlRequest(corenum);
-
+		{
+			// handle control setup etc. eventually forward to
+			// application code
+			USB_Device_ProcessControlRequest(corenum);
+		}
+		
 		Endpoint_SelectEndpoint(corenum, PrevEndpoint);
 	}
 }

@@ -3,17 +3,12 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="Audio"
-	ProjectGUID="{50A09435-37B4-4F60-A2FB-B7D58A309D1B}"
-	Keyword="Win32Proj"
-	TargetFrameworkVersion="0"
-	>
+	ProjectGUID="{A5EA72D5-2647-4196-B62C-D0F2B9C353A4}"
+	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
+			Name="Win32"/>
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
@@ -21,68 +16,31 @@
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
 			UseOfMFC="1"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="$(ProjectDir)examples\keil\ngx-4330\usb\audio;$(ProjectDir)examples\keil\ngx-4330\usb\audio\descriptors;$(ProjectDir)examples\keil\ngx-4330\usb\audio\freertos;$(ProjectDir)examples\keil\ngx-4330\usb\audio\freertos\include;$(ProjectDir)software\lpc_core\lpc_board\board_common;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_4350;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_4357;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_1830;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330;$(ProjectDir)software\lpc_core\lpc_chip\chip_18xx_43xx;$(ProjectDir)software\lpc_core\lpc_chip\chip_common;$(ProjectDir)software\lpc_core\lpc_ip;$(ProjectDir)software\lpc_core\lpc_ip\usbd_rom;$(ProjectDir)software\lpcusblib;$(ProjectDir)software\lpcusblib\common;$(ProjectDir)software\lpcusblib\doc;$(ProjectDir)software\lpcusblib\drivers\usb;$(ProjectDir)software\lpcusblib\drivers\usb\class;$(ProjectDir)software\lpcusblib\drivers\usb\class\common;$(ProjectDir)software\lpcusblib\drivers\usb\class\device;$(ProjectDir)software\lpcusblib\drivers\usb\class\host;$(ProjectDir)software\lpcusblib\drivers\usb\core;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc11uxx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc17xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc18xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\usbrom;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc11uxx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc17xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc18xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd\ehci;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd\ohci;"
-				PreprocessorDefinitions="USB_CAN_BE_DEVICE;WIN32;_WINDOWS;_DEBUG;"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+			CharacterSet="2">
+			<Tool Name="VCCLCOMPILERTOOL" 			PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;"
+			AdditionalIncludeDirectories=".;.\descriptors;.\freertos;.\freertos\include;..\..\..\..\..\software\cmsis\cmsis\include;..\..\..\..\..\software\cmsis\device\arm\armcm4\include;..\..\..\..\..\software\lpc_core\lpc_board\board_common;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_4350;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_4357;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_1830;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330;..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx;..\..\..\..\..\software\lpc_core\lpc_chip\chip_common;..\..\..\..\..\software\lpc_core\lpc_ip;..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom;..\..\..\..\..\software\lpcusblib\common;..\..\..\..\..\software\lpcusblib\drivers\usb;..\..\..\..\..\software\lpcusblib\drivers\usb\class;..\..\..\..\..\software\lpcusblib\drivers\usb\class\common;..\..\..\..\..\software\lpcusblib\drivers\usb\class\device;..\..\..\..\..\software\lpcusblib\drivers\usb\class\host;..\..\..\..\..\software\lpcusblib\drivers\usb\core;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc11uxx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc17xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc18xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ehci;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ohci;"
+			Optimization="0"
+			MinimalRebuild="true"
+			BasicRuntimeChecks="3"
+			RuntimeLibrary="1"
+			UsePrecompiledHeader="true"
+			WarningLevel="3"
+			Detect64BitPortabilityProblems="false"
+			DebugInformationFormat="4"
+/>
+			<Tool Name="VCCustomBuildTool"/>
+			<Tool Name="VCLibrarianTool"/>
+			<Tool Name= "$VCLINKERTOOL"/>
+			<Tool Name="VCMIDLTool"/>
+			<Tool Name="VCPostBuildEventTool"/>
+			<Tool Name="VCPreBuildEventTool"/>
+			<Tool Name="VCPreLinkEventTool"/>
+			<Tool Name="VCResourceCompilerTool"/>
+			<Tool Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool Name="VCXMLDataGeneratorTool"/>
+			<Tool Name="VCWebDeploymentTool"/>
+			<Tool Name="VCManagedWrapperGeneratorTool"/>
+			<Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -90,69 +48,33 @@
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			UseOfMFC="1"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="$(ProjectDir)examples\keil\ngx-4330\usb\audio;$(ProjectDir)examples\keil\ngx-4330\usb\audio\descriptors;$(ProjectDir)examples\keil\ngx-4330\usb\audio\freertos;$(ProjectDir)examples\keil\ngx-4330\usb\audio\freertos\include;$(ProjectDir)software\lpc_core\lpc_board\board_common;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_4350;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_4357;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_1830;$(ProjectDir)software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330;$(ProjectDir)software\lpc_core\lpc_chip\chip_18xx_43xx;$(ProjectDir)software\lpc_core\lpc_chip\chip_common;$(ProjectDir)software\lpc_core\lpc_ip;$(ProjectDir)software\lpc_core\lpc_ip\usbd_rom;$(ProjectDir)software\lpcusblib;$(ProjectDir)software\lpcusblib\common;$(ProjectDir)software\lpcusblib\doc;$(ProjectDir)software\lpcusblib\drivers\usb;$(ProjectDir)software\lpcusblib\drivers\usb\class;$(ProjectDir)software\lpcusblib\drivers\usb\class\common;$(ProjectDir)software\lpcusblib\drivers\usb\class\device;$(ProjectDir)software\lpcusblib\drivers\usb\class\host;$(ProjectDir)software\lpcusblib\drivers\usb\core;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc11uxx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc17xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\lpc18xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\dcd\usbrom;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc11uxx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc17xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hal\lpc18xx;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd\ehci;$(ProjectDir)software\lpcusblib\drivers\usb\core\hcd\ohci;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="0"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+			CharacterSet="2">
+			<Tool Name="VCCLCOMPILERTOOL" 			PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;"
+			AdditionalIncludeDirectories=".;.\descriptors;.\freertos;.\freertos\include;..\..\..\..\..\software\cmsis\cmsis\include;..\..\..\..\..\software\cmsis\device\arm\armcm4\include;..\..\..\..\..\software\lpc_core\lpc_board\board_common;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_4350;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_4357;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_1830;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330;..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx;..\..\..\..\..\software\lpc_core\lpc_chip\chip_common;..\..\..\..\..\software\lpc_core\lpc_ip;..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom;..\..\..\..\..\software\lpcusblib\common;..\..\..\..\..\software\lpcusblib\drivers\usb;..\..\..\..\..\software\lpcusblib\drivers\usb\class;..\..\..\..\..\software\lpcusblib\drivers\usb\class\common;..\..\..\..\..\software\lpcusblib\drivers\usb\class\device;..\..\..\..\..\software\lpcusblib\drivers\usb\class\host;..\..\..\..\..\software\lpcusblib\drivers\usb\core;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc11uxx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc17xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc18xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ehci;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ohci;"
+			Optimization="0"
+			MinimalRebuild="true"
+			BasicRuntimeChecks="3"
+			RuntimeLibrary="0"
+			UsePrecompiledHeader="true"
+			WarningLevel="3"
+			Detect64BitPortabilityProblems="false"
+			DebugInformationFormat="4"
+/>
+			<Tool Name="VCCustomBuildTool"/>
+			<Tool Name="VCLibrarianTool"/>
+			<Tool Name= "$VCLINKERTOOL"/>
+			<Tool Name="VCMIDLTool"/>
+			<Tool Name="VCPostBuildEventTool"/>
+			<Tool Name="VCPreBuildEventTool"/>
+			<Tool Name="VCPreLinkEventTool"/>
+			<Tool Name="VCResourceCompilerTool"/>
+			<Tool Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool Name="VCXMLDataGeneratorTool"/>
+			<Tool Name="VCWebDeploymentTool"/>
+			<Tool Name="VCManagedWrapperGeneratorTool"/>
+			<Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
+	
 	</Configurations>
 	<References>
 	</References>
@@ -160,1457 +82,393 @@
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{363848A8-1637-4CD1-B4D5-10CB7C90F3BE}"
-			>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\acmp_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\adc_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\adc_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath=".\adc_user.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\aes_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\atimer_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\atimer_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\audioclassdevice.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\audioclasshost.c"
-				>
-			</File>
-			<File
-				RelativePath=".\audioinput.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board_hitex_eva_18504350.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\board_keil_mcb_18574357.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board_ngx_xplorer_18304330.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\can_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ccan_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ccan_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\cdcclassdevice.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\cdcclasshost.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\clock_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\configdescriptor.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\crc_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\dac_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\dac_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath=".\descriptors.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\device.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\devicestandardreq.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\eeprom_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\eeprom_002.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\eeprom_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ehci\ehci.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\emc_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\emc_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\endpoint.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\endpoint_lpc11uxx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\endpoint_lpc17xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\endpoint_lpc18xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\endpointstream.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\enet_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\enet_002.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\enet_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\events.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\evrt_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\fpu_init.c"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\freertoscommonhooks.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpdma_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\gpdma_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpio_003.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\gpio_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpiogrpint_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpioint_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpiopinint_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc11uxx\hal_lpc11uxx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc17xx\hal_lpc17xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc18xx\hal_lpc18xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\hcd.c"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\heap_3.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\hidclassdevice.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\hidclasshost.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\hidparser.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\host.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hoststandardreq.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\i2c_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\i2c_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\i2s_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\i2s_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\lcd_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\lcd_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\list.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_nandflash_k9f1g.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_norflash_sst39vf320.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_phy_dp83848.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_phy_smsc87x0.c"
-				>
-			</File>
-			<File
-				RelativePath=".\main.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\massstorageclassdevice.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\massstorageclasshost.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\mem_tests.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\midiclassdevice.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\midiclasshost.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ohci\ohci.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\otp_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\pipe.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\pipestream.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\pmc_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\port.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\printerclasshost.c"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\queue.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\retarget.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rgu_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\ring_buffer.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ritimer_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ritimer_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\rndisclassdevice.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\rndisclasshost.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\rtc_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rtc_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sct_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sct_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\scu_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sdc_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sdif_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sdmmc_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sdmmc_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\spi_002.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ssp_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ssp_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\stillimageclasshost.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\sysinit_hitex_eva_18504350.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\sysinit_keil_mcb_18574357.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\sysinit_ngx_xplorer_18304330.c"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\tasks.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\timer_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\timer_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\timers.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\uart_18xx_43xx.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\uda1380.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_002.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_004.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbcontroller.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hid.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_msc.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbmemory.c"
-				>
-			</File>
-			<File
-				RelativePath=".\usbrom.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbtask.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\wwdt_001.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\wwdt_18xx_43xx.c"
-				>
-			</File>
+			UniqueIdentifier="{472BF917-55E8-4AC2-9D9C-7314F420290E}">
+		<File RelativePath=".\adc_user.c"></File>
+		<File RelativePath=".\audioinput.c"></File>
+		<File RelativePath=".\descriptors.c"></File>
+		<File RelativePath=".\usbrom.c"></File>
+		<File RelativePath=".\freertos\freertoscommonhooks.c"></File>
+		<File RelativePath=".\freertos\heap_3.c"></File>
+		<File RelativePath=".\freertos\list.c"></File>
+		<File RelativePath=".\freertos\port.c"></File>
+		<File RelativePath=".\freertos\queue.c"></File>
+		<File RelativePath=".\freertos\tasks.c"></File>
+		<File RelativePath=".\freertos\timers.c"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\device\arm\armcm4\source\system_armcm4.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_nandflash_k9f1g.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_norflash_sst39vf320.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_phy_dp83848.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_phy_smsc87x0.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\retarget.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\uda1380.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board_hitex_eva_18504350.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\sysinit_hitex_eva_18504350.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\board_keil_mcb_18574357.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\sysinit_keil_mcb_18574357.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board_ngx_xplorer_18304330.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\sysinit_ngx_xplorer_18304330.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\adc_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\aes_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\atimer_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ccan_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\clock_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\dac_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\eeprom_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\emc_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\enet_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\evrt_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\gpdma_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\gpio_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\i2c_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\i2s_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\lcd_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\otp_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\pmc_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rgu_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ritimer_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rtc_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sct_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\scu_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sdif_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sdmmc_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ssp_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\timer_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\uart_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\wwdt_18xx_43xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\mem_tests.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\ring_buffer.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\acmp_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\adc_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\atimer_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\can_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ccan_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\crc_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\dac_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\eeprom_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\eeprom_002.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\emc_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\enet_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\enet_002.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\fpu_init.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpdma_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpio_003.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpiogrpint_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpioint_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpiopinint_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\i2c_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\i2s_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\lcd_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ritimer_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\rtc_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sct_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sdc_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sdmmc_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\spi_002.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ssp_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\timer_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_002.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_004.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\wwdt_001.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\hidparser.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\audioclassdevice.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\cdcclassdevice.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\hidclassdevice.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\massstorageclassdevice.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\midiclassdevice.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\rndisclassdevice.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\audioclasshost.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\cdcclasshost.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\hidclasshost.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\massstorageclasshost.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\midiclasshost.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\printerclasshost.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\rndisclasshost.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\stillimageclasshost.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\configdescriptor.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\device.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\devicestandardreq.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\endpoint.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\endpointstream.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\events.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\host.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hoststandardreq.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\pipe.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\pipestream.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbcontroller.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbmemory.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbtask.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\endpoint_lpc11uxx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\endpoint_lpc17xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\endpoint_lpc18xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hid.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_msc.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc11uxx\hal_lpc11uxx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc17xx\hal_lpc17xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc18xx\hal_lpc18xx.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\hcd.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ehci\ehci.c"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ohci\ohci.c"></File>
+
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{CBF99E3A-74ED-4A51-B105-91E76C1AE9E5}"
-			>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\acmp_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\adc_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\adc_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\aes_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\atimer_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\atimer_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\common\attributes.h"
-				>
-			</File>
-			<File
-				RelativePath=".\descriptors\audio1.h"
-				>
-			</File>
-			<File
-				RelativePath=".\descriptors\audio2.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\audioclass.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\audioclasscommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\audioclassdevice.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\audioclasshost.h"
-				>
-			</File>
-			<File
-				RelativePath=".\audioinput.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\board.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\board_api.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board_hitex_eva_18504350.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\board_keil_mcb_18574357.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board_ngx_xplorer_18304330.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\can_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ccan_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ccan_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\cdcclass.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\cdcclasscommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\cdcclassdevice.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\cdcclasshost.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\cguccu_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\chip.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\chip_clocks.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\chip_lpc18xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\chip_lpc43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\clock_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\cmp_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\cmsis.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\common\common.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\common\compilerspecific.h"
-				>
-			</File>
-			<File
-				RelativePath=".\config.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\configdescriptor.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\crc_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\creg_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\croutine.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\dac_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\dac_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\descriptors.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\device.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\device_lpc11uxx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\device_lpc17xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\device_lpc18xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\devicestandardreq.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\doc\doxymainpage.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\eeprom_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\eeprom_002.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\eeprom_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ehci\ehci.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\emc_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\emc_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\common\endianness.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\endpoint.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\endpoint_lpc11uxx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\endpoint_lpc17xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\endpoint_lpc18xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\endpointcommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\endpointstream.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\enet_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\enet_002.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\enet_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\error.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\events.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\evrt_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\flash_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\fpu_init.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\freertos.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\freertoscommonhooks.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\freertosconfig.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gima_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpdma_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\gpdma_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpio_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpio_002.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpio_003.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\gpio_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpiogrpint_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpioint_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpiopinint_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\hal.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc11uxx\hal_lpc11uxx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc17xx\hal_lpc17xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc18xx\hal_lpc18xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\hcd.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\hidclass.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\hidclasscommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\hidclassdevice.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\hidclasshost.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\hidparser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\hidreportdata.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\host.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hoststandardreq.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\i2c_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\i2c_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\i2s_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\i2s_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\lcd_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\lcd_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\list.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_nandflash.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_nandflash_k9f1g.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_norflash.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_phy.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\lpc_sdmmc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\lpc_types.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\lpcusblibconfig.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\massstorageclass.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\massstorageclasscommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\massstorageclassdevice.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\massstorageclasshost.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\mcpwm_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\mem_tests.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\midiclass.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\midiclasscommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\midiclassdevice.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\midiclasshost.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\mpu_wrappers.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\mrt_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ohci\ohci.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\otg.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\otp_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\pipe.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\pipestream.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\pmc_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\pmc_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\portable.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\portmacro.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\printerclass.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\printerclasscommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\printerclasshost.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\projdefs.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\qei_001.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\queue.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\regfile_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rgu_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\ring_buffer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ringbuf.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ritimer_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ritimer_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\rndisclass.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\rndisclasscommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\rndisclassdevice.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\rndisclasshost.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\rtc_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rtc_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sct_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sct_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\scu_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sdc_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sdif_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sdmmc_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sdmmc_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\semphr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sgpio_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\spi_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\spi_002.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ssp_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ssp_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\stackmacros.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\stddescriptors.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\stdrequesttype.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\stillimageclass.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\stillimageclasscommon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\stillimageclasshost.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857\sys_config.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_4350\sys_config.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330\sys_config.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_4357\sys_config.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_1830\sys_config.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850\sys_config.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\task.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\timer_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\timer_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\freertos\include\timers.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\uart_18xx_43xx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\uda1380.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_002.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_004.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\usb.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usb_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbcontroller.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_adcuser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_api.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_audio.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_cdc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_cdcuser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdcuser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_core.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_core.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_desc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfu.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfu.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfuuser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfuuser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hid.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hid.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hiduser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hiduser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hw.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hw.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_msc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_msc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_mscuser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_mscuser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom_api.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_rom_api.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbhs_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbinterrupt.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbmemory.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbmode.h"
-				>
-			</File>
-			<File
-				RelativePath=".\usbrom.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbtask.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\version.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\wkt_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\wwdt_001.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\wwdt_18xx_43xx.h"
-				>
-			</File>
+			UniqueIdentifier="{2AB1EEF1-A85B-4D21-93FA-167BD1D36FE7}">
+		<File RelativePath=".\audioinput.h"></File>
+		<File RelativePath=".\config.h"></File>
+		<File RelativePath=".\descriptors.h"></File>
+		<File RelativePath=".\usbrom.h"></File>
+		<File RelativePath=".\descriptors\audio1.h"></File>
+		<File RelativePath=".\descriptors\audio2.h"></File>
+		<File RelativePath=".\freertos\freertoscommonhooks.h"></File>
+		<File RelativePath=".\freertos\freertosconfig.h"></File>
+		<File RelativePath=".\freertos\portmacro.h"></File>
+		<File RelativePath=".\freertos\include\croutine.h"></File>
+		<File RelativePath=".\freertos\include\freertos.h"></File>
+		<File RelativePath=".\freertos\include\list.h"></File>
+		<File RelativePath=".\freertos\include\mpu_wrappers.h"></File>
+		<File RelativePath=".\freertos\include\portable.h"></File>
+		<File RelativePath=".\freertos\include\projdefs.h"></File>
+		<File RelativePath=".\freertos\include\queue.h"></File>
+		<File RelativePath=".\freertos\include\semphr.h"></File>
+		<File RelativePath=".\freertos\include\stackmacros.h"></File>
+		<File RelativePath=".\freertos\include\task.h"></File>
+		<File RelativePath=".\freertos\include\timers.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\arm_common_tables.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\arm_math.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_cm0.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_cm0plus.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_cm3.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_cm4.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_cm4_simd.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_cmfunc.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_cminstr.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_sc000.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\cmsis\include\core_sc300.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\device\arm\armcm4\include\armcm4.h"></File>
+		<File RelativePath="..\..\..\..\..\software\cmsis\device\arm\armcm4\include\system_armcm4.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\board_api.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_nandflash.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_nandflash_k9f1g.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_norflash.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\lpc_phy.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\board_common\uda1380.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board_hitex_eva_18504350.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850\sys_config.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_4350\sys_config.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\board.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\board_keil_mcb_18574357.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857\sys_config.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_4357\sys_config.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board_ngx_xplorer_18304330.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_1830\sys_config.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330\sys_config.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\adc_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\aes_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\atimer_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ccan_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\cguccu_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\chip.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\chip_clocks.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\chip_lpc18xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\chip_lpc43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\clock_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\cmsis.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\creg_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\dac_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\eeprom_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\emc_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\enet_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\evrt_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\gpdma_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\gpio_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\i2c_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\i2s_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\lcd_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\otp_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\pmc_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rgu_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ritimer_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\rtc_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sct_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\scu_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sdif_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\sdmmc_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\ssp_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\timer_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\uart_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx\wwdt_18xx_43xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\lpc_sdmmc.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\mem_tests.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_chip\chip_common\ring_buffer.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\acmp_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\adc_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\atimer_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\can_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ccan_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\cmp_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\crc_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\dac_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\eeprom_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\eeprom_002.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\emc_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\enet_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\enet_002.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\flash_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\fpu_init.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gima_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpdma_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpio_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpio_002.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpio_003.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpiogrpint_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpioint_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\gpiopinint_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\i2c_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\i2s_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\lcd_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\lpc_types.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\mcpwm_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\mrt_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\pmc_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\qei_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\regfile_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ritimer_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\rtc_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sct_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sdc_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sdmmc_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\sgpio_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\spi_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\spi_002.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\ssp_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\timer_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_002.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usart_004.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usb_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbhs_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\wkt_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\wwdt_001.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_adcuser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_api.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_audio.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_cdc.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_cdcuser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_core.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_desc.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfu.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfuuser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hid.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hiduser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hw.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_msc.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_mscuser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_rom_api.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\common\attributes.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\common\common.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\common\compilerspecific.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\common\endianness.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\usb.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\audioclass.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\cdcclass.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\hidclass.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\massstorageclass.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\midiclass.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\printerclass.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\rndisclass.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\stillimageclass.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\audioclasscommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\cdcclasscommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\hidclasscommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\hidparser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\hidreportdata.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\massstorageclasscommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\midiclasscommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\printerclasscommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\rndisclasscommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\common\stillimageclasscommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\audioclassdevice.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\cdcclassdevice.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\hidclassdevice.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\massstorageclassdevice.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\midiclassdevice.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\device\rndisclassdevice.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\audioclasshost.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\cdcclasshost.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\hidclasshost.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\massstorageclasshost.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\midiclasshost.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\printerclasshost.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\rndisclasshost.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\class\host\stillimageclasshost.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\configdescriptor.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\device.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\devicestandardreq.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\endpoint.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\endpointstream.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\events.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\host.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hoststandardreq.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\otg.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\pipe.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\pipestream.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\stddescriptors.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\stdrequesttype.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbcontroller.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbinterrupt.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbmemory.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbmode.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\usbtask.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\endpointcommon.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\device_lpc11uxx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx\endpoint_lpc11uxx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\device_lpc17xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx\endpoint_lpc17xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\device_lpc18xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx\endpoint_lpc18xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\error.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adc.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdcuser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_core.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfu.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfuuser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hid.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hiduser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hw.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_msc.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_mscuser.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom_api.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\hal.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc11uxx\hal_lpc11uxx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc17xx\hal_lpc17xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc18xx\hal_lpc18xx.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\hcd.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ehci\ehci.h"></File>
+		<File RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ohci\ohci.h"></File>
+			
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{DF875314-3348-45C1-B707-C46ECA298FEE}"
-			>
+			UniqueIdentifier="{10F13826-E209-49E4-8485-CD55C611B8F3}">
+			
 		</Filter>
 		<Filter
 			Name="Misc Files"
-			UniqueIdentifier="{260E0034-D89B-407E-BB01-2D85D7838180}"
-			>
+			Filter=""
+			UniqueIdentifier="{3653AE16-B75A-4F71-B006-53EB3AA124A7}">
+			
 		</Filter>
 	</Files>
 	<Globals>

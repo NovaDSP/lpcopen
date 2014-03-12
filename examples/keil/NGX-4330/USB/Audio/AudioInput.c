@@ -120,6 +120,54 @@ typedef struct _DbgMessage
 typedef DbgMessage dbg_message;
 
 //-----------------------------------------------------------------------------
+// Set up the pre-defined N channel waveform we currently stream to host
+void FillAudioBuffers()
+{
+	int16_t value = 0;
+	int16_t step = SHRT_MAX / (SAMPLE_COUNT / 2);
+	int index = 0;
+	// set up the sample pattern in the USB xfer buffer
+	// depending on how many channels and bus speed
+	// this is a really simple full range saw wave
+	int sample = 0;
+	int channel = 0;
+	for (sample = 0; sample < SAMPLE_COUNT; sample++)
+	{
+		// apply same values to all channels
+		for (channel = 0; channel < CHANNEL_COUNT; channel++)
+		{
+			data[index++] = value;
+		}
+		// next value
+		value += step;
+	}
+}
+
+//-----------------------------------------------------------------------------
+// Set the channel mask flags - not used any more.
+void SetChannelMask()
+{
+	int i = 0;
+	// this can be played with in the debugger ...
+	bool use_channel_mask = (USE_CHANNEL_MASK == 1);
+	//bool use_channel_mask = (CHANNEL_COUNT <= 8);
+	// the default mask according to the spec can be zero
+	uint32_t mask = 0;
+	// set the channel mask at run-time
+	if (use_channel_mask)
+	{
+		// set a bit for each channel
+		for (i = 0; i < CHANNEL_COUNT; i++)
+		{
+			mask |= (1 << i);
+		}
+	}
+
+	// now set the mask.
+	ConfigurationDescriptor.Audio_InputTerminal.ChannelConfig = mask;
+}
+
+//-----------------------------------------------------------------------------
 // Called on every SOF interrupt. Thus 8KHz at high-speed and 1KHz at full-speed
 // this is actually returning a pointer to the data buffer to be transferred
 // JME WTF does this not pass instance pointer?
@@ -192,55 +240,21 @@ void UARTTask(void* pvParameters)
 // This polls the USB registers for state change. Not ideal but works for now
 void AudioTask(void* pvParameters)
 {
-	int i = 0;
-	
 	// we loop at startup until SW2 is pressed
 	uint32_t Button_State = 0;
 	// switch off green LED
 	Board_LED_Set(GREENLED, false);
-	
-	// this can be played with in the debugger ...
-	bool use_channel_mask = (USE_CHANNEL_MASK == 1);
-	//bool use_channel_mask = (CHANNEL_COUNT <= 8);
-	// the default mask according to the spec can be zero
-	uint32_t mask = 0;
-	// set the channel mask at run-time
-	if (use_channel_mask)
-	{
-		// set a bit for each channel
-		for (i = 0; i < CHANNEL_COUNT; i++)
-		{
-			mask |= (1 << i);
-		}
-	}
 
-	// now set the mask.
-	ConfigurationDescriptor.Audio_InputTerminal.ChannelConfig = mask;
+	// 
+	SetChannelMask();
 
+	// set up our N channel waveform
+	FillAudioBuffers();
 	
 	// Enable timer interrupt
 	NVIC_EnableIRQ(TIMER1_IRQn);
 	NVIC_ClearPendingIRQ(TIMER1_IRQn);
 	
-	int16_t value = 0;
-	int16_t step = SHRT_MAX / (SAMPLE_COUNT / 2);
-	int index = 0;
-	// set up the sample pattern in the USB xfer buffer
-	// depending on how many channels and bus speed
-	// this is a really simple full range saw wave
-	int sample = 0;
-	int channel = 0;
-	for (sample = 0; sample < SAMPLE_COUNT; sample++)
-	{
-		// apply same values to all channels
-		for (channel = 0; channel < CHANNEL_COUNT; channel++)
-		{
-			data[index++] = value;
-		}
-		// next value
-		value += step;
-	}
-
 	Board_UARTPutSTR("Press SW1 to connect unit ...\n");
 
 	// wait. do not connect until button 1 is pressed
@@ -267,7 +281,9 @@ void AudioTask(void* pvParameters)
 	// JME audit:polled
 	for (;;)
 	{
+		//
 		Audio_Device_USBTask(&USBAudioIF);
+		//
 		USB_USBTask(USBAudioIF.Config.PortNumber, USB_MODE_Device);
 	}
 }
@@ -449,16 +465,15 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 			switch (EndpointProperty)
 			{
 			case AUDIO_REQ_SetCurrent:
-				/* Check if we are just testing for a valid property, or actually adjusting it */
+				// Check if we are just testing for a valid property, 
+				// or actually adjusting it
 				if (DataLength != NULL)
 				{
 					dbm.psz = states[eSetSampleRate];
 					dbm.flags = *DataLength;
-					/* Set the new sampling frequency to the value given by the host */
+					// Set the new sampling frequency to the value given by the host
 					CurrentAudioSampleFrequency =
 					    (((uint32_t) Data[2] << 16) | ((uint32_t) Data[1] << 8) | (uint32_t) Data[0]);
-					// if (CurrentAudioSampleFrequency > AUDIO_MAX_SAMPLE_FREQ)
-					// fake a bad sample rate
 					switch (CurrentAudioSampleFrequency)
 					{
 						case 48000:
@@ -479,7 +494,9 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 				ret = true;
 				break;
 			case AUDIO_REQ_GetCurrent:
-				/* Check if we are just testing for a valid property, or actually reading it */
+				// Check if we are just testing for a valid property, or actually reading it
+				dbm.value = CurrentAudioSampleFrequency;
+				//
 				if (DataLength != NULL)
 				{
 					dbm.psz = states[eGetSampleRate];
