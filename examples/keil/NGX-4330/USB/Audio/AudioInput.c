@@ -255,6 +255,8 @@ void AudioTask(void* pvParameters)
 	NVIC_EnableIRQ(TIMER1_IRQn);
 	NVIC_ClearPendingIRQ(TIMER1_IRQn);
 	
+	//JME we need right switch on 4357 board.
+#ifndef _USE_4357
 	Board_UARTPutSTR("Press SW1 to connect unit ...\n");
 
 	// wait. do not connect until button 1 is pressed
@@ -266,6 +268,7 @@ void AudioTask(void* pvParameters)
 			break;
 		}
 	}
+#endif
 
 	// stop the timer IRQ
 	NVIC_DisableIRQ(TIMER1_IRQn);		
@@ -326,6 +329,12 @@ int main(void)
 	Board_Init();
 	
 	Board_Buttons_Init();
+	
+	// check LEDs
+	Board_LED_Set(0,true);
+	Board_LED_Set(1,true);
+	Board_LED_Set(0,false);
+	Board_LED_Set(1,false);
 	
 	// and ticker timer at 1hz
 //	InitTimer();

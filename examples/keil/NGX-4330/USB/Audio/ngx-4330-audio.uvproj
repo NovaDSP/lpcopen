@@ -1815,7 +1815,7 @@
             <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls>--gnu --c99 </MiscControls>
-              <Define>__LPC43XX__ CORE_M4 USB_DEVICE_ONLY NO_LIMITED_CONTROLLER_CONNECT</Define>
+              <Define>_USE_4357 __LPC43XX__ CORE_M4 USB_DEVICE_ONLY NO_LIMITED_CONTROLLER_CONNECT</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx;..\..\..\..\..\software\lpc_core\lpc_chip\chip_common;..\..\..\..\..\software\lpc_core\lpc_ip;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330;..\..\..\..\..\software\CMSIS;..\..\..\..\..\software\LPCUSBLib\Drivers\USB;..\..\..\..\..\software\lpc_core\lpc_board\board_common;.\freertos\include;.\freertos;.</IncludePath>
             </VariousControls>

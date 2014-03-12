@@ -34,8 +34,27 @@
  * @{
  */
 
+#ifdef _USE_4357
+#define LED4_BIT 18  
+#define LED4_PORT 5
+#define LED5_BIT 11 
+#define LED5_PORT 4
+#define PIN_INT_PORT			4   
+#define PIN_INT_BIT				0
+#else
+#define LED2_BIT			11
+#define LED2_PORT			1
+#define LED3_BIT			12
+#define LED3_PORT			1
+#endif
+
 void Board_UART_Init(LPC_USART_T *pUART)
 {
+#ifdef _USE_4357
+	// Initialize UART0 pin connect	Xplorer++ board
+	Chip_SCU_PinMux(0xF ,10 , MD_PDN|MD_EZI, FUNC1); 	// UART0_TXD
+	Chip_SCU_PinMux(0xF ,11 , MD_PDN|MD_EZI, FUNC1); 	// UART0_RXD
+#else	
 	if (pUART == LPC_USART0) {
 		Chip_SCU_PinMuxSet(0x6, 4, (SCU_MODE_MODE_REPEATER | SCU_MODE_FUNC2));					/* P6.5 : UART0_TXD */
 		Chip_SCU_PinMuxSet(0x6, 5, (SCU_MODE_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC2));/* P6.4 : UART0_RXD */
@@ -44,6 +63,7 @@ void Board_UART_Init(LPC_USART_T *pUART)
 		Chip_SCU_PinMuxSet(0x1, 13, (SCU_MODE_MODE_REPEATER | SCU_MODE_FUNC2));				/* P1.13 : UART1_TXD */
 		Chip_SCU_PinMuxSet(0x1, 14, (SCU_MODE_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC2));	/* P1.14 : UART1_RX */
 	}
+#endif	
 }
 
 /* Initialize debug output via UART for board */
@@ -97,51 +117,94 @@ void Board_UARTPutSTR(char *str)
 
 static void Board_LED_Init()
 {
+#ifdef _USE_4357
+
+	// User LED 4
+	Chip_SCU_PinMux(0x9 ,5 , MD_PDN, SCU_MODE_FUNC4); 					
+	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT,LED4_PORT,LED4_BIT, true); 			
+
+	// User LED 5
+	Chip_SCU_PinMux(0x9 ,6 , MD_PDN, SCU_MODE_FUNC0);
+	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT,LED5_PORT,LED5_BIT, true); 
+
 	/* P2.12 : LED D2 as output */
-	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, 1, 12, true);
-
+	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, LED4_PORT, LED4_BIT, true);
 	/* P2.11 : LED D3 as output */
-	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, 1, 11, true);
-
+	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, LED5_PORT, LED5_BIT, true);
 	/* Set initial states to off (true to disable) */
-	Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 1, 12, (bool) true);
-	Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 1, 11, (bool) true);
+	Chip_GPIO_WritePortBit(LPC_GPIO_PORT, LED4_PORT, LED4_BIT, (bool) true);
+	Chip_GPIO_WritePortBit(LPC_GPIO_PORT, LED5_PORT, LED5_BIT, (bool) true);
+#else
+	/* P2.12 : LED D2 as output */
+	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, LED2_PORT, LED2_BIT, true);
+	/* P2.11 : LED D3 as output */
+	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, LED3_PORT, LED3_BIT, true);
+	/* Set initial states to off (true to disable) */
+	Chip_GPIO_WritePortBit(LPC_GPIO_PORT, LED2_PORT, LED2_BIT, (bool) true);
+	Chip_GPIO_WritePortBit(LPC_GPIO_PORT, LED3_PORT, LED3_BIT, (bool) true);
+#endif	
 }
 
 void Board_LED_Set(uint8_t LEDNumber, bool On)
 {
+#ifdef _USE_4357
 	if (LEDNumber == 0) {
-		Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 1, 12, (bool) !On);
+		Chip_GPIO_WritePortBit(LPC_GPIO_PORT, LED4_PORT, LED4_BIT, (bool) !On);
 	}
 	else if (LEDNumber == 1) {
-		Chip_GPIO_WritePortBit(LPC_GPIO_PORT, 1, 11, (bool) !On);
+		Chip_GPIO_WritePortBit(LPC_GPIO_PORT, LED5_PORT, LED5_BIT, (bool) !On);
 	}
+#else
+	if (LEDNumber == 0) {
+		Chip_GPIO_WritePortBit(LPC_GPIO_PORT, LED2_PORT, LED2_BIT, (bool) !On);
+	}
+	else if (LEDNumber == 1) {
+		Chip_GPIO_WritePortBit(LPC_GPIO_PORT, LED3_PORT, LED3_BIT, (bool) !On);
+	}
+#endif	
 }
 
 bool Board_LED_Test(uint8_t LEDNumber)
 {
+#ifdef _USE_4357
 	if (LEDNumber == 0) {
-		return (bool) !Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, 1, 12);
+		return (bool) !Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, LED4_PORT, LED4_BIT);
 	}
 	else if (LEDNumber == 1) {
-		return (bool) !Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, 1, 11);
+		return (bool) !Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, LED5_PORT, LED5_BIT);
 	}
-
+#else
+	if (LEDNumber == 0) {
+		return (bool) !Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, LED2_PORT, LED2_BIT);
+	}
+	else if (LEDNumber == 1) {
+		return (bool) !Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, LED3_PORT, LED3_BIT);
+	}
+#endif
 	return false;
 }
 
 void Board_Buttons_Init(void)	// FIXME not functional ATM
 {
+#ifdef _USE_4357
+	// JME todo
+#else
 	Chip_SCU_PinMuxSet(0x2, 7, (SCU_MODE_MODE_INACT | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC0));		// P2_7 as GPIO0[7]
 	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM, (1 << BUTTONS_BUTTON1_GPIO_BIT_NUM), false);	// input
+#endif		
 }
 
 uint32_t Buttons_GetStatus(void)
 {
 	uint8_t ret = NO_BUTTON_PRESSED;
-	if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM, BUTTONS_BUTTON1_GPIO_BIT_NUM) == 0) {
+#ifdef _USE_4357
+	// JME todo
+#else	
+	if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM, BUTTONS_BUTTON1_GPIO_BIT_NUM) == 0) 
+	{
 		ret |= BUTTONS_BUTTON1;
 	}
+#endif	
 	return ret;
 }
 
