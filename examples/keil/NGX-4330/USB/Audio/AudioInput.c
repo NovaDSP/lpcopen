@@ -256,7 +256,8 @@ void AudioTask(void* pvParameters)
 	NVIC_ClearPendingIRQ(TIMER1_IRQn);
 	
 	//JME we need right switch on 4357 board.
-#ifndef _USE_4357
+//#ifndef _USE_4357
+#if 1
 	Board_UARTPutSTR("Press SW1 to connect unit ...\n");
 
 	// wait. do not connect until button 1 is pressed

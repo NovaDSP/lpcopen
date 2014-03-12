@@ -184,21 +184,30 @@ bool Board_LED_Test(uint8_t LEDNumber)
 	return false;
 }
 
-void Board_Buttons_Init(void)	// FIXME not functional ATM
+//-----------------------------------------------------------------------------
+void Board_Buttons_Init()
 {
 #ifdef _USE_4357
-	// JME todo
+	// JME RA please check this makes sense?
+	Chip_SCU_PinMux(0x8 ,0 ,(MD_PLN|MD_EZI|MD_ZI), SCU_MODE_FUNC0);		
+	// Set direction for GPIO port to input
+	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT,PIN_INT_PORT, (1 << PIN_INT_BIT), false);	
 #else
 	Chip_SCU_PinMuxSet(0x2, 7, (SCU_MODE_MODE_INACT | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC0));		// P2_7 as GPIO0[7]
 	Chip_GPIO_WriteDirBit(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM, (1 << BUTTONS_BUTTON1_GPIO_BIT_NUM), false);	// input
 #endif		
 }
 
+//-----------------------------------------------------------------------------
 uint32_t Buttons_GetStatus(void)
 {
 	uint8_t ret = NO_BUTTON_PRESSED;
 #ifdef _USE_4357
-	// JME todo
+	// JME RA please check this makes sense?
+	if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, PIN_INT_PORT, PIN_INT_BIT) == 0) 
+	{
+		ret |= BUTTONS_BUTTON1;
+	}
 #else	
 	if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, BUTTONS_BUTTON1_GPIO_PORT_NUM, BUTTONS_BUTTON1_GPIO_BIT_NUM) == 0) 
 	{
@@ -208,17 +217,23 @@ uint32_t Buttons_GetStatus(void)
 	return ret;
 }
 
+//-----------------------------------------------------------------------------
 void Board_Joystick_Init(void)
-{}
+{
 
+}
+
+//-----------------------------------------------------------------------------
 uint8_t Joystick_GetStatus(void)
 {
 	return NO_BUTTON_PRESSED;
 }
 
+//-----------------------------------------------------------------------------
 /*!< System Clock Frequency (Core Clock)*/
 uint32_t SystemCoreClock;
 
+//-----------------------------------------------------------------------------
 /* Update system core clock rate, should be called if the system has
    a clock rate change */
 void SystemCoreClockUpdate(void)
@@ -227,16 +242,19 @@ void SystemCoreClockUpdate(void)
 	SystemCoreClock = Chip_Clock_GetRate(CLK_MX_MXCORE);
 }
 
+//-----------------------------------------------------------------------------
 /* Returns the MAC address assigned to this board */
 void Board_ENET_GetMacADDR(uint8_t *mcaddr)
 {
+	// JME audit: nasty !!!!!!!!
 	uint8_t boardmac[] = {0x00, 0x60, 0x37, 0x12, 0x34, 0x56};
 
 	memcpy(mcaddr, boardmac, 6);
 }
 
-/* Set up and initialize all required blocks and functions related to the
-   board hardware */
+//-----------------------------------------------------------------------------
+// Set up and initialize all required blocks and functions related to the
+//   board hardware
 void Board_Init(void)
 {
 	/* Sets up DEBUG UART */
@@ -264,6 +282,7 @@ void Board_Init(void)
 
 }
 
+//-----------------------------------------------------------------------------
 void Board_I2C_Init(I2C_ID_T id)
 {
 	if (id == I2C1) {
