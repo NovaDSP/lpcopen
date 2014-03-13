@@ -78,7 +78,7 @@ int Board_UARTGetChar(void);
  * @param	str	: Terminated string to output
  * @return	None
  */
-void Board_UARTPutSTR(char *str);
+void Board_UARTPutSTR(const char *str);
 
 /**
  * @brief	Sets the state of a board LED to on or off

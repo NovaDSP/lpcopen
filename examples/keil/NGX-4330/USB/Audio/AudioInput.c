@@ -83,6 +83,7 @@ int16_t data[CHANNEL_COUNT * SAMPLE_COUNT] = { 0 };
 //-----------------------------------------------------------------------------
 typedef enum _state_index
 {
+	eTarget,
 	eEnabled,
 	eDisabled,
 	eGetSampleRate,
@@ -92,10 +93,16 @@ typedef enum _state_index
 	eGetSetInterfaceProperty,
 	eUnknownEndpointProperty,
 	eOtherEndpointProperty,
+	eConfigureEndpoints,
 } state_index;
 
 const char* states[] = 
 {
+#ifdef _USE_4357
+	"\n---------NGX 4357 target---------\n",
+#else
+	"\n---------NGX 4330 target---------\n",
+#endif	
 	"enabled",
 	"disabled",
 	"get sample rate",
@@ -105,6 +112,7 @@ const char* states[] =
 	"GetSetInterfaceProperty",
 	"Unknown Endpoint Property",
 	"Other Endpoint Property",
+	"Endpoint configuration",
 };
 
 //-----------------------------------------------------------------------------
@@ -237,6 +245,8 @@ void UARTTask(void* pvParameters)
 }
 
 //-----------------------------------------------------------------------------
+volatile bool connected = false;
+//-----------------------------------------------------------------------------
 // This polls the USB registers for state change. Not ideal but works for now
 void AudioTask(void* pvParameters)
 {
@@ -251,44 +261,74 @@ void AudioTask(void* pvParameters)
 	// set up our N channel waveform
 	FillAudioBuffers();
 	
-	// Enable timer interrupt
-	NVIC_EnableIRQ(TIMER1_IRQn);
-	NVIC_ClearPendingIRQ(TIMER1_IRQn);
-	
-	//JME we need right switch on 4357 board.
-//#ifndef _USE_4357
-#if 1
-	Board_UARTPutSTR("Press SW1 to connect unit ...\n");
-
-	// wait. do not connect until button 1 is pressed
+	// 
 	for (;;)
 	{
-		if ((Buttons_GetStatus() & BUTTONS_BUTTON1) != Button_State)
+		Board_UARTPutSTR("Press User switch for ~1s to connect\n");
+		
+		while (connected == false)
 		{
-			Board_LED_Set(GREENLED, 1);
-			break;
+			Board_LED_Set(0,true);
+			// wait for ~10s
+			vTaskDelay(configTICK_RATE_HZ / 10);
+			//
+			Board_LED_Set(0,false);
+			//
+			vTaskDelay(configTICK_RATE_HZ / 10);
 		}
+
+		// Initialize the USB audio driver
+		USB_Init(USBAudioIF.Config.PortNumber, USB_MODE_Device,USE_FULL_SPEED);
+
+		// enable SOF interrupt
+		USB_Device_EnableSOFEvents();
+
+		Board_UARTPutSTR("Device is connected to host\n");
+
+		// JME audit:polled
+		while (connected == true)
+		{
+			//
+			Audio_Device_USBTask(&USBAudioIF);
+			//
+			USB_USBTask(USBAudioIF.Config.PortNumber, USB_MODE_Device);
+		}
+		//
+		Board_UARTPutSTR("Device disconnecting from host\n");
+		// should cause re-enumeration
+		//USB_ResetInterface(USBAudioIF.Config.PortNumber,USB_MODE_Device);
+		USB_Disable(USBAudioIF.Config.PortNumber,USB_MODE_Device);
+		//
+		Board_UARTPutSTR("Device disconnected from host\n");
+		// wait for ~10s
+		vTaskDelay(configTICK_RATE_HZ * 10);
+		//
+		Board_UARTPutSTR("Device waited ~10s\n");
 	}
-#endif
 
-	// stop the timer IRQ
-	NVIC_DisableIRQ(TIMER1_IRQn);		
-	//
-	// Initialize the USB audio driver
-	USB_Init(USBAudioIF.Config.PortNumber, USB_MODE_Device,USE_FULL_SPEED);
+}
 
-	// enable SOF interrupt
-	USB_Device_EnableSOFEvents();
-
-	Board_UARTPutSTR("Device is connected to host\n");
-
-	// JME audit:polled
+//-----------------------------------------------------------------------------
+void SwitchTask(void* pvParameters)
+{
 	for (;;)
 	{
 		//
-		Audio_Device_USBTask(&USBAudioIF);
-		//
-		USB_USBTask(USBAudioIF.Config.PortNumber, USB_MODE_Device);
+		if (Buttons_GetStatus() & BUTTONS_BUTTON1)
+		{
+			Board_LED_Set(0,true);
+			// wait ...
+			vTaskDelay(configTICK_RATE_HZ/2);
+			// still down ?
+			if (Buttons_GetStatus() & BUTTONS_BUTTON1)
+			{
+				connected = !connected;
+				//
+				Board_LED_Set(0,false);
+			}
+			// wait ...
+			vTaskDelay(configTICK_RATE_HZ);
+		}
 	}
 }
 
@@ -341,7 +381,8 @@ int main(void)
 //	InitTimer();
 	Board_Debug_Init();
 	
-	Board_UARTPutSTR("\n----------Device initialized--------\n");
+	//
+	Board_UARTPutSTR(states[eTarget]);
 
 	// create the ISR safe qeueue	
 	USBAudioIF.instance_data = xQueueCreate(64,sizeof(DbgMessage));
@@ -356,6 +397,11 @@ int main(void)
 	xTaskCreate(UARTTask, (signed char *) "UARTTask",
 				configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
 				(xTaskHandle *) NULL);
+
+	//  switch thread checks user switch and does de-bouncing (!)
+	xTaskCreate(SwitchTask, (signed char *) "SwitchTask",
+		configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
+		(xTaskHandle *) NULL);
 
 	//
 	Board_UARTPutSTR("vTaskStartScheduler() \n");
@@ -405,16 +451,12 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 	bool ConfigSuccess = true;
 	ConfigSuccess &= Audio_Device_ConfigureEndpoints(&USBAudioIF);
 	//
-/*
-	if (USB_Device_ConfigurationNumber == 0)
-	{
-		Board_LED_Set(GREENLED, false);	
-	}
-	else
-	{
-		Board_LED_Set(GREENLED, true);
-	}
-*/
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	dbg_message dbm = { 0 };
+	xQueueHandle xq = (xQueueHandle)USBAudioIF.instance_data;
+	dbm.psz = states[eConfigureEndpoints];
+	dbm.value = USB_Device_ConfigurationNumber;
+	xQueueSendFromISR(xq,&dbm,&xHigherPriorityTaskWoken);
 }
 
 //-----------------------------------------------------------------------------

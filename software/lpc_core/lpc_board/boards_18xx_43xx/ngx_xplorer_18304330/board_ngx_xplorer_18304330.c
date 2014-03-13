@@ -106,7 +106,7 @@ int Board_UARTGetChar(void)
 }
 
 /* Outputs a string on the debug UART */
-void Board_UARTPutSTR(char *str)
+void Board_UARTPutSTR(const char* str)
 {
 #if defined(DEBUG_UART)
 	while (*str != '\0') {
