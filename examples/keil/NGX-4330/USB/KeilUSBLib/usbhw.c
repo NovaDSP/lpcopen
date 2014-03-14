@@ -23,14 +23,19 @@
 * use without further testing or modification.
 **********************************************************************/
 #include <string.h>
-#include "lpc43xx.H"                        /* lpc43xx definitions */
+//#include "lpc43xx.H"                        /* lpc43xx definitions */
+#include <chip.h>
+#include <cmsis.h>
 #include "lpc_types.h"
 #include "usb.h"
 #include "usbhw.h"
 #include "usbcfg.h"
 #include "usbcore.h"
-#include "lpc43xx_scu.h"
-#include "lpc43xx_cgu.h"
+
+// #include "lpc43xx_scu.h"
+// #include "lpc43xx_cgu.h"
+#include "scu_18xx_43xx.h"
+#include "cguccu_18xx_43xx.h"
 
 #ifdef __CC_ARM
 #pragma diag_suppress 1441
@@ -87,13 +92,34 @@ void USB_Init (LPC_USBDRV_INIT_T* cbs)
     g_drv.ep0_maxp = 64;
 
 #ifdef USE_USB0
-	scu_pinmux(0x8,1,MD_PLN_FAST,FUNC1);    //  0: motocon pcap0_1          1: usb0 usb0_ind1           2:  nc                      3: gpio4 gpio4_1
-	scu_pinmux(0x8,2,MD_PLN_FAST,FUNC1);    //  0: motocon pcap0_0          1: usb0 usb0_ind0           2:  nc                      3: gpio4 gpio4_2
+
+	Chip_SCU_PinMux(0x8,1,MD_PLN_FAST,SCU_MODE_FUNC1);    //  0: motocon pcap0_1          1: usb0 usb0_ind1           2:  nc                      3: gpio4 gpio4_1
+	Chip_SCU_PinMux(0x8,2,MD_PLN_FAST,SCU_MODE_FUNC1);    //  0: motocon pcap0_0          1: usb0 usb0_ind0           2:  nc                      3: gpio4 gpio4_2
+
 #endif
+
 #ifdef USE_USB0
+/*
+	// JME. This setup was used with older versions of lpcopen
 	CGU_SetPLL0();
 	CGU_EnableEntity(CGU_CLKSRC_PLL0, ENABLE);
 	CGU_EntityConnect(CGU_CLKSRC_PLL0, CGU_BASE_USB0);
+*/
+
+	Chip_Clock_EnablePLL(CGU_USB_PLL);
+
+	/* Wait for PLL lock */
+	while (!(Chip_Clock_GetPLLStatus(CGU_USB_PLL) & CGU_PLL_LOCKED))
+	{
+		// nop
+	}
+	
+	Chip_Clock_EnableBaseClock(CLK_BASE_USB0);
+	Chip_Clock_EnableOpts(CLK_MX_USB0, true, true, 1);
+
+	/* Turn on the phy */
+	Chip_CREG_EnableUSB0Phy(true);
+
 #else
 	CGU_SetPLL1(5);
 	CGU_EnableEntity(CGU_CLKSRC_PLL1, ENABLE);
@@ -137,7 +163,7 @@ void USB_Init (LPC_USBDRV_INIT_T* cbs)
 
 	USB_Reset();
 	USB_SetAddress(0);
-	return;
+
 }
 #endif
 /*
@@ -166,9 +192,9 @@ void USB_Reset (void)
 
   DevStatusFS2HS = FALSE;
   /* disable all EPs */
-  LPC_USB->ENDPTCTRL0 &= ~(EPCTRL_RXE | EPCTRL_TXE);
-  LPC_USB->ENDPTCTRL2 &= ~(EPCTRL_RXE | EPCTRL_TXE);
-  LPC_USB->ENDPTCTRL3 &= ~(EPCTRL_RXE | EPCTRL_TXE);
+  LPC_USB->ENDPTCTRL[0] &= ~(EPCTRL_RXE | EPCTRL_TXE);
+  LPC_USB->ENDPTCTRL[2] &= ~(EPCTRL_RXE | EPCTRL_TXE);
+  LPC_USB->ENDPTCTRL[3] &= ~(EPCTRL_RXE | EPCTRL_TXE);
 
   /* Clear all pending interrupts */
   LPC_USB->ENDPTNAK   = 0xFFFFFFFF;
@@ -216,8 +242,7 @@ void USB_Reset (void)
                   | QH_IOS
                   | QH_ZLT;
   /* enable EP0 */
-  LPC_USB->ENDPTCTRL0 = EPCTRL_RXE | EPCTRL_RXR | EPCTRL_TXE | EPCTRL_TXR;
-  return;
+  LPC_USB->ENDPTCTRL[0] = EPCTRL_RXE | EPCTRL_RXR | EPCTRL_TXE | EPCTRL_TXR;
 
 }
 
@@ -327,7 +352,7 @@ void USB_ConfigEP (USB_ENDPOINT_DESCRIPTOR *pEPD) {
   lep = pEPD->bEndpointAddress & 0x7F;
   num = EPAdr(pEPD->bEndpointAddress);
 
-  ep_cfg = ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep];
+  ep_cfg = ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep];
   /* mask the attributes we are not-intersetd in */
   bmAttributes = pEPD->bmAttributes & USB_ENDPOINT_TYPE_MASK;
   /* set EP type */
@@ -357,8 +382,7 @@ void USB_ConfigEP (USB_ENDPOINT_DESCRIPTOR *pEPD) {
     ep_cfg |= EPCTRL_RX_TYPE(bmAttributes)
               | EPCTRL_RXR;
   }
-  ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] = ep_cfg;
-  return;
+  ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] = ep_cfg;
 }
 
 /*
@@ -387,11 +411,11 @@ void USB_EnableEP (uint32_t EPNum) {
 
   if (EPNum & 0x80)
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] |= EPCTRL_TXE;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] |= EPCTRL_TXE;
   }
   else
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] |= EPCTRL_RXE;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] |= EPCTRL_RXE;
     /* enable NAK interrupt */
     bitpos = USB_EP_BITPOS(EPNum);
     LPC_USB->ENDPTNAKEN |= (1<<bitpos);
@@ -412,14 +436,14 @@ void USB_DisableEP (uint32_t EPNum) {
   lep = EPNum & 0x0F;
   if (EPNum & 0x80)
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] &= ~EPCTRL_TXE;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] &= ~EPCTRL_TXE;
   }
   else
   {
     /* disable NAK interrupt */
     bitpos = USB_EP_BITPOS(EPNum);
     LPC_USB->ENDPTNAKEN &= ~(1<<bitpos);
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] &= ~EPCTRL_RXE;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] &= ~EPCTRL_RXE;
   }
 }
 
@@ -441,11 +465,11 @@ void USB_ResetEP (uint32_t EPNum) {
   /* reset data toggles */
   if (EPNum & 0x80)
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] |= EPCTRL_TXR;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] |= EPCTRL_TXR;
   }
   else
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] |= EPCTRL_RXR;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] |= EPCTRL_RXR;
   }
 }
 
@@ -463,11 +487,11 @@ void USB_SetStallEP (uint32_t EPNum) {
   lep = EPNum & 0x0F;
   if (EPNum & 0x80)
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] |= EPCTRL_TXS;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] |= EPCTRL_TXS;
   }
   else
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] |= EPCTRL_RXS;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] |= EPCTRL_RXS;
   }
 }
 
@@ -485,15 +509,15 @@ void USB_ClrStallEP (uint32_t EPNum) {
   lep = EPNum & 0x0F;
   if (EPNum & 0x80)
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] &= ~EPCTRL_TXS;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] &= ~EPCTRL_TXS;
     /* reset data toggle */
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] |= EPCTRL_TXR;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] |= EPCTRL_TXR;
   }
   else
   {
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] &= ~EPCTRL_RXS;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] &= ~EPCTRL_RXS;
     /* reset data toggle */
-    ((uint32_t*)&(LPC_USB->ENDPTCTRL0))[lep] |= EPCTRL_RXR;
+    ((uint32_t*)&(LPC_USB->ENDPTCTRL[0]))[lep] |= EPCTRL_RXR;
   }
 }
 

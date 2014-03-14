@@ -16,8 +16,11 @@
 #include "lpc43xx.h"                                   // lpc43xx definitions
 #include "lpc_types.h"
 #include "serial.h"
-#include "lpc43xx_scu.h"
-#include "lpc43xx_cgu.h"
+// #include "lpc43xx_scu.h"
+// #include "lpc43xx_cgu.h"
+#include "scu_18xx_43xx.h"
+#include "cguccu_18xx_43xx.h"
+
 
 
 /*----------------------------------------------------------------------------

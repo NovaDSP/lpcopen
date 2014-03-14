@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;.\descriptors;.\freertos;.\freertos\include;..\..\..\..\..\software\cmsis\cmsis\include;..\..\..\..\..\software\cmsis\device\arm\armcm4\include;..\..\..\..\..\software\lpc_core\lpc_board\board_common;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_4350;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_4357;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_1830;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330;..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx;..\..\..\..\..\software\lpc_core\lpc_chip\chip_common;..\..\..\..\..\software\lpc_core\lpc_ip;..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom;..\..\..\..\..\software\lpcusblib\common;..\..\..\..\..\software\lpcusblib\drivers\usb;..\..\..\..\..\software\lpcusblib\drivers\usb\class;..\..\..\..\..\software\lpcusblib\drivers\usb\class\common;..\..\..\..\..\software\lpcusblib\drivers\usb\class\device;..\..\..\..\..\software\lpcusblib\drivers\usb\class\host;..\..\..\..\..\software\lpcusblib\drivers\usb\core;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc11uxx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc17xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\lpc18xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc11uxx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc17xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hal\lpc18xx;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ehci;..\..\..\..\..\software\lpcusblib\drivers\usb\core\hcd\ohci;"
-				PreprocessorDefinitions="USB_CAN_BE_DEVICE;_DEBUG;"
+				PreprocessorDefinitions="__LPC43XX__;CORE_M4;USB_CAN_BE_DEVICE;_DEBUG;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -753,15 +753,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\board.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board.h"
 				>
 			</File>
 			<File
@@ -1405,10 +1405,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850\sys_config.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_4350\sys_config.h"
 				>
 			</File>
@@ -1426,6 +1422,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330\sys_config.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\hitex_eva_1850\sys_config.h"
 				>
 			</File>
 			<File
@@ -1481,11 +1481,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd.h"
 				>
 			</File>
 			<File
@@ -1493,11 +1493,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_adcuser.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_adcuser.h"
 				>
 			</File>
 			<File
@@ -1509,11 +1509,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_cdc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_cdc.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.h"
 				>
 			</File>
 			<File
@@ -1525,11 +1525,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_core.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_core.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_core.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_core.h"
 				>
 			</File>
 			<File
@@ -1537,11 +1537,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfu.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfu.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfu.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfu.h"
 				>
 			</File>
 			<File
@@ -1553,15 +1553,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hid.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hid.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hiduser.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hid.h"
 				>
 			</File>
 			<File
@@ -1569,11 +1565,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hw.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hiduser.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hw.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hw.h"
 				>
 			</File>
 			<File
@@ -1585,19 +1585,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_mscuser.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_mscuser.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_rom_api.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_mscuser.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom_api.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_rom_api.h"
 				>
 			</File>
 			<File

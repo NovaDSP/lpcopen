@@ -72,6 +72,7 @@ build_version
 
 #  Folders
 # where we build stuff for distro
+obj/
 gcc/
 keil_output/
 pix/
