@@ -355,9 +355,9 @@
             <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>CORE_M4 USE_USB0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\..\software\lpc_core\lpc_ip</IncludePath>
+              <IncludePath>..\..\..\..\..\software\lpc_core\lpc_ip;..\..\..\..\..\software\lpc_core\lpc_chip\chip_18xx_43xx;..\..\..\..\..\software\lpc_core\lpc_chip\chip_common;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx;..\..\..\..\..\software\lpc_core\lpc_board\board_common;..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -422,11 +422,6 @@
               <FileName>mscuser.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\mscuser.c</FilePath>
-            </File>
-            <File>
-              <FileName>serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\serial.c</FilePath>
             </File>
             <File>
               <FileName>usbcore.c</FileName>
