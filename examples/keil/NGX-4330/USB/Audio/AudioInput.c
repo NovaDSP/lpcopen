@@ -9,9 +9,7 @@
 
 #include "AudioInput.h"
 #include <limits.h>
-#include "FreeRTOS.h"
-#include "queue.h"
-#include "task.h"
+#include "apptypes.h"
 
 /** Audio Class driver interface configuration and state information. This structure is
  *  passed to all Audio Class driver functions, so that multiple instances of the same class
@@ -64,7 +62,9 @@ bool iso_state = false;
 int iso_packets = 0; 
 //
 int iso_index = 0;
-
+//-----------------------------------------------------------------------------
+//
+xQueueHandle xqh = 0;
 //-----------------------------------------------------------------------------
 // we assume that on SOF interrput we send N channels * sizeof sample to isoch EP
 #ifdef FULL_SPEED
@@ -81,25 +81,15 @@ const int SAMPLE_COUNT = 6;
 int16_t data[CHANNEL_COUNT * SAMPLE_COUNT] = { 0 };
 
 //-----------------------------------------------------------------------------
-typedef enum _state_index
-{
-	eTarget,
-	eEnabled,
-	eDisabled,
-	eGetSampleRate,
-	eGetSampleRateNoData,
-	eSetSampleRate,
-	eSetSampleRateNoData,
-	eGetSetInterfaceProperty,
-	eUnknownEndpointProperty,
-	eOtherEndpointProperty,
-	eConfigureEndpoints,
-} state_index;
 
-const char* states[] = 
+const char* states[MaxStates] = 
 {
 #ifdef _USE_4357
+#ifdef _USE_AC2
+	"\n---------NGX 4357 AC2 target---------\n",
+	#else
 	"\n---------NGX 4357 target---------\n",
+#endif	
 #else
 	"\n---------NGX 4330 target---------\n",
 #endif	
@@ -113,19 +103,8 @@ const char* states[] =
 	"Unknown Endpoint Property",
 	"Other Endpoint Property",
 	"Endpoint configuration",
+	"GetDescriptor",
 };
-
-//-----------------------------------------------------------------------------
-typedef struct _DbgMessage
-{
-	// pointer to const string
-	const char* psz;
-	uint32_t value;
-	uint32_t flags;
-	
-} DbgMessage;
-
-typedef DbgMessage dbg_message;
 
 //-----------------------------------------------------------------------------
 // Set up the pre-defined N channel waveform we currently stream to host
@@ -224,6 +203,10 @@ void UARTTask(void* pvParameters)
 {
 	int tickCnt = 0;
 	xQueueHandle qh = (xQueueHandle) USBAudioIF.instance_data;
+	
+	//
+	DEBUGOUT("Config size %d\n",GetConfigStructSize());
+	
 	for (;;)
 	{
 		if (uxQueueMessagesWaiting(qh))
@@ -231,7 +214,7 @@ void UARTTask(void* pvParameters)
 			dbg_message dbm;
 			while (xQueueReceive(qh,&dbm,0))
 			{
-				DEBUGOUT("[%d] %s %d %d\r\n",tickCnt,(dbm.psz ? dbm.psz : "<null>"),dbm.flags, dbm.value);
+				DEBUGOUT("[%d] %s %d %d %d\r\n",tickCnt,(dbm.psz ? dbm.psz : "<null>"),dbm.flags, dbm.value, dbm.v2);
 			}
 		}
 		else
@@ -385,7 +368,8 @@ int main(void)
 	Board_UARTPutSTR(states[eTarget]);
 
 	// create the ISR safe qeueue	
-	USBAudioIF.instance_data = xQueueCreate(64,sizeof(DbgMessage));
+	xqh = xQueueCreate(64,sizeof(DbgMessage));
+	USBAudioIF.instance_data = xqh;
 	
 	// create the audio test. this currently polls, should eventually be
 	// modified so it waits correctly (power)

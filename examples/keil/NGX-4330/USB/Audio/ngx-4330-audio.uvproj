@@ -479,6 +479,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330\sys_config.h</FilePath>
             </File>
+            <File>
+              <FileName>uac2desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\uac2desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>apptypes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\apptypes.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2331,6 +2341,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330\sys_config.h</FilePath>
             </File>
+            <File>
+              <FileName>uac2desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\uac2desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>apptypes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\apptypes.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -4182,6 +4202,16 @@
               <FileName>sys_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330\sys_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>uac2desc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\uac2desc.c</FilePath>
+            </File>
+            <File>
+              <FileName>apptypes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\apptypes.h</FilePath>
             </File>
           </Files>
         </Group>

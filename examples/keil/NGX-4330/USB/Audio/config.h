@@ -7,6 +7,9 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// test vendor specific stuff
+#define VS
+#define _USE_AC2
 // if 1 then we will set to full-speed (12MBS) 
 // if 0 then we run at default hispeed (480MBS)
 

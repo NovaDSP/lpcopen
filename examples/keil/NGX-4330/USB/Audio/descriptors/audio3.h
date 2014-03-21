@@ -29,7 +29,7 @@ static const char Configuration_1[] = {
   /* Configuration*/
   0x09,                       /* bLength (Size of this descriptor in bytes) */
   0x02,                       /* bDescriptorType (CONFIGURATION Descriptor Type) */
-  0x73, 0x00,                 /* wTotalLength (Total length of data returned for this configuration) (115) */
+  0x5a, 0x00,                 /* wTotalLength (Total length of data returned for this configuration) (90) */
   0x02,                       /* bNumInterfaces (Number of interfaces supported by this configuration) */
   0x01,                       /* bConfigurationValue (Value to use as an argument to the SetConfiguration() request to select this configuration) */
   0x00,                       /* iConfiguration (Index of string descriptor describing this configuration) */
@@ -45,6 +45,15 @@ static const char Configuration_1[] = {
     0x00,                     /* bInterfaceSubClass (Subclass code (assigned by the USB-IF).) ("0") */
     0x00,                     /* bInterfaceProtocol (Protocol code (assigned by the USB).) */
     0x00,                     /* iInterface (Index of string descriptor describing this interface) */
+    /* InterfaceAssociation*/
+    0x08,                     /* bLength (Size of this descriptor in bytes) */
+    0x08,                     /* bDescriptorType */
+    0x00,                     /* bFirstInterface */
+    0x00,                     /* bInterfaceCount */
+    0x00,                     /* bFunctionClass ("Defined at interface level") */
+    0x00,                     /* bInterfaceSubClass */
+    0x00,                     /* bInterfaceProtocol */
+    0x00,                     /* iFunction */
     /* Interface*/
     0x09,                     /* bLength (Size of this descriptor in bytes) */
     0x04,                     /* bDescriptorType (INTERFACE Descriptor Type) */
@@ -55,38 +64,23 @@ static const char Configuration_1[] = {
     0x00,                     /* bInterfaceSubClass (Subclass code (assigned by the USB-IF).) ("0") */
     0x00,                     /* bInterfaceProtocol (Protocol code (assigned by the USB).) */
     0x00,                     /* iInterface (Index of string descriptor describing this interface) */
-      /* Endpoint*/
-      0x07,                   /* bLength (Size of this descriptor in bytes) */
-      0x05,                   /* bDescriptorType (ENDPOINT descriptor) */
-      0x81,                   /* bEndpointAddress ('Endpoint Number' = 1, 'Direction' = 1) */
-      0x03,                   /* bEndpointAttributes ('Transfer Type' = 3, 'Synchronization Type' = 3, 'Usage Type' = 0) */
-      0x00, 0x04,             /* wMaxPacketSize (Maximum packet size this endpoint is capable of sending or receiving when this configuration is selected.) (1024) */
-      0x01,                   /* bInterval (Interval for polling endpoint for data transfers. Expressed in frames or microframes depending on the device operating speed (i.e., either 1 millisecond or 125 us units)) */
-      /* Endpoint*/
-      0x07,                   /* bLength (Size of this descriptor in bytes) */
-      0x05,                   /* bDescriptorType (ENDPOINT descriptor) */
-      0x02,                   /* bEndpointAddress ('Endpoint Number' = 2, 'Direction' = 0) */
-      0x03,                   /* bEndpointAttributes ('Transfer Type' = 3, 'Synchronization Type' = 3, 'Usage Type' = 0) */
-      0x00, 0x04,             /* wMaxPacketSize (Maximum packet size this endpoint is capable of sending or receiving when this configuration is selected.) (1024) */
-      0x01,                   /* bInterval (Interval for polling endpoint for data transfers. Expressed in frames or microframes depending on the device operating speed (i.e., either 1 millisecond or 125 us units)) */
-      /* DeviceQualifier*/
-      0x0a,                   /* bLength (Size of this descriptor in bytes) */
-      0x06,                   /* bDescriptorType (Device Qualifier Type) */
-      0x00, 0x02,             /* bcdUSB (USB specification version number) ("2.0") (512) */
-      0x01,                   /* bDeviceClass (Class Code) ("Audio") */
-      0x02,                   /* bDeviceSubClass (Subclass Code) */
-      0x01,                   /* bDeviceProtocol (Protocol Code) */
-      0x40,                   /* bMaxPacketSize0 (Maximum packet size for other speed) ("64") */
-      0x00,                   /* bNumConfigurations (Number of Other-speed Configurations) */
-      0x00,                   /* bReserved (Reserved for future use, must be zero) */
       /* UAC2InterfaceHeader*/
       0x0b,                   /* bLength (Size of this descriptor in bytes) */
       0x24,                   /* bDescriptorType */
       0x01,                   /* bDescriptorSubtype */
       0x00, 0x02,             /* bcdADC (512) */
       0x00,                   /* bCategory ("FUNCTION_SUBCLASS_UNDEFINED") */
-      0x36,                   /* wTotalLength (Total number of bytes returned for the class-specific AudioControl interface descriptor.) */
+      0x29,                   /* wTotalLength (Total number of bytes returned for the class-specific AudioControl interface descriptor.) */
       0x00, 0x00, 0x00, 0x00, /* bmControls ('Latency Control' = 0) (0) */
+        /* UAC2ClockSource*/
+        0x0b,                 /* bLength (Size of this descriptor in bytes) */
+        0x24,                 /* bDescriptorType */
+        0x0a,                 /* bDescriptorSubtype */
+        0x00,                 /* bClockID */
+        0x00,                 /* bmAttributes ('Clock type' = 0, 'Clock synchronized to SOF' = 0) */
+        0x00, 0x00, 0x00, 0x00, /* bmControls ('Clock Frequency Control' = 0, 'Clock Validity Control' = 0) (0) */
+        0x00,                 /* bAssocTerminal */
+        0x00,                 /* iClockSource */
         /* UAC2InputTerminal*/
         0x13,                 /* bLength (Size of this descriptor in bytes) */
         0x24,                 /* bDescriptorType */
@@ -100,35 +94,20 @@ static const char Configuration_1[] = {
         0x00,                 /* iChannelNames */
         0x00, 0x00, 0x00, 0x00, /* bmControls ('Copy Protect Control' = 0, 'Connector Control' = 0, 'Overload Control' = 0, 'Cluster Control' = 0, 'Underflow Control' = 0, 'Overflow Control' = 0) (0) */
         0x00,                 /* iTerminal */
-        /* UAC2OutputTerminal*/
-        0x0d,                 /* bLength (Size of this descriptor in bytes) */
-        0x24,                 /* bDescriptorType */
-        0x03,                 /* bDescriptorSubtype */
-        0x00,                 /* bTerminalID */
-        0x00, 0x01,           /* wTerminalType ("USB Undefined") (256) */
-        0x00,                 /* bAssocTerminal */
-        0x00,                 /* bCSourceID */
-        0x00, 0x00, 0x00, 0x00, /* bmControls ('Copy Protect Control' = 0, 'Connector Control' = 0, 'Overload Control' = 0, 'Cluster Control' = 0, 'Underflow Control' = 0, 'Overflow Control' = 0) (0) */
-        0x00,                 /* iTerminal */
-        /* UAC2ClockSource*/
-        0x0b,                 /* bLength (Size of this descriptor in bytes) */
-        0x24,                 /* bDescriptorType */
-        0x0a,                 /* bDescriptorSubtype */
-        0x00,                 /* bClockID */
-        0x00,                 /* bmAttributes ('Clock type' = 0, 'Clock synchronized to SOF' = 0) */
-        0x00, 0x00, 0x00, 0x00, /* bmControls ('Clock Frequency Control' = 0, 'Clock Validity Control' = 0) (0) */
-        0x00,                 /* bAssocTerminal */
-        0x00,                 /* iClockSource */
-    /* DeviceQualifier*/
-    0x0a,                     /* bLength (Size of this descriptor in bytes) */
-    0x06,                     /* bDescriptorType (Device Qualifier Type) */
-    0x00, 0x02,               /* bcdUSB (USB specification version number) ("2.0") (512) */
-    0x00,                     /* bDeviceClass (Class Code) ("Defined at interface level") */
-    0x00,                     /* bDeviceSubClass (Subclass Code) */
-    0x00,                     /* bDeviceProtocol (Protocol Code) */
-    0x40,                     /* bMaxPacketSize0 (Maximum packet size for other speed) ("64") */
-    0x00,                     /* bNumConfigurations (Number of Other-speed Configurations) */
-    0x00,                     /* bReserved (Reserved for future use, must be zero) */
+      /* Endpoint*/
+      0x07,                   /* bLength (Size of this descriptor in bytes) */
+      0x05,                   /* bDescriptorType (ENDPOINT descriptor) */
+      0x01,                   /* bEndpointAddress ('Endpoint Number' = 1, 'Direction' = 0) */
+      0x00,                   /* bEndpointAttributes ('Transfer Type' = 0, 'Synchronization Type' = 0, 'Usage Type' = 0) */
+      0x00, 0x00,             /* wMaxPacketSize (Maximum packet size this endpoint is capable of sending or receiving when this configuration is selected.) (0) */
+      0x00,                   /* bInterval (Interval for polling endpoint for data transfers. Expressed in frames or microframes depending on the device operating speed (i.e., either 1 millisecond or 125 us units)) */
+      /* Endpoint*/
+      0x07,                   /* bLength (Size of this descriptor in bytes) */
+      0x05,                   /* bDescriptorType (ENDPOINT descriptor) */
+      0x01,                   /* bEndpointAddress ('Endpoint Number' = 1, 'Direction' = 0) */
+      0x00,                   /* bEndpointAttributes ('Transfer Type' = 0, 'Synchronization Type' = 0, 'Usage Type' = 0) */
+      0x00, 0x00,             /* wMaxPacketSize (Maximum packet size this endpoint is capable of sending or receiving when this configuration is selected.) (0) */
+      0x00,                   /* bInterval (Interval for polling endpoint for data transfers. Expressed in frames or microframes depending on the device operating speed (i.e., either 1 millisecond or 125 us units)) */
 };
 
 static const char *Devices[] = {

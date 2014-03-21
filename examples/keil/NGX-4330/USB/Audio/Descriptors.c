@@ -34,6 +34,7 @@
 
 
 #include "Descriptors.h"
+#include "apptypes.h"
 
 /*****************************************************************************
  * Private types/enumerations/variables
@@ -69,7 +70,9 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	.VendorID               = 0xFACE,
 	
 	// persuade Windows to re-install drivers when we change configuration
-#if BYTES_PER_SAMPLE == 2 && USE_FULL_SPEED == 1
+#ifdef _USE_AC2
+	.ProductID              = 1909,
+#elif BYTES_PER_SAMPLE == 2 && USE_FULL_SPEED == 1
 	.ProductID              = 1601 + CHANNEL_COUNT,
 #elif BYTES_PER_SAMPLE == 2 && USE_FULL_SPEED == 0
 	.ProductID              = 1602 + CHANNEL_COUNT,
@@ -460,6 +463,9 @@ USB_Descriptor_String_t* pDescSerial = (USB_Descriptor_String_t*) DescSerial;
  *  is called so that the descriptor details can be passed back and the appropriate descriptor sent back to the
  *  USB host.
  */
+
+extern const int struct_size;
+ 
 uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
                                     const uint16_t wValue,
                                     const uint8_t wIndex,
@@ -469,6 +475,13 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 	const uint8_t  DescriptorNumber = (wValue & 0xFF);
 	const void* Address = NULL;
 	uint16_t    Size    = NO_DESCRIPTOR;
+	
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	dbg_message dbm = { 0, 0 };
+	dbm.psz = states[eGetDescriptor];
+	dbm.flags = DescriptorType;
+	dbm.value = DescriptorNumber;
+	
 	switch (DescriptorType)
 	{
 	case DTYPE_Device:
@@ -476,8 +489,13 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 		Size    = sizeof(USB_Descriptor_Device_t);
 		break;
 	case DTYPE_Configuration:
+#ifdef _USE_AC2	
+		Address = GetConfigStruct();
+		Size    = GetConfigStructSize();
+#else		
 		Address = &ConfigurationDescriptor;
 		Size    = sizeof(USB_Descriptor_Configuration_t);
+#endif		
 		break;
 	case DTYPE_String:
 		switch (DescriptorNumber)
@@ -510,5 +528,7 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 		break;
 	}
 	*DescriptorAddress = Address;
+	dbm.v2 = Size;
+	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
 	return Size;
 }
