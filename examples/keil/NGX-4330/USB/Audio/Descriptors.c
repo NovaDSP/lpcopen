@@ -60,10 +60,15 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	.USBSpecification       = VERSION_BCD(02.00),
 #endif	
 
+#ifdef _USE_AC2
+	.Class                  = USB_CSCP_IADDeviceClass,
+	.SubClass               = USB_CSCP_IADDeviceSubclass,
+	.Protocol               = USB_CSCP_IADDeviceProtocol,
+#else
 	.Class                  = USB_CSCP_NoDeviceClass,
 	.SubClass               = USB_CSCP_NoDeviceSubclass,
 	.Protocol               = USB_CSCP_NoDeviceProtocol,
-
+#endif
 	.Endpoint0Size          = FIXED_CONTROL_ENDPOINT_SIZE,
 
 	// this belongs to OMG ...

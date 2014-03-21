@@ -46,23 +46,7 @@ extern "C" {
 //
 #define FEATURE_VOLUME (1 << 1)
 #define FORMAT_TYPE_1 0x01
-//
-typedef enum 
-{ 
-	eLanguage, 
-	eAltMan, 
-	eProduct, 
-	eChannelNames, 
-	eManufacturer,
-	eSerial
-} StringDescriptors;
 
-typedef enum
-{
-	eUndefined,
-	eMilliseconds,
-	ePCMSamples,
-} LockDelayUnits;
 /** @defgroup Audio_Input_Device_Descriptor Class descriptors
  * @ingroup USB_Audio_Input_Device_18xx43xx USB_Audio_Input_Device_17xx40xx
  * @{

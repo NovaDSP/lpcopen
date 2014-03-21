@@ -16,6 +16,27 @@
 #include "task.h"
 #endif
 
+#include "config.h"
+
+//-----------------------------------------------------------------------------
+//
+typedef enum 
+{ 
+	eLanguage, 
+	eAltMan, 
+	eProduct, 
+	eChannelNames, 
+	eManufacturer,
+	eSerial
+} StringDescriptors;
+
+typedef enum
+{
+	eUndefined,
+	eMilliseconds,
+	ePCMSamples,
+} LockDelayUnits;
+
 //-----------------------------------------------------------------------------
 typedef enum _state_index
 {
