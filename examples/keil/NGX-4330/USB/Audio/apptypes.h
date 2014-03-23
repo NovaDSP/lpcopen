@@ -17,18 +17,7 @@
 #endif
 
 #include "config.h"
-
-//-----------------------------------------------------------------------------
-//
-typedef enum 
-{ 
-	eLanguage, 
-	eAltMan, 
-	eProduct, 
-	eChannelNames, 
-	eManufacturer,
-	eSerial
-} StringDescriptors;
+#include "appenum.h"
 
 typedef enum
 {
@@ -37,27 +26,7 @@ typedef enum
 	ePCMSamples,
 } LockDelayUnits;
 
-//-----------------------------------------------------------------------------
-typedef enum _state_index
-{
-	eTarget,
-	eEnabled,
-	eDisabled,
-	eGetSampleRate,
-	eGetSampleRateNoData,
-	eSetSampleRate,
-	eSetSampleRateNoData,
-	eGetSetInterfaceProperty,
-	eUnknownEndpointProperty,
-	eOtherEndpointProperty,
-	eConfigureEndpoints,
-	eGetDescriptor,
-	MaxStates
-} state_index;
-
 typedef void* xQueueHandle;
-
-extern const char* states[MaxStates];
 extern xQueueHandle xqh;
 
 //-----------------------------------------------------------------------------

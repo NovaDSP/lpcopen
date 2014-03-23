@@ -4,9 +4,27 @@
 */
 
 #include <stdint.h>
-#include "USB.h"
-#include "apptypes.h"
 
+#ifndef _MSC_VER
+#include "USB.h"
+#endif
+
+//-----------------------------------------------------------------------------
+// JME audit: needs fixing. defined twice.
+#ifndef AUDIO_STREAM_EPNUM
+#define AUDIO_STREAM_EPNUM           1
+#endif
+
+//-----------------------------------------------------------------------------
+#include "config.h"
+#include "appenum.h"
+
+//-----------------------------------------------------------------------------
+#ifdef _MSC_VER
+#define ATTR_PACKED
+#endif
+
+//-----------------------------------------------------------------------------
 // helper macro for identification
 #define  STRUCT(Type,Name)
 #define  KV(Key,Value)	(Value)
@@ -14,6 +32,45 @@
 #define  AUDIO_INTERFACE_PROTOCOL_UNDEFINED         0x00
 #define  AUDIO_INTERFACE_IP_VERSION_02_00           0x20
 #define  IP_VERSION_02_00	AUDIO_INTERFACE_IP_VERSION_02_00
+
+// table A.1
+#define  AUDIO_FUNCTION 0x01
+// table A.2
+#define  FUNCTION_SUBCLASS_UNDEFINED 0x00
+// table A.3
+#define  UAC2           0x20
+// table A.5
+#define INTERFACE_SUBCLASS_UNDEFINED 0x00
+#define AUDIOCONTROL 0x01
+#define AUDIOSTREAMING 0x02
+// table A.7
+#define FUNCTION_SUBCLASS_UNDEFINED 0x00
+#define PRO_AUDIO 0x0A
+// table A.9
+#define AC_DESCRIPTOR_UNDEFINED 0x00
+#define INPUT_TERMINAL 0x01
+#define OUTPUT_TERMINAL 0x02
+#define CLOCK_SOURCE 0x0A
+#define CLOCK_SELECTOR 0x0B
+
+//-----------------------------------------------------------------------------
+// From USB Device Class Specification for Terminal Types
+#define ANALOG_CONNECTOR 0x0601
+#define DIGITAL_AUDIO_INTERFACE 0x0602
+
+//-----------------------------------------------------------------------------
+// Generic macros
+#define NO_CONTROLS 0x00
+#define NO_TERMINAL_ASSOCIATION 0x00
+#define NO_CHANNEL_CONFIG 0x00
+#define NO_CHANNEL_NAMES 0x00
+#define NO_DESCRIPTOR_STRING 0x00
+#define SYNC_SOF (1 << 3)
+
+//-----------------------------------------------------------------------------
+#define INTERFACE_COUNT 3
+
+//-----------------------------------------------------------------------------
 
 #define MSK_EP_NBR                            0x0F
 #define MSK_EP_DIR                            0x80
@@ -317,8 +374,9 @@ typedef uint8_t U8;
 typedef uint16_t U16;
 typedef uint32_t U32;
 
+//-----------------------------------------------------------------------------
 //! USB Configuration Descriptor
-typedef struct _S_usb_configuration_descriptor
+typedef struct _ConfigurationDescriptor
 {
 	U8      bLength;              //!< Size of this descriptor in bytes
 	U8      bDescriptorType;      //!< CONFIGURATION descriptor type
@@ -329,12 +387,12 @@ typedef struct _S_usb_configuration_descriptor
 	U8      bmAttributes;         //!< Configuration characteristics
 	U8      MaxPower;             //!< Maximum power consumption
 }
-ATTR_PACKED S_usb_configuration_descriptor;
+ATTR_PACKED ConfigurationDescriptor;
 
-
+//-----------------------------------------------------------------------------
 //! USB Interface Descriptor
 typedef
-struct _S_usb_interface_descriptor
+struct _ACInterfaceDescriptor
 {
 	U8      bLength;              //!< Size of this descriptor in bytes
 	U8      bDescriptorType;      //!< INTERFACE descriptor type
@@ -346,11 +404,11 @@ struct _S_usb_interface_descriptor
 	U8      bInterfaceProtocol;   //!< Protocol code assigned by the USB
 	U8      iInterface;           //!< Index of string descriptor
 }
-ATTR_PACKED S_usb_interface_descriptor;
-
+ATTR_PACKED ACInterfaceDescriptor;
+//-----------------------------------------------------------------------------
 //! USB Interface Association Descriptor
 typedef
-struct _S_usb_interface_association_descriptor
+struct _InterfaceAssociationDescriptor
 {
 	U8 bLength;						// Size of this Descriptor in BYTEs
 	U8 bDescriptorType;				// INTERFACE_ASSOCIATION Descriptor Type (0x0B)
@@ -361,12 +419,13 @@ struct _S_usb_interface_association_descriptor
 	U8 bFunctionProcotol;
 	U8 iInterface;					// Index of String Desc for this function
 }
-ATTR_PACKED S_usb_interface_association_descriptor;
+ATTR_PACKED InterfaceAssociationDescriptor;
 
+//-----------------------------------------------------------------------------
 //! A U D I O Class V2.0 Specific paragraph 4.7
 //! Audio AC interface descriptor pp 4.7.2
 typedef
-struct _S_usb_ac_interface_descriptor_2
+struct _ACInterfaceHeaderDescriptor
 {
 	U8  bLength;               /* Size of this descriptor in bytes */
 	U8  bDescriptorType;       /* CS_INTERFACE descriptor type */
@@ -375,12 +434,12 @@ struct _S_usb_ac_interface_descriptor_2
 	U8  bCategory;				/* Primary use of this function */
 	U16 wTotalLength;       	  /* Total size of class specific descriptor */
 	U8  bmControls;		     /* Latency Control Bitmap */
-} ATTR_PACKED S_usb_ac_interface_descriptor_2;
+} ATTR_PACKED ACInterfaceHeaderDescriptor;
 
-
+//-----------------------------------------------------------------------------
 //! Clock Source descriptor  pp 4.7.2.1
 typedef
-struct _S_usb_clock_source_descriptor
+struct _ClockSourceDescriptor
 {
 	U8  bLength;               /* Size of this descriptor in bytes */
 	U8  bDescriptorType;       /* CS_INTERFACE descriptor type */
@@ -390,27 +449,27 @@ struct _S_usb_clock_source_descriptor
 	U8  bmControls;			/* Clock control bitmap */
 	U8  bAssocTerminal;		/* Terminal ID associated with this source */
 	U8  iClockSource;			/* String descriptor of this clock source */
-} ATTR_PACKED S_usb_clock_source_descriptor;
+} ATTR_PACKED ClockSourceDescriptor;
 
-
+//-----------------------------------------------------------------------------
 //! Clock Selector descriptor pp 4.7.2.2
 typedef
-struct _S_usb_clock_selector_descriptor
+struct _ClockSelectorDescriptor
 {
 	U8  bLength;               /* Size of this descriptor in bytes */
 	U8  bDescriptorType;       /* CS_INTERFACE descriptor type */
 	U8 	bDescritorSubtype;     /* CLOCK_SELECTOR subtype */
 	U8  bClockID;       	  /* Clock Selector ID */
 	U8  bNrInPins;		     /* Number of Input Pins */
-	U8  baCSourceID1;			/* variable length */
-	U8  baCSourceID2;
+	U8  baCSourceID[1];		/* variable length */
 	U8  bmControls;			/* Clock selector control bitmap  */
 	U8  iClockSelector;			/* String descriptor of this clock selector */
-} ATTR_PACKED S_usb_clock_selector_descriptor;
+} ATTR_PACKED ClockSelectorDescriptor;
 
+//-----------------------------------------------------------------------------
 //! USB INPUT Terminal Descriptor pp 4.7.2.4
 typedef
-struct _S_usb_in_ter_descriptor_2
+struct _InputTerminalDescriptor
 {
 	U8		bLength;		/* Size of this descriptor in bytes */
 	U8 	bDescriptorType;	/* CS_INTERFACE descriptor type */
@@ -424,12 +483,12 @@ struct _S_usb_in_ter_descriptor_2
 	U8		iChannelNames;	/* String descriptor of first logical channel */
 	U16  bmControls;		/* Paired Bitmap of controls */
 	U8		iTerminal;		/* String descriptor of this Input Terminal */
-} ATTR_PACKED S_usb_in_ter_descriptor_2;
+} ATTR_PACKED InputTerminalDescriptor;
 
-
+//-----------------------------------------------------------------------------
 //! USB OUTPUT Terminal Descriptor pp 4.7.2.5
 typedef
-struct _S_usb_out_ter_descriptor_2
+struct _OutputTerminalDescriptor
 {
 	U8		bLength;		/* Size of this descriptor in bytes */
 	U8 	bDescriptorType;	/* CS_INTERFACE descriptor type */
@@ -441,12 +500,12 @@ struct _S_usb_out_ter_descriptor_2
 	U8      bCSourceID;		/* ID od the Clock Entity to which this terminal is connected */
 	U16  bmControls;		/* Paired Bitmap of controls */
 	U8		iTerminal;		/* String descriptor of this Output Terminal */
-} ATTR_PACKED S_usb_out_ter_descriptor_2;
+} ATTR_PACKED OutputTerminalDescriptor;
 
 //! USB Mixer Unit descriptor pp 4.7.2.6
 //! USB Selector Unit descriptor pp 4.7.2.7
 
-
+//-----------------------------------------------------------------------------
 //! USB Audio Feature Unit descriptor pp 4.7.2.8
 typedef
 struct _S_usb_feature_unit_descriptor_2
@@ -462,6 +521,7 @@ struct _S_usb_feature_unit_descriptor_2
 	U8	iFeature;  /* String Descriptor of this Feature Unit */
 } ATTR_PACKED S_usb_feature_unit_descriptor_2;
 
+//-----------------------------------------------------------------------------
 //! USB Standard AS interface Descriptor pp 4.9.1
 typedef
 struct _S_usb_as_interface_descriptor
@@ -477,7 +537,7 @@ struct _S_usb_as_interface_descriptor
 	U8		iInterface;			/* String descriptor of this Interface */
 } ATTR_PACKED S_usb_as_interface_descriptor;
 
-
+//-----------------------------------------------------------------------------
 //! USB Class-Specific AS general interface descriptor pp 4.9.2
 typedef
 struct _S_usb_as_g_interface_descriptor_2
@@ -494,17 +554,17 @@ struct _S_usb_as_g_interface_descriptor_2
 	U8  iChannelNames;			/* String descriptor of the first physical channel */
 } ATTR_PACKED S_usb_as_g_interface_descriptor_2;
 
-
+//-----------------------------------------------------------------------------
 //! Class-Specific Audio Format Type descriptor pp 4.9.3 -> 2.3.1.6 Type I Format
 typedef
 struct _S_usb_format_type_2
 {
-	U8		bLength;			/* Size of this descriptor in bytes */
+	U8	bLength;			/* Size of this descriptor in bytes */
 	U8 	bDescriptorType;		/* CS_INTERFACE descriptor type */
 	U8 	bDescriptorSubType;		/* FORMAT_TYPE subtype */
-	U8		bFormatType;		/* Format Type this streaming interface is using */
-	U8		bSubslotSize;		/* Number of bytes in one audio subslot */
-	U8		bBitResolution;		/* Number of bits used from the available bits in the subslot */
+	U8	bFormatType;		/* Format Type this streaming interface is using */
+	U8	bSubslotSize;		/* Number of bytes in one audio subslot */
+	U8	bBitResolution;		/* Number of bits used from the available bits in the subslot */
 } ATTR_PACKED S_usb_format_type_2;
 
 
@@ -516,7 +576,7 @@ struct _S_usb_format_type_2
 //! USB WMA Decoder Descriptor pp 4.9.5.3
 //! USB DTS Decoder Descriptor pp 4.9.5.4
 
-
+//-----------------------------------------------------------------------------
 //! Usb Standard AS Isochronous Audio Data Endpoint Descriptors pp 4.10.1.1
 typedef
 struct _S_usb_endpoint_audio_descriptor_2
@@ -529,7 +589,7 @@ struct _S_usb_endpoint_audio_descriptor_2
 	U8      bInterval;             /* Interval for polling EP in ms */
 } ATTR_PACKED S_usb_endpoint_audio_descriptor_2;
 
-
+//-----------------------------------------------------------------------------
 //! Usb Class_Specific AS Isochronous Audio Data Endpoint Descriptors pp 4.10.1.2
 typedef
 struct _S_usb_endpoint_audio_specific_2
@@ -543,34 +603,33 @@ struct _S_usb_endpoint_audio_specific_2
 	U16		wLockDelay;				/* time to lock endpoint */
 } ATTR_PACKED S_usb_endpoint_audio_specific_2;
 
+//-----------------------------------------------------------------------------
 typedef
 struct _InterfaceCollectionDescriptor
 {
-	S_usb_ac_interface_descriptor_2			audioac;
-	S_usb_clock_source_descriptor			audio_cs1;
-	S_usb_clock_source_descriptor			audio_cs2;
-	S_usb_clock_selector_descriptor			audio_csel;
-	//			S_usb_clock_multiplier_descriptor		audio_cmul;
-	S_usb_in_ter_descriptor_2 				mic_in_ter;
-	S_usb_feature_unit_descriptor_2			mic_fea_unit;
-	S_usb_out_ter_descriptor_2				mic_out_ter;
-	S_usb_in_ter_descriptor_2				spk_in_ter;
-	S_usb_feature_unit_descriptor_2			spk_fea_unit;
-	S_usb_out_ter_descriptor_2				spk_out_ter;
+	ACInterfaceHeaderDescriptor			audioac;
+	// 1 sample rate so 1 clock source.
+	ClockSourceDescriptor clock_source;
+	//
+	ClockSelectorDescriptor clock_selector;
+	//
+	InputTerminalDescriptor 				mic_in_ter;
+	//
+	OutputTerminalDescriptor				mic_out_ter;
 } 
 ATTR_PACKED InterfaceCollectionDescriptor;
 
+//-----------------------------------------------------------------------------
+// application specific structure for descriptor collection(s)
 typedef
-struct _S_usb_user_configuration_descriptor
+struct _AppConfigurationDescriptor
 {
-	S_usb_configuration_descriptor			cfg;
-	S_usb_interface_descriptor	 			ifc0;
-
-	//! Audio descriptors Class 2
-
-	S_usb_interface_association_descriptor	iad1;
-	S_usb_interface_descriptor				ifc1;
+	ConfigurationDescriptor	cfg;
+	ACInterfaceDescriptor ifc0;
+	InterfaceAssociationDescriptor ifad;
+	ACInterfaceDescriptor acifd;
 	//-------------------------------------------
+	// variable length collection
 	InterfaceCollectionDescriptor ifcd;
 	//-------------------------------------------
 	S_usb_as_interface_descriptor	 		mic_as_alt0;
@@ -579,316 +638,210 @@ struct _S_usb_user_configuration_descriptor
 	S_usb_format_type_2						mic_format_type;
 	S_usb_endpoint_audio_descriptor_2 		ep1;
 	S_usb_endpoint_audio_specific_2			ep1_s;
-	S_usb_as_interface_descriptor	 		spk_as_alt0;
-	S_usb_as_interface_descriptor	 		spk_as_alt1;
-	S_usb_as_g_interface_descriptor_2		spk_g_as;
-	S_usb_format_type_2						spk_format_type;
-	S_usb_endpoint_audio_descriptor_2 		ep2;
-	S_usb_endpoint_audio_specific_2			ep2_s;
 }
-ATTR_PACKED S_usb_user_configuration_descriptor;
+ATTR_PACKED AppConfigurationDescriptor;
 
+//-----------------------------------------------------------------------------
 // usb_user_configuration_descriptor HS
-const S_usb_user_configuration_descriptor uac2_usb_conf_desc_hs =
+const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 {
-	STRUCT(S_usb_configuration_descriptor,cfg)
+	STRUCT(ConfigurationDescriptor,cfg)
 	{	
-		KV(Size,sizeof(S_usb_configuration_descriptor)),
-		KV(Type,DTYPE_Configuration),
-		KV(TotalConfigurationSize,sizeof(S_usb_user_configuration_descriptor)),
+		KV(bLength,sizeof(ConfigurationDescriptor)),
+		KV(bDescriptorType,DTYPE_Configuration),
+		KV(TotalConfigurationSize,sizeof(AppConfigurationDescriptor)),
 		KV(TotalInterfaces,2),
 		KV(ConfigurationNumber,1),
-		KV(StringIndex,NO_DESCRIPTOR),
-		KV(ConfigAttributes,USB_CONFIG_ATTR_BUSPOWERED | USB_CONFIG_ATTR_SELFPOWERED),
+		KV(StringIndex,NO_DESCRIPTOR_STRING),
+		KV(ConfigAttributes,USB_CONFIG_ATTR_BUSPOWERED),
 		KV(MaxPower,USB_CONFIG_POWER_MA(200))
 	},
-	STRUCT(S_usb_interface_descriptor,ifc0)
+	// JME audit, this is in the wrong place ...
+	// interface 0 is zero-bandwidth
+	STRUCT(ACInterfaceDescriptor,ifc0)
 	{
-		KV(Size,sizeof(S_usb_interface_descriptor)),
-		KV(Type,DTYPE_Interface),
+		KV(bLength,sizeof(ACInterfaceDescriptor)),
+		KV(bDescriptorType,DTYPE_Interface),
 		KV(InterfaceNumber,0),
 		KV(AlternateSetting,0),
-		KV(TotalEndpoints,0),
-		INTERFACE_CLASS0,
-		INTERFACE_SUB_CLASS0,
-		INTERFACE_PROTOCOL0,
-		INTERFACE_INDEX0
+		KV(bNumEndpoints,0),
+		KV(bInterfaceClass,AUDIO_CLASS),
+		KV(bInterfaceSubClass,FUNCTION_SUBCLASS_UNDEFINED),
+		KV(bInterfaceProtocol,UAC2),
+		KV(iInterface,eINTERFACE_STRING_IF0)
 	},
 
-	//! Here is where Audio Class 2 specific stuff is
-	STRUCT(S_usb_interface_association_descriptor,iad1)
+	// S 3.2 Audio Interface Collection
+	STRUCT(InterfaceAssociationDescriptor,ifad)
 	{ 
-		KV(Size,sizeof(S_usb_interface_association_descriptor)),
-		KV(Type,DTYPE_InterfaceAssociation),
-		KV(FirstInterfaceIndex,FIRST_INTERFACE1),
-		KV(TotalInterfaces,INTERFACE_COUNT1),
-		KV(Class,FUNCTION_CLASS),
-		KV(SubClass,FUNCTION_SUB_CLASS),
-		KV(Protocol,FUNCTION_PROTOCOL),
-		KV(StringIndex,FUNCTION_INDEX)
+		KV(bLength,sizeof(InterfaceAssociationDescriptor)),
+		KV(bDescriptorType,DTYPE_InterfaceAssociation),
+		KV(bFirstInterface,FIRST_INTERFACE1),
+		KV(bInterfaceCount,INTERFACE_COUNT),
+		KV(bFunctionClass,AUDIO_FUNCTION),
+		KV(bFunctionSubClass,FUNCTION_SUBCLASS_UNDEFINED),
+		KV(bFunctionProtocol,UAC2),
+		KV(iFunction,eINTERFACE_STRING_IAD)
 	},
-
-	STRUCT(S_usb_interface_descriptor,ifc1)
+	// interface 1 is streaming mode
+	// S 4.7.1
+	STRUCT(ACInterfaceDescriptor,acifd)
 	{
-		KV(Size,sizeof(S_usb_interface_descriptor)),
-		KV(Type,DTYPE_Interface),
-		INTERFACE_NB1,
-		ALTERNATE_NB1,
-		NB_ENDPOINT1,
-		INTERFACE_CLASS1,
-		INTERFACE_SUB_CLASS1,
-		INTERFACE_PROTOCOL1,
-		INTERFACE_INDEX1
+		KV(bLength,sizeof(ACInterfaceDescriptor)),
+		KV(bDescriptorType,DTYPE_Interface),
+		KV(bInterfaceNumber,INTERFACE_NB1),
+		KV(bAlternateSetting,ALTERNATE_NB1),
+		KV(bNumEndpoints,1),
+		KV(bInterfaceClass,AUDIO_CLASS),
+		KV(bInterfaceSubClass,AUDIOCONTROL),
+		KV(bInterfaceProtocol,UAC2),
+		KV(iInterface,eINTERFACE_STRING_ACINTERFACEDESCRIPTOR)
 	},
 	STRUCT(InterfaceCollectionDescriptor,ifcd)
 	{
-		STRUCT(S_usb_ac_interface_descriptor_2,audioac)
-		{  sizeof(S_usb_ac_interface_descriptor_2)
-			,  CS_INTERFACE
-			,  HEADER_SUB_TYPE
-			,  Usb_format_mcu_to_usb_data(16, AUDIO_CLASS_REVISION_2)
-			,  HEADSET_CATEGORY
-			,  Usb_format_mcu_to_usb_data(16,sizeof(InterfaceCollectionDescriptor))
-			,  MIC_LATENCY_CONTROL
-		},
-		STRUCT(S_usb_clock_source_descriptor,audio_cs1)
+		STRUCT(ACInterfaceHeaderDescriptor,audioac)
 		{  
-			sizeof (S_usb_clock_source_descriptor),
-			CS_INTERFACE,
-			DESCRIPTOR_SUBTYPE_AUDIO_AC_CLOCK_SOURCE,
-			CSD_ID_1,
-			CSD_ID_1_TYPE,
-			CSD_ID_1_CONTROL,
-			OUTPUT_TERMINAL_ID,
-			CLOCK_SOURCE_1_INDEX,
+			KV(bLength,sizeof(ACInterfaceHeaderDescriptor)),
+			KV(bDescriptorType,CS_INTERFACE),
+			KV(bDescriptorSubtype,HEADER_SUB_TYPE),
+			KV(bcdADC,VERSION_BCD(02.00)),
+			KV(bCategory,PRO_AUDIO),
+			KV(wTotalLength,sizeof(InterfaceCollectionDescriptor)),
+			KV(bmControls,0),
 		},
-		STRUCT(S_usb_clock_source_descriptor,audio_cs2)
+		STRUCT(ClockSourceDescriptor,clock_source)
 		{  
-			sizeof (S_usb_clock_source_descriptor),
-			CS_INTERFACE,
-			DESCRIPTOR_SUBTYPE_AUDIO_AC_CLOCK_SOURCE,
-			CSD_ID_2,
-			CSD_ID_2_TYPE,
-			CSD_ID_2_CONTROL,
-			OUTPUT_TERMINAL_ID,
-			CLOCK_SOURCE_2_INDEX,
+			KV(bLength,sizeof(ClockSourceDescriptor)),
+			KV(bDescriptorType,CS_INTERFACE),
+			KV(bDescriptorSubtype,CLOCK_SOURCE),
+			KV(ClockID,CSD_ID_1),
+			KV(bmAttributes,SYNC_SOF),
+			KV(bmControls,NO_CONTROLS),
+			KV(bAssocTerminal,OUTPUT_TERMINAL_ID),
+			KV(iClockSource,eINTERFACE_STRING_CLOCK_SOURCE),
 		},
-		STRUCT(S_usb_clock_selector_descriptor,audio_csel)
+		STRUCT(ClockSelectorDescriptor,clock_selector)
+		{
+			KV(bLength,sizeof(ClockSelectorDescriptor)),
+			KV(bDescriptorType,CS_INTERFACE),
+			KV(bDescriptorSubtype,CLOCK_SELECTOR),
+			KV(ClockID,CSD_ID_2),
+			KV(bNrInPins,1),
+			KV(baCSourceID,CSD_ID_1),
+			KV(bmControls,NO_CONTROLS),
+			KV(iClockSelector,eINTERFACE_STRING_CLOCK_SELECTOR),
+		},
+		// 4.7.2.4
+		STRUCT(InputTerminalDescriptor,mic_in_ter)
 		{  
-			sizeof (S_usb_clock_selector_descriptor),
-			CS_INTERFACE,
-			DESCRIPTOR_SUBTYPE_AUDIO_AC_CLOCK_SELECTOR,
-			CSX_ID,
-			CSX_INPUT_PINS,
-			CSX_SOURCE_1,
-			CSX_SOURCE_2,
-			CSX_CONTROL,
-			0,
+			KV(bLength,sizeof(InputTerminalDescriptor)),
+			KV(bDescriptorType,CS_INTERFACE),
+			KV(bDescriptorSubType,INPUT_TERMINAL_SUB_TYPE),
+			KV(bTerminalID,INPUT_TERMINAL_ID),
+			KV(wTerminalType,DIGITAL_AUDIO_INTERFACE),
+			KV(bAssocTerminal,NO_TERMINAL_ASSOCIATION),
+			KV(bCSourceID,CSX_ID),
+			KV(bNrChannels,CHANNEL_COUNT),
+			KV(bmChannelConfig,NO_CHANNEL_CONFIG),
+			KV(iChannelNames,NO_CHANNEL_NAMES),
+			KV(bmControls,NO_CONTROLS),
+			KV(iTerminal,eINTERFACE_STRING_INPUT_TERMINAL)
 		},
-		STRUCT(S_usb_in_ter_descriptor_2,mic_in_ter)
+
+		STRUCT(OutputTerminalDescriptor,mic_out_ter)
 		{  
-			sizeof(S_usb_in_ter_descriptor_2),
-			CS_INTERFACE,
-			INPUT_TERMINAL_SUB_TYPE,
-			INPUT_TERMINAL_ID,
-			Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_TYPE),
-			INPUT_TERMINAL_ASSOCIATION,
-			CSX_ID,
-			INPUT_TERMINAL_NB_CHANNELS,
-			Usb_format_mcu_to_usb_data(32, INPUT_TERMINAL_CHANNEL_CONF),
-			INPUT_TERMINAL_CH_NAME_ID,
-			Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CONTROLS),
-			AIT_INDEX
+			KV(bLength,sizeof(OutputTerminalDescriptor)),
+			KV(bType,CS_INTERFACE),
+			KV(bDescriptorSubType,OUTPUT_TERMINAL_SUB_TYPE),
+			KV(bTerminalID,OUTPUT_TERMINAL_ID),
+			KV(wTerminalType,OUTPUT_TERMINAL_TYPE),
+			KV(bAssocTerminal,  OUTPUT_TERMINAL_ASSOCIATION),
+			KV(bSourceID,  OUTPUT_TERMINAL_SOURCE_ID),
+			KV(bClockSourceID,  CSX_ID),
+			KV(bmControls,NO_CONTROLS),
+			KV(iTerminal,eINTERFACE_STRING_OUTPUT_TERMINAL)
 		},
-		STRUCT(S_usb_feature_unit_descriptor_2,mic_fea_unit)
-		{  
-			sizeof(S_usb_feature_unit_descriptor_2),
-			CS_INTERFACE,
-			FEATURE_UNIT_SUB_TYPE,
-			MIC_FEATURE_UNIT_ID,
-			MIC_FEATURE_UNIT_SOURCE_ID,
-			Usb_format_mcu_to_usb_data(32, MIC_BMA_CONTROLS),
-			Usb_format_mcu_to_usb_data(32, MIC_BMA_CONTROLS_CH_1),
-			Usb_format_mcu_to_usb_data(32, MIC_BMA_CONTROLS_CH_2),
-			0x00   //iFeature
-		},
-		STRUCT(S_usb_out_ter_descriptor_2,mic_out_ter)
-		{  
-			sizeof(S_usb_out_ter_descriptor_2)
-			,  CS_INTERFACE
-			,  OUTPUT_TERMINAL_SUB_TYPE
-			,  OUTPUT_TERMINAL_ID
-			,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_TYPE)
-			,  OUTPUT_TERMINAL_ASSOCIATION
-			,  OUTPUT_TERMINAL_SOURCE_ID
-			,  CSX_ID
-			,  Usb_format_mcu_to_usb_data(16, OUTPUT_TERMINAL_CONTROLS)
-			, AOT_INDEX
-		},
-			{  sizeof(S_usb_in_ter_descriptor_2)
-			,  CS_INTERFACE
-			,  INPUT_TERMINAL_SUB_TYPE
-			,  SPK_INPUT_TERMINAL_ID
-			,  Usb_format_mcu_to_usb_data(16, SPK_INPUT_TERMINAL_TYPE)
-			,  SPK_INPUT_TERMINAL_ASSOCIATION
-			,  CSX_ID
-			,  SPK_INPUT_TERMINAL_NB_CHANNELS
-			,  Usb_format_mcu_to_usb_data(32, SPK_INPUT_TERMINAL_CHANNEL_CONF)
-			,  INPUT_TERMINAL_CH_NAME_ID
-			,  Usb_format_mcu_to_usb_data(16, INPUT_TERMINAL_CONTROLS)
-			,  INPUT_TERMINAL_STRING_DESC
-			}
-			,
-			{  sizeof(S_usb_feature_unit_descriptor_2)
-			,  CS_INTERFACE
-			,  FEATURE_UNIT_SUB_TYPE
-			,  SPK_FEATURE_UNIT_ID
-			,  SPK_FEATURE_UNIT_SOURCE_ID
-			,  Usb_format_mcu_to_usb_data(32, SPK_BMA_CONTROLS)
-			,  Usb_format_mcu_to_usb_data(32, SPK_BMA_CONTROLS_CH_1)
-			,  Usb_format_mcu_to_usb_data(32, SPK_BMA_CONTROLS_CH_2)
-			,  0x00
-			}
-			,
-			{  sizeof(S_usb_out_ter_descriptor_2)
-			,  CS_INTERFACE
-			,  OUTPUT_TERMINAL_SUB_TYPE
-			,  SPK_OUTPUT_TERMINAL_ID
-			,  Usb_format_mcu_to_usb_data(16, SPK_OUTPUT_TERMINAL_TYPE)
-			,  SPK_OUTPUT_TERMINAL_ASSOCIATION
-			,  SPK_OUTPUT_TERMINAL_SOURCE_ID
-			,  CSX_ID
-			,  Usb_format_mcu_to_usb_data(16,SPK_OUTPUT_TERMINAL_CONTROLS)
-			,  0x00
-			},
-		},
-		//
-		{  sizeof(S_usb_as_interface_descriptor)
-		,  INTERFACE_DESCRIPTOR
-		,  STD_AS_INTERFACE_IN
-		,  ALT0_AS_INTERFACE_INDEX
-		,  ALT0_AS_NB_ENDPOINT
-		,  ALT0_AS_INTERFACE_CLASS
-		,  ALT0_AS_INTERFACE_SUB_CLASS
-		,  ALT0_AS_INTERFACE_PROTOCOL
-		, AIN_INDEX
-		},
-		//
-		{  sizeof(S_usb_as_interface_descriptor)
-		,  INTERFACE_DESCRIPTOR
-		,  STD_AS_INTERFACE_IN
-		,  ALT1_AS_INTERFACE_INDEX
-		,  ALT1_AS_NB_ENDPOINT
-		,  ALT1_AS_INTERFACE_CLASS
-		,  ALT1_AS_INTERFACE_SUB_CLASS
-		,  ALT1_AS_INTERFACE_PROTOCOL
-		, AIA_INDEX
-		},
-		//
-		{  sizeof(S_usb_as_g_interface_descriptor_2)
-		,  CS_INTERFACE
-		,  GENERAL_SUB_TYPE
-		,  AS_TERMINAL_LINK
-		,  AS_CONTROLS
-		,  AS_FORMAT_TYPE
-		,  Usb_format_mcu_to_usb_data(32, AS_FORMATS)
-		,  AS_NB_CHANNELS
-		,  Usb_format_mcu_to_usb_data(32, AS_CHAN_CONFIG)
-		},
-		//
-		{  sizeof(S_usb_format_type_2)
-		,  CS_INTERFACE
-		,  FORMAT_SUB_TYPE
-		,  FORMAT_TYPE_1
-		,  FORMAT_SUBSLOT_SIZE_1
-		,  FORMAT_BIT_RESOLUTION_1
-		},
-		//
-		{   sizeof(S_usb_endpoint_audio_descriptor_2)
-		,   ENDPOINT_DESCRIPTOR
-		,   ENDPOINT_NB_1
-		,   EP_ATTRIBUTES_1
-		,   Usb_format_mcu_to_usb_data(16, EP_SIZE_1_HS)
-		,   EP_INTERVAL_1_HS
-		},
-		//
-		{  sizeof(S_usb_endpoint_audio_specific_2)
-		,  CS_ENDPOINT
-		,  GENERAL_SUB_TYPE
-		,  AUDIO_EP_ATRIBUTES
-		,  AUDIO_EP_CONTROLS
-		,  AUDIO_EP_DELAY_UNIT
-		,  Usb_format_mcu_to_usb_data(16, AUDIO_EP_LOCK_DELAY)
-		},
-		//
-		{  sizeof(S_usb_as_interface_descriptor)
-		,  INTERFACE_DESCRIPTOR
-		,  STD_AS_INTERFACE_OUT
-		,  ALT0_AS_INTERFACE_INDEX
-		,  ALT0_AS_NB_ENDPOINT
-		,  ALT0_AS_INTERFACE_CLASS
-		,  ALT0_AS_INTERFACE_SUB_CLASS
-		,  ALT0_AS_INTERFACE_PROTOCOL
-		,  0x00
-		},
-		//
-		{  sizeof(S_usb_as_interface_descriptor)
-		,  INTERFACE_DESCRIPTOR
-		,  STD_AS_INTERFACE_OUT
-		,  ALT1_AS_INTERFACE_INDEX
-		,  ALT1_AS_NB_ENDPOINT_OUT
-		,  ALT1_AS_INTERFACE_CLASS
-		,  ALT1_AS_INTERFACE_SUB_CLASS
-		,  ALT1_AS_INTERFACE_PROTOCOL
-		,  0x00
-		},
-		//
-		{  sizeof(S_usb_as_g_interface_descriptor_2)
-		,  CS_INTERFACE
-		,  GENERAL_SUB_TYPE
-		,  SPK_INPUT_TERMINAL_ID
-		,  AS_CONTROLS
-		,  AS_FORMAT_TYPE
-		,  Usb_format_mcu_to_usb_data(32, AS_FORMATS)
-		,  AS_NB_CHANNELS
-		,  Usb_format_mcu_to_usb_data(32,AS_CHAN_CONFIG)
-		,  0x00
-		},
-		//
-		{  sizeof(S_usb_format_type_2)
-		,  CS_INTERFACE
-		,  FORMAT_SUB_TYPE
-		,  FORMAT_TYPE_1
-		,  FORMAT_SUBSLOT_SIZE_1
-		,  FORMAT_BIT_RESOLUTION_1
-		},
-		//
-		{   sizeof(S_usb_endpoint_audio_descriptor_2)
-		,   ENDPOINT_DESCRIPTOR
-		,   ENDPOINT_NB_2
-		,   EP_ATTRIBUTES_2
-		,   Usb_format_mcu_to_usb_data(16, EP_SIZE_2_HS)
-		,   EP_INTERVAL_2_HS
-		},
-		//
-		{  
-			KV(Size,sizeof(S_usb_endpoint_audio_specific_2)),
-			KV(Type,DTYPE_CSEndpoint),
-			KV(SubType,AUDIO_DSUBTYPE_CSEndpoint_General),
-			KV(Attributes,AUDIO_EP_ATRIBUTES),
-			KV(LockDelayUnits,ePCMSamples),
-			KV(LockDelay,2)
-		}
+	},
+	STRUCT(S_usb_as_interface_descriptor,mic_as_alt0)
+	{  
+		KV(bLength,sizeof(S_usb_as_interface_descriptor)),
+		KV(bType,INTERFACE_DESCRIPTOR),
+		KV(bInterfaceNumber,STD_AS_INTERFACE_IN),
+		KV(bAlternateSetting,ALT0_AS_INTERFACE_INDEX),
+		KV(bNumEndpoints,ALT0_AS_NB_ENDPOINT),
+		KV(bInterfaceClass,ALT0_AS_INTERFACE_CLASS),
+		KV(bInterfaceSubclass,ALT0_AS_INTERFACE_SUB_CLASS),
+		KV(bInterfaceProtocol,ALT0_AS_INTERFACE_PROTOCOL),
+		KV(iInterface,eINTERFACE_STRING_ALT0)
+	},
+	STRUCT(S_usb_as_interface_descriptor,mic_as_alt1)
+	{  
+		KV(bLength,sizeof(S_usb_as_interface_descriptor)),
+		KV(bType,INTERFACE_DESCRIPTOR),
+		KV(bInterfaceNumber,STD_AS_INTERFACE_IN),
+		KV(bAlternateSetting,ALT1_AS_INTERFACE_INDEX),
+		KV(bNumEndpoints,ALT1_AS_NB_ENDPOINT),
+		KV(bInterfaceClass,ALT1_AS_INTERFACE_CLASS),
+		KV(bInterfaceSubclass,ALT1_AS_INTERFACE_SUB_CLASS),
+		KV(bInterfaceProtocol,ALT1_AS_INTERFACE_PROTOCOL),
+		KV(iInterface,eINTERFACE_STRING_ALT1),
+	},
+	STRUCT(S_usb_as_g_interface_descriptor_2,mic_g_as)
+	{  
+		KV(bLength,sizeof(S_usb_as_g_interface_descriptor_2)),
+		KV(bType,CS_INTERFACE),
+		KV(bDescriptorSubType,GENERAL_SUB_TYPE),
+		KV(bTerminalLink,AS_TERMINAL_LINK),
+		KV(bmControls,AS_CONTROLS),
+		KV(bFormatType,AS_FORMAT_TYPE),
+		KV(bmFormats,AS_FORMATS),
+		KV(bNrChannels,CHANNEL_COUNT),
+		KV(bmChannelConfig,0),
+		KV(iChannelNames,0)
+	},
+	STRUCT(S_usb_format_type_2,mic_format_type)
+	{  
+		KV(bLength,sizeof(S_usb_format_type_2)),
+		KV(bDescriptorType,CS_INTERFACE),
+		KV(bDescriptorSubType,FORMAT_SUB_TYPE),
+		KV(bFormatType,FORMAT_TYPE_1),
+		KV(bSubslotSize,BYTES_PER_SAMPLE),
+		KV(bBitResolution,BYTES_PER_SAMPLE * 8),
+	},
+	STRUCT(S_usb_endpoint_audio_descriptor_2,ep1)
+	{   // 4.10.2.1
+		KV(bLength,sizeof(S_usb_endpoint_audio_descriptor_2)),
+		KV(bDescriptorType,ENDPOINT_DESCRIPTOR),
+		KV(bEndpointAddress,ENDPOINT_DIR_IN | AUDIO_STREAM_EPNUM),
+		KV(bmAttributes,EP_TYPE_ISOCHRONOUS | ENDPOINT_ATTR_SYNC | ENDPOINT_USAGE_DATA),
+		KV(wMaxPacketsize,EP_SIZE_BYTES),
+		KV(bInterval,EP_INTERVAL_1_HS),
+	},
+	STRUCT(	S_usb_endpoint_audio_specific_2,ep1_s)
+	{	// T4.34
+		KV(bLength,sizeof(S_usb_endpoint_audio_specific_2)),
+		KV(bDescriptorType,CS_ENDPOINT),
+		KV(Subtype,GENERAL_SUB_TYPE),
+		KV(bmAttributes,0),
+		KV(bmControls,0),
+		KV(bLockDelayUnits,2),
+		KV(wLockDelay,2),
+	},
 };
 
-const int struct_size = sizeof(S_usb_user_configuration_descriptor);
+//-----------------------------------------------------------------------------
+const int struct_size = sizeof(AppConfigurationDescriptor);
 
+//-----------------------------------------------------------------------------
 int GetConfigStructSize() 
 {
-	return sizeof(S_usb_user_configuration_descriptor);
+	return sizeof(AppConfigurationDescriptor);
 }
 
+//-----------------------------------------------------------------------------
 void* GetConfigStruct() 
 {
 	return (void*) &uac2_usb_conf_desc_hs;
 }
+
+//-----------------------------------------------------------------------------

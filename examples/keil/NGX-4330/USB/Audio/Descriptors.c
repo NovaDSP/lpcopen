@@ -35,6 +35,7 @@
 
 #include "Descriptors.h"
 #include "apptypes.h"
+#include "appenum.h"
 
 /*****************************************************************************
  * Private types/enumerations/variables
@@ -90,8 +91,7 @@ USB_Descriptor_Device_t DeviceDescriptor =
 #endif	
 	.ReleaseNumber          = VERSION_BCD(02.18),
 
-	//.ManufacturerStrIndex   = eManufacturer,
-	.ManufacturerStrIndex   = eAltMan,
+	.ManufacturerStrIndex   = eManufacturer,
 	.ProductStrIndex        = eProduct,
 	.SerialNumStrIndex      = eSerial,
 
@@ -323,7 +323,6 @@ uint8_t LanguageString[] =
 	DTYPE_String,
 	WBVAL(LANGUAGE_ID_ENG),
 };
-USB_Descriptor_String_t* LanguageStringPtr = (USB_Descriptor_String_t*) LanguageString;
 
 /** Manufacturer descriptor string. This is a Unicode string containing the manufacturer's details in human readable
  *  form, and is read out upon request by the host when the appropriate string ID is requested, listed in the Device
@@ -341,7 +340,6 @@ uint8_t ManufacturerString[] =
 	WBVAL('i'),
 	WBVAL('a'),
 };
-USB_Descriptor_String_t* ManufacturerStringPtr = (USB_Descriptor_String_t*) ManufacturerString;
 
 /** Product descriptor string. This is a Unicode string containing the product's details in human readable form,
  *  and is read out upon request by the host when the appropriate string ID is requested, listed in the Device
@@ -403,7 +401,6 @@ uint8_t ProductString[] =
 	WBVAL('S'),
 #endif	
 };
-USB_Descriptor_String_t* ProductStringPtr = (USB_Descriptor_String_t*) ProductString;
 
 uint8_t ChannelStrings[] =
 {
@@ -415,7 +412,6 @@ uint8_t ChannelStrings[] =
 	WBVAL('0'),
 	WBVAL('1'),
 };
-USB_Descriptor_String_t* ChannelNamesStringPtr = (USB_Descriptor_String_t*) ChannelStrings;
 
 uint8_t AltMan[] =
 {
@@ -429,8 +425,6 @@ uint8_t AltMan[] =
 	WBVAL('i'),
 	WBVAL('a'),
 };
-
-USB_Descriptor_String_t* AltManDesc = (USB_Descriptor_String_t*) AltMan;
 
 uint8_t DescSerial[] =
 {
@@ -452,16 +446,103 @@ uint8_t DescSerial[] =
 #endif	
 };
 
-USB_Descriptor_String_t* pDescSerial = (USB_Descriptor_String_t*) DescSerial;
+uint8_t DescAlt0[] =
+{
+	USB_STRING_LEN(4),
+	DTYPE_String,
+	WBVAL('A'),
+	WBVAL('L'),
+	WBVAL('T'),
+	WBVAL('0'),
+};
 
-/*****************************************************************************
- * Private functions
- ****************************************************************************/
+uint8_t DescAlt1[] =
+{
+	USB_STRING_LEN(4),
+	DTYPE_String,
+	WBVAL('A'),
+	WBVAL('L'),
+	WBVAL('T'),
+	WBVAL('1'),
+};
 
-/*****************************************************************************
- * Public functions
- ****************************************************************************/
+uint8_t DescAC0[] =
+{
+	USB_STRING_LEN(3),
+	DTYPE_String,
+	WBVAL('A'),
+	WBVAL('C'),
+	WBVAL('1'),
+};
 
+uint8_t DescIF0[] =
+{
+	USB_STRING_LEN(3),
+	DTYPE_String,
+	WBVAL('I'),
+	WBVAL('F'),
+	WBVAL('0'),
+};
+
+uint8_t DescIAD[] =
+{
+	USB_STRING_LEN(3),
+	DTYPE_String,
+	WBVAL('I'),
+	WBVAL('A'),
+	WBVAL('D'),
+};
+
+//-----------------------------------------------------------------------------
+uint8_t ClockSource[] = 
+{
+	USB_STRING_LEN(6),DTYPE_String,WBVAL('C'),WBVAL('L'),WBVAL('K'),WBVAL('S'),WBVAL('R'),WBVAL('C'),
+};
+
+//-----------------------------------------------------------------------------
+uint8_t ClockSelector[] = 
+{
+	USB_STRING_LEN(6),DTYPE_String,WBVAL('C'),WBVAL('L'),WBVAL('K'),WBVAL('S'),WBVAL('E'),WBVAL('L'),
+};
+
+//-----------------------------------------------------------------------------
+uint8_t InputTerminal[] = 
+{
+	USB_STRING_LEN(6),DTYPE_String,WBVAL('I'),WBVAL('P'),WBVAL('T'),WBVAL('E'),WBVAL('R'),WBVAL('M'),
+};
+
+//-----------------------------------------------------------------------------
+uint8_t OutputTerminal[] = 
+{
+	USB_STRING_LEN(6),DTYPE_String,WBVAL('O'),WBVAL('P'),WBVAL('T'),WBVAL('E'),WBVAL('R'),WBVAL('M'),
+};
+
+//-----------------------------------------------------------------------------
+uint8_t acInterfaceDescriptor[] = 
+{
+	USB_STRING_LEN(5),DTYPE_String,WBVAL('A'),WBVAL('C'),WBVAL('I'),WBVAL('F'),WBVAL('D'),
+};
+
+//-----------------------------------------------------------------------------
+USB_Descriptor_String_t* descriptor_string[] = 
+{
+	(USB_Descriptor_String_t*) LanguageString,
+	(USB_Descriptor_String_t*) ManufacturerString,
+	(USB_Descriptor_String_t*) ProductString,
+	(USB_Descriptor_String_t*) DescSerial,
+	(USB_Descriptor_String_t*) DescAlt0,
+	(USB_Descriptor_String_t*) DescAlt1,
+	(USB_Descriptor_String_t*) DescAC0,
+	(USB_Descriptor_String_t*) DescIF0,
+	(USB_Descriptor_String_t*) DescIAD,
+	(USB_Descriptor_String_t*) ClockSource,
+	(USB_Descriptor_String_t*) ClockSelector,
+	(USB_Descriptor_String_t*) InputTerminal,
+	(USB_Descriptor_String_t*) OutputTerminal,
+	(USB_Descriptor_String_t*) acInterfaceDescriptor
+};
+
+//-----------------------------------------------------------------------------
 /** This function is called by the library when in device mode, and must be overridden (see library "USB Descriptors"
  *  documentation) by the application code so that the address and size of a requested descriptor can be given
  *  to the USB library. When the device receives a Get Descriptor request on the control endpoint, this function
@@ -469,8 +550,8 @@ USB_Descriptor_String_t* pDescSerial = (USB_Descriptor_String_t*) DescSerial;
  *  USB host.
  */
 
-extern const int struct_size;
- 
+//-----------------------------------------------------------------------------
+//
 uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
                                     const uint16_t wValue,
                                     const uint8_t wIndex,
@@ -503,37 +584,19 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 #endif		
 		break;
 	case DTYPE_String:
-		switch (DescriptorNumber)
+		if (DescriptorNumber < eINTERFACE_STRING_MAX)
 		{
-		case eLanguage:
-			Address = LanguageStringPtr;
-			Size    = pgm_read_byte(&LanguageStringPtr->Header.Size);
-			break;
-		case eManufacturer:
-			Address = ManufacturerStringPtr;
-			Size    = pgm_read_byte(&ManufacturerStringPtr->Header.Size);
-			break;
-		case eProduct:
-			Address = ProductStringPtr;
-			Size    = pgm_read_byte(&ProductStringPtr->Header.Size);
-			break;
-		case eChannelNames:
-			Address = ChannelNamesStringPtr;
-			Size    = pgm_read_byte(&ChannelNamesStringPtr->Header.Size);
-			break;
-		case eAltMan:
-			Address = AltManDesc;
-			Size    = pgm_read_byte(&AltManDesc->Header.Size);
-			break;
-		case eSerial:
-			Address = pDescSerial;
-			Size    = pgm_read_byte(&pDescSerial->Header.Size);
-			break;
+			USB_Descriptor_String_t* p = descriptor_string[DescriptorNumber];
+			Address = p;
+			Size    = pgm_read_byte(&p->Header.Size);
 		}
 		break;
 	}
-	*DescriptorAddress = Address;
+	// queue the details for later logging
 	dbm.v2 = Size;
 	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+	// set the address of the string 'struct'
+	*DescriptorAddress = Address;
+	// return the number of bytes ...
 	return Size;
 }

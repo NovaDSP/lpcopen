@@ -698,6 +698,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\appenum.h"
+				>
+			</File>
+			<File
 				RelativePath=".\apptypes.h"
 				>
 			</File>
@@ -754,15 +758,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\board.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\board.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\hitex_eva_18504350\board.h"
 				>
 			</File>
 			<File
@@ -1398,10 +1402,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857\sys_config.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\ngx_xplorer_18304330\ngx_xplorer_4330\sys_config.h"
 				>
 			</File>
@@ -1419,6 +1419,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_4357\sys_config.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_board\boards_18xx_43xx\keil_mcb_18574357\keil_mcb_1857\sys_config.h"
 				>
 			</File>
 			<File
@@ -1486,11 +1490,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_adcuser.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_adcuser.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_adcuser.h"
 				>
 			</File>
 			<File
@@ -1502,15 +1506,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_cdc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdcuser.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdc.h"
 				>
 			</File>
 			<File
@@ -1518,7 +1518,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_core.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_cdcuser.h"
 				>
 			</File>
 			<File
@@ -1526,11 +1526,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_desc.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_core.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfu.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_desc.h"
 				>
 			</File>
 			<File
@@ -1538,11 +1538,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfuuser.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfu.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_dfuuser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_dfuuser.h"
 				>
 			</File>
 			<File
@@ -1554,15 +1558,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hiduser.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hiduser.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hw.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_hiduser.h"
 				>
 			</File>
 			<File
@@ -1570,11 +1570,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_msc.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_hw.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_msc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_msc.h"
 				>
 			</File>
 			<File
@@ -1586,11 +1590,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_rom_api.h"
+				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom_api.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\software\lpcusblib\drivers\usb\core\dcd\usbrom\usbd_rom_api.h"
+				RelativePath="..\..\..\..\..\software\lpc_core\lpc_ip\usbd_rom\usbd_rom_api.h"
 				>
 			</File>
 			<File
