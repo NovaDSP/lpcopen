@@ -77,7 +77,7 @@ USB_Descriptor_Device_t DeviceDescriptor =
 	
 	// persuade Windows to re-install drivers when we change configuration
 #ifdef _USE_AC2
-	.ProductID              = 1909,
+	.ProductID              = 1906,
 #elif BYTES_PER_SAMPLE == 2 && USE_FULL_SPEED == 1
 	.ProductID              = 1601 + CHANNEL_COUNT,
 #elif BYTES_PER_SAMPLE == 2 && USE_FULL_SPEED == 0

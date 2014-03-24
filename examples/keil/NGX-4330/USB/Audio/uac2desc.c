@@ -121,7 +121,7 @@ typedef enum
 #include "USB.h"
 #include "config.h"
 #include "appenum.h"
-#include "b1.h"
+
 #ifndef AUDIO_STREAM_EPNUM
 #define AUDIO_STREAM_EPNUM 1
 #endif
