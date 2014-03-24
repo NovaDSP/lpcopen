@@ -735,8 +735,10 @@ struct _InterfaceCollectionDescriptor
 	InputTerminalDescriptor mic_in_ter;
 	//
 	OutputTerminalDescriptor mic_out_ter;
+#ifdef _USE_FEATURE_UNIT	
 	// volume ...
 	AudioFeatureUnitDescriptor feature_unit;
+#endif	
 } 
 ATTR_PACKED InterfaceCollectionDescriptor;
 
@@ -836,7 +838,7 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 			KV(bLength,sizeof(ClockSourceDescriptor)),
 			KV(bDescriptorType,CS_INTERFACE),
 			KV(bDescriptorSubtype,CLOCK_SOURCE),
-			KV(ClockID,CSD_ID_1),
+			KV(ClockID,4),
 			KV(bmAttributes,SYNC_SOF),
 			KV(bmControls,NO_CONTROLS),
 			KV(bAssocTerminal,OUTPUT_TERMINAL_ID),
@@ -862,9 +864,9 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 			KV(bDescriptorType,CS_INTERFACE),
 			KV(bDescriptorSubType,INPUT_TERMINAL_SUB_TYPE),
 			KV(bTerminalID,INPUT_TERMINAL_ID),
-			KV(wTerminalType,DIGITAL_AUDIO_INTERFACE),
+			KV(wTerminalType,0x0201),
 			KV(bAssocTerminal,NO_TERMINAL_ASSOCIATION),
-			KV(bCSourceID,CSX_ID),
+			KV(bCSourceID,4),
 			KV(bNrChannels,CHANNEL_COUNT),
 			KV(bmChannelConfig,NO_CHANNEL_CONFIG),
 			KV(iChannelNames,NO_CHANNEL_NAMES),
@@ -880,11 +882,12 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 			KV(bTerminalID,OUTPUT_TERMINAL_ID),
 			KV(wTerminalType,OUTPUT_TERMINAL_TYPE),
 			KV(bAssocTerminal,  OUTPUT_TERMINAL_ASSOCIATION),
-			KV(bSourceID,  OUTPUT_TERMINAL_SOURCE_ID),
-			KV(bClockSourceID,  CSX_ID),
+			KV(bSourceID,  INPUT_TERMINAL_ID),
+			KV(bClockSourceID,  4),
 			KV(bmControls,NO_CONTROLS),
 			KV(iTerminal,eINTERFACE_STRING_OUTPUT_TERMINAL)
 		},
+#ifdef _USE_FEATURE_UNIT			
 		STRUCT(AudioFeatureUnitDescriptor,feature_unit)
 		{
 			KV(bLength,sizeof(AudioFeatureUnitDescriptor)),
@@ -892,9 +895,10 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 			KV(bDescriptorSubType,FEATURE_UNIT_SUB_TYPE),
 			KV(bUnitID,OUTPUT_TERMINAL_SOURCE_ID),
 			KV(bSourceID,INPUT_TERMINAL_ID),
-			KV(bmaControls,0),
+			KV(bmaControls,0x03),
 			KV(iFeature,0),
 		},
+#endif		
 	},
 	STRUCT(S_usb_as_interface_descriptor,mic_as_alt0)
 	{  

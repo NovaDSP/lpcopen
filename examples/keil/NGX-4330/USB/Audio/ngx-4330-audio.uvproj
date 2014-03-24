@@ -1866,6 +1866,9 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>includes</GroupName>
+        </Group>
       </Groups>
     </Target>
     <Target>
@@ -3727,6 +3730,9 @@
               <FilePath>.\KeilUSB\usbuser.h</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>includes</GroupName>
         </Group>
       </Groups>
     </Target>
@@ -5876,6 +5882,9 @@
               <FilePath>.\KeilUSB\usbuser.h</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>includes</GroupName>
         </Group>
       </Groups>
     </Target>
