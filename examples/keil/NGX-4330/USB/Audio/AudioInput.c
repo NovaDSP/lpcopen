@@ -228,7 +228,7 @@ void UARTTask(void* pvParameters)
 }
 
 //-----------------------------------------------------------------------------
-volatile bool connected = false;
+volatile bool connected = true;
 //-----------------------------------------------------------------------------
 // This polls the USB registers for state change. Not ideal but works for now
 void AudioTask(void* pvParameters)

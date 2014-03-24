@@ -5,19 +5,128 @@
 
 #include <stdint.h>
 
-#ifndef _MSC_VER
-#include "USB.h"
-#endif
-
 //-----------------------------------------------------------------------------
-// JME audit: needs fixing. defined twice.
-#ifndef AUDIO_STREAM_EPNUM
+// Hacking about. Make this self-contained so we can compile 
+#ifdef _MSC_VER
+
+#define CPU_TO_LE16(x)           (x)
+
+#define VERSION_TENS(x)                   (int)((x) / 10)
+#define VERSION_ONES(x)                   (int)((x) - (10 * VERSION_TENS(x)))
+#define VERSION_TENTHS(x)                 (int)(((x) - (int)(x)) * 10)
+#define VERSION_HUNDREDTHS(x)             (int)((((x) - (int)(x)) * 100) - (10 * VERSION_TENTHS(x)))
+
+#define VERSION_BCD(x)                    CPU_TO_LE16((((VERSION_TENS(x) << 4) | VERSION_ONES(x)) << 8) | \
+	((VERSION_TENTHS(x) << 4) | VERSION_HUNDREDTHS(x)))
+
+/* bMaxPower in Configuration Descriptor */
+#define USB_CONFIG_POWER_MA(mA)                ((mA)/2)
+
+#define USB_CONFIG_ATTR_BUSPOWERED        0x80
+#define USB_CONFIG_ATTR_SELFPOWERED       0x40
+#define USB_CONFIG_ATTR_REMOTEWAKEUP      0x20
+#define ENDPOINT_ATTR_NO_SYNC             (0 << 2)
+#define ENDPOINT_ATTR_ASYNC               (1 << 2)
+#define ENDPOINT_ATTR_ADAPTIVE            (2 << 2)
+#define ENDPOINT_ATTR_SYNC                (3 << 2)
+#define ENDPOINT_USAGE_DATA               (0 << 4)
+#define ENDPOINT_USAGE_FEEDBACK           (1 << 4)
+#define ENDPOINT_USAGE_IMPLICIT_FEEDBACK  (2 << 4)
+
+#define ENDPOINT_DIR_MASK                       0x80
+#define ENDPOINT_DIR_OUT                        0x00
+#define ENDPOINT_DIR_IN                         0x80
+#define EP_TYPE_MASK                       0x03
+#define EP_TYPE_CONTROL                    0x00
+#define EP_TYPE_ISOCHRONOUS                0x01
+#define EP_TYPE_BULK                       0x02
+#define EP_TYPE_INTERRUPT                  0x03
+
 #define AUDIO_STREAM_EPNUM           1
-#endif
+#define CHANNEL_COUNT 12
+#define BYTES_PER_SAMPLE 2
+#define EP_SIZE_BYTES 1024
+
+/** Enum for the possible standard descriptor types, as given in each descriptor's header. */
+enum USB_DescriptorTypes_t
+{
+	DTYPE_Device                    = 0x01, /**< Indicates that the descriptor is a device descriptor. */
+	DTYPE_Configuration             = 0x02, /**< Indicates that the descriptor is a configuration descriptor. */
+	DTYPE_String                    = 0x03, /**< Indicates that the descriptor is a string descriptor. */
+	DTYPE_Interface                 = 0x04, /**< Indicates that the descriptor is an interface descriptor. */
+	DTYPE_Endpoint                  = 0x05, /**< Indicates that the descriptor is an endpoint descriptor. */
+	DTYPE_DeviceQualifier           = 0x06, /**< Indicates that the descriptor is a device qualifier descriptor. */
+	DTYPE_Other                     = 0x07, /**< Indicates that the descriptor is of other type. */
+	DTYPE_InterfacePower            = 0x08, /**< Indicates that the descriptor is an interface power descriptor. */
+	DTYPE_InterfaceAssociation      = 0x0B, /**< Indicates that the descriptor is an interface association descriptor. */
+	DTYPE_CSInterface               = 0x24, /**< Indicates that the descriptor is a class specific interface descriptor. */
+	DTYPE_CSEndpoint                = 0x25, /**< Indicates that the descriptor is a class specific endpoint descriptor. */
+};
+
+/** Enum for possible Class, Subclass and Protocol values of device and interface descriptors. */
+enum USB_Descriptor_ClassSubclassProtocol_t
+{
+	USB_CSCP_NoDeviceClass          = 0x00, /**< Descriptor Class value indicating that the device does not belong
+	                                         *   to a particular class at the device level.
+	                                         */
+	USB_CSCP_NoDeviceSubclass       = 0x00, /**< Descriptor Subclass value indicating that the device does not belong
+	                                         *   to a particular subclass at the device level.
+	                                         */
+	USB_CSCP_NoDeviceProtocol       = 0x00, /**< Descriptor Protocol value indicating that the device does not belong
+	                                         *   to a particular protocol at the device level.
+	                                         */
+	USB_CSCP_VendorSpecificClass    = 0xFF, /**< Descriptor Class value indicating that the device/interface belongs
+	                                         *   to a vendor specific class.
+	                                         */
+	USB_CSCP_VendorSpecificSubclass = 0xFF, /**< Descriptor Subclass value indicating that the device/interface belongs
+	                                         *   to a vendor specific subclass.
+	                                         */
+	USB_CSCP_VendorSpecificProtocol = 0xFF, /**< Descriptor Protocol value indicating that the device/interface belongs
+	                                         *   to a vendor specific protocol.
+	                                         */
+	USB_CSCP_IADDeviceClass         = 0xEF, /**< Descriptor Class value indicating that the device belongs to the
+	                                         *   Interface Association Descriptor class.
+	                                         */
+	USB_CSCP_IADDeviceSubclass      = 0x02, /**< Descriptor Subclass value indicating that the device belongs to the
+	                                         *   Interface Association Descriptor subclass.
+	                                         */
+	USB_CSCP_IADDeviceProtocol      = 0x01, /**< Descriptor Protocol value indicating that the device belongs to the
+	                                         *   Interface Association Descriptor protocol.
+	                                         */
+};
 
 //-----------------------------------------------------------------------------
+//
+typedef enum 
+{ 
+	eLanguage, 
+	eManufacturer,
+	eProduct, 
+	eSerial,
+	eINTERFACE_STRING_ALT0,
+	eINTERFACE_STRING_ALT1,
+	eINTERFACE_STRING_AC0,
+	eINTERFACE_STRING_IF0,
+	eINTERFACE_STRING_IAD,
+	eINTERFACE_STRING_CLOCK_SOURCE,
+	eINTERFACE_STRING_CLOCK_SELECTOR,
+	eINTERFACE_STRING_INPUT_TERMINAL,
+	eINTERFACE_STRING_OUTPUT_TERMINAL,
+	eINTERFACE_STRING_ACINTERFACEDESCRIPTOR,
+	eINTERFACE_STRING_MAX
+} StringDescriptors;
+
+#else
+//-----------------------------------------------------------------------------
+#include "USB.h"
 #include "config.h"
 #include "appenum.h"
+#include "b1.h"
+#ifndef AUDIO_STREAM_EPNUM
+#define AUDIO_STREAM_EPNUM 1
+#endif
+#endif
+
 
 //-----------------------------------------------------------------------------
 #ifdef _MSC_VER
@@ -374,6 +483,10 @@ typedef uint8_t U8;
 typedef uint16_t U16;
 typedef uint32_t U32;
 
+#ifdef _MSC_VER
+#include <pshpack1.h>
+#endif
+
 //-----------------------------------------------------------------------------
 //! USB Configuration Descriptor
 typedef struct _ConfigurationDescriptor
@@ -429,7 +542,7 @@ struct _ACInterfaceHeaderDescriptor
 {
 	U8  bLength;               /* Size of this descriptor in bytes */
 	U8  bDescriptorType;       /* CS_INTERFACE descriptor type */
-	U8  bDescritorSubtype;     /* HEADER subtype */
+	U8  bDescriptorSubtype;     /* HEADER subtype */
 	U16 bcdADC;          		  /* Revision of class spec */
 	U8  bCategory;				/* Primary use of this function */
 	U16 wTotalLength;       	  /* Total size of class specific descriptor */
@@ -443,7 +556,7 @@ struct _ClockSourceDescriptor
 {
 	U8  bLength;               /* Size of this descriptor in bytes */
 	U8  bDescriptorType;       /* CS_INTERFACE descriptor type */
-	U8 	bDescritorSubtype;     /* CLOCK_SOURCE subtype */
+	U8 	bDescriptorSubtype;     /* CLOCK_SOURCE subtype */
 	U8  bClockID;       	  /* Clock Source ID */
 	U8  bmAttributes;		     /* Clock Type Bitmap */
 	U8  bmControls;			/* Clock control bitmap */
@@ -458,7 +571,7 @@ struct _ClockSelectorDescriptor
 {
 	U8  bLength;               /* Size of this descriptor in bytes */
 	U8  bDescriptorType;       /* CS_INTERFACE descriptor type */
-	U8 	bDescritorSubtype;     /* CLOCK_SELECTOR subtype */
+	U8 	bDescriptorSubtype;     /* CLOCK_SELECTOR subtype */
 	U8  bClockID;       	  /* Clock Selector ID */
 	U8  bNrInPins;		     /* Number of Input Pins */
 	U8  baCSourceID[1];		/* variable length */
@@ -506,20 +619,26 @@ struct _OutputTerminalDescriptor
 //! USB Selector Unit descriptor pp 4.7.2.7
 
 //-----------------------------------------------------------------------------
-//! USB Audio Feature Unit descriptor pp 4.7.2.8
+//! USB Audio Feature Unit descriptor S 4.7.2.8 
+// T4-13 P59
 typedef
-struct _S_usb_feature_unit_descriptor_2
+struct _AudioFeatureUnitDescriptor
 {
-	U8		bLength;			/* Size of this descriptor in bytes */
-	U8 	bDescriptorType;        /* CS_INTERFACE descriptor type */
-	U8 	bDescriptorSubType; 	/* FEATURE_UNIT  subtype */
-	U8		bUnitID;			/* Feature unit ID */
-	U8		bSourceID;			/* ID of the Unit or Terminal to which this teminal is connected to */
-	U32		bmaControls;	/* Master Channel 0*/
-	U32	    bmaControls_1;  // Channel 1
-	U32     bmaControls_2;  // Channel 2
-	U8	iFeature;  /* String Descriptor of this Feature Unit */
-} ATTR_PACKED S_usb_feature_unit_descriptor_2;
+	// Size of this descriptor in bytes
+	U8 bLength;			
+	// CS_INTERFACE descriptor type
+	U8 bDescriptorType;        
+	// FEATURE_UNIT subtype
+	U8 bDescriptorSubType; 	
+	// Unique Feature unit ID
+	U8		bUnitID;			
+	// ID of the Unit or Terminal to which this terminal is connected
+	U8		bSourceID;			
+	// Master channel 0 plus 1 feature for each subsequent channel
+	U32		bmaControls[1+CHANNEL_COUNT];
+	// String Descriptor of this Feature Unit
+	U8	iFeature;  
+} ATTR_PACKED AudioFeatureUnitDescriptor;
 
 //-----------------------------------------------------------------------------
 //! USB Standard AS interface Descriptor pp 4.9.1
@@ -607,15 +726,17 @@ struct _S_usb_endpoint_audio_specific_2
 typedef
 struct _InterfaceCollectionDescriptor
 {
-	ACInterfaceHeaderDescriptor			audioac;
+	ACInterfaceHeaderDescriptor audioac;
 	// 1 sample rate so 1 clock source.
 	ClockSourceDescriptor clock_source;
-	//
+#ifdef _USE_CLOCK_SELECTOR
 	ClockSelectorDescriptor clock_selector;
+#endif
+	InputTerminalDescriptor mic_in_ter;
 	//
-	InputTerminalDescriptor 				mic_in_ter;
-	//
-	OutputTerminalDescriptor				mic_out_ter;
+	OutputTerminalDescriptor mic_out_ter;
+	// volume ...
+	AudioFeatureUnitDescriptor feature_unit;
 } 
 ATTR_PACKED InterfaceCollectionDescriptor;
 
@@ -625,7 +746,7 @@ typedef
 struct _AppConfigurationDescriptor
 {
 	ConfigurationDescriptor	cfg;
-	ACInterfaceDescriptor ifc0;
+//	ACInterfaceDescriptor ifc0;
 	InterfaceAssociationDescriptor ifad;
 	ACInterfaceDescriptor acifd;
 	//-------------------------------------------
@@ -656,6 +777,7 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 		KV(ConfigAttributes,USB_CONFIG_ATTR_BUSPOWERED),
 		KV(MaxPower,USB_CONFIG_POWER_MA(200))
 	},
+#if 0
 	// JME audit, this is in the wrong place ...
 	// interface 0 is zero-bandwidth
 	STRUCT(ACInterfaceDescriptor,ifc0)
@@ -670,7 +792,7 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 		KV(bInterfaceProtocol,UAC2),
 		KV(iInterface,eINTERFACE_STRING_IF0)
 	},
-
+#endif
 	// S 3.2 Audio Interface Collection
 	STRUCT(InterfaceAssociationDescriptor,ifad)
 	{ 
@@ -720,6 +842,7 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 			KV(bAssocTerminal,OUTPUT_TERMINAL_ID),
 			KV(iClockSource,eINTERFACE_STRING_CLOCK_SOURCE),
 		},
+#ifdef _USE_CLOCK_SELECTOR
 		STRUCT(ClockSelectorDescriptor,clock_selector)
 		{
 			KV(bLength,sizeof(ClockSelectorDescriptor)),
@@ -731,6 +854,7 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 			KV(bmControls,NO_CONTROLS),
 			KV(iClockSelector,eINTERFACE_STRING_CLOCK_SELECTOR),
 		},
+#endif		
 		// 4.7.2.4
 		STRUCT(InputTerminalDescriptor,mic_in_ter)
 		{  
@@ -760,6 +884,16 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 			KV(bClockSourceID,  CSX_ID),
 			KV(bmControls,NO_CONTROLS),
 			KV(iTerminal,eINTERFACE_STRING_OUTPUT_TERMINAL)
+		},
+		STRUCT(AudioFeatureUnitDescriptor,feature_unit)
+		{
+			KV(bLength,sizeof(AudioFeatureUnitDescriptor)),
+			KV(bType,CS_INTERFACE),
+			KV(bDescriptorSubType,FEATURE_UNIT_SUB_TYPE),
+			KV(bUnitID,OUTPUT_TERMINAL_SOURCE_ID),
+			KV(bSourceID,INPUT_TERMINAL_ID),
+			KV(bmaControls,0),
+			KV(iFeature,0),
 		},
 	},
 	STRUCT(S_usb_as_interface_descriptor,mic_as_alt0)
@@ -829,6 +963,10 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 	},
 };
 
+#ifdef _MSC_VER
+#include <poppack.h>
+#endif
+
 //-----------------------------------------------------------------------------
 const int struct_size = sizeof(AppConfigurationDescriptor);
 
@@ -836,12 +974,14 @@ const int struct_size = sizeof(AppConfigurationDescriptor);
 int GetConfigStructSize() 
 {
 	return sizeof(AppConfigurationDescriptor);
+	//return sizeof(Configuration_1);
 }
 
 //-----------------------------------------------------------------------------
 void* GetConfigStruct() 
 {
 	return (void*) &uac2_usb_conf_desc_hs;
+	//return (void*) &Configuration_1[0];
 }
 
 //-----------------------------------------------------------------------------
