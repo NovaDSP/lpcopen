@@ -37,6 +37,13 @@
 #include "apptypes.h"
 #include "appenum.h"
 
+#ifndef INC_FREERTOS_H
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "task.h"
+#endif
+
+
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
@@ -543,15 +550,41 @@ USB_Descriptor_String_t* descriptor_string[] =
 };
 
 //-----------------------------------------------------------------------------
-/** This function is called by the library when in device mode, and must be overridden (see library "USB Descriptors"
- *  documentation) by the application code so that the address and size of a requested descriptor can be given
- *  to the USB library. When the device receives a Get Descriptor request on the control endpoint, this function
- *  is called so that the descriptor details can be passed back and the appropriate descriptor sent back to the
- *  USB host.
- */
+// OSX asks for this in AC2 mode
+USB_Descriptor_DeviceQualifier_t DeviceQualifier =
+{
+	{ sizeof(USB_Descriptor_DeviceQualifier_t), DTYPE_DeviceQualifier },
+	VERSION_BCD(02.00),
+	USB_CSCP_IADDeviceClass,	// misc.
+	USB_CSCP_IADDeviceSubclass,	// common class
+	USB_CSCP_IADDeviceProtocol,	// Interface association
+	64,	// EP0 size
+	1,	// # *other speed* configurations in Keil dox, total in all others
+	0	// reserved
+};
 
 //-----------------------------------------------------------------------------
-//
+// This function is called by the library when in device mode, and must be overridden (see library "USB Descriptors"
+// documentation) by the application code so that the address and size of a requested descriptor can be given
+// to the USB library. When the device receives a Get Descriptor request on the control endpoint, this function
+// is called so that the descriptor details can be passed back and the appropriate descriptor sent back to the
+// USB host.
+//-----------------------------------------------------------------------------
+
+const char* descriptors[] =
+{
+	"Unhandled GetDescriptor: Unknown 0",
+	"Unhandled GetDescriptor: Device 1",
+	"Unhandled GetDescriptor: Configuration 2",
+	"Unhandled GetDescriptor: String 3",
+	"Unhandled GetDescriptor: Interface 4",
+	"Unhandled GetDescriptor: Endpoint 5",
+	"Unhandled GetDescriptor: Device Qualifier 6",
+	"Unhandled GetDescriptor: Other speed configuration 7",
+	"Unhandled GetDescriptor: Interface power 8",
+	"Unhandled GetDescriptor: OTG 9",
+};
+
 uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
                                     const uint16_t wValue,
                                     const uint8_t wIndex,
@@ -564,9 +597,6 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 	
 	portBASE_TYPE xHigherPriorityTaskWoken;
 	dbg_message dbm = { 0, 0 };
-	dbm.psz = states[eGetDescriptor];
-	dbm.flags = DescriptorType;
-	dbm.value = DescriptorNumber;
 	
 	switch (DescriptorType)
 	{
@@ -591,10 +621,29 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 			Size    = pgm_read_byte(&p->Header.Size);
 		}
 		break;
+/*		
+	case DTYPE_DeviceQualifier:
+		{
+			Address = &DeviceQualifier;
+			Size = sizeof(DeviceQualifier);
+			dbm.psz = states[eGet_DeviceQualifier_Descriptor];
+			dbm.v1 = DescriptorType;
+			dbm.v2 = DescriptorNumber;
+			dbm.v3 = Size;
+			xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+		}
+		break;
+*/
+	default:
+		{
+			// dbm.psz = states[eGet_Unknown_Descriptor];
+			dbm.psz = descriptors[DescriptorType];
+			dbm.v1 = DescriptorType;
+			dbm.v2 = DescriptorNumber;
+			xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+		}
 	}
 	// queue the details for later logging
-	dbm.v2 = Size;
-	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
 	// set the address of the string 'struct'
 	*DescriptorAddress = Address;
 	// return the number of bytes ...

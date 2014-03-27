@@ -8,6 +8,10 @@
 #define APPENUM_H
 
 //-----------------------------------------------------------------------------
+// abstract as much as possible
+#include "logger.h"
+
+//-----------------------------------------------------------------------------
 //
 typedef enum 
 { 
@@ -27,27 +31,5 @@ typedef enum
 	eINTERFACE_STRING_ACINTERFACEDESCRIPTOR,
 	eINTERFACE_STRING_MAX
 } StringDescriptors;
-
-//-----------------------------------------------------------------------------
-typedef enum _state_index
-{
-	eTarget,
-	eEnabled,
-	eDisabled,
-	eGetSampleRate,
-	eGetSampleRateNoData,
-	eSetSampleRate,
-	eSetSampleRateNoData,
-	eGetSetInterfaceProperty,
-	eUnknownEndpointProperty,
-	eOtherEndpointProperty,
-	eConfigureEndpoints,
-	eGetDescriptor,
-	MaxStates
-} state_index;
-
-
-extern const char* states[MaxStates];
-
 
 #endif

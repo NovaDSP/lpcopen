@@ -9,16 +9,29 @@
 #define APPTYPES_H
 
 #include <stdint.h>
-
-#ifndef INC_FREERTOS_H
-#include "FreeRTOS.h"
-#include "queue.h"
-#include "task.h"
-#endif
-
 #include "config.h"
 #include "appenum.h"
 
+//-----------------------------------------------------------------------------
+// lets do byte twiddling correctly ...
+typedef struct _ByteByte
+{
+	uint8_t lobyte;
+	uint8_t hibyte;
+} ATTR_PACKED ByteByte;
+
+//-----------------------------------------------------------------------------
+//
+typedef struct _WordByte
+{
+	union
+	{
+		ByteByte bval;
+		uint16_t wval;
+	};
+} ATTR_PACKED WordByte;
+
+//-----------------------------------------------------------------------------
 typedef enum
 {
 	eUndefined,
@@ -34,9 +47,11 @@ typedef struct _DbgMessage
 {
 	// pointer to const string
 	const char* psz;
-	uint32_t value;
-	uint32_t flags;
+	uint32_t v1;
 	uint32_t v2;
+	uint32_t v3;
+	uint32_t v4;
+	uint32_t v5;
 } DbgMessage;
 
 typedef DbgMessage dbg_message;

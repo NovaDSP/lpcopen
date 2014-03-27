@@ -49,6 +49,47 @@ bool    USB_Device_CurrentlySelfPowered;
 bool    USB_Device_RemoteWakeupEnabled;
 #endif
 
+#include <logger.h>
+
+const char* psz[] =
+{
+/*0*/ "REQ_GetStatus",
+		"REQ_ClearFeature",
+/*2*/ "REQ_SetFeature",
+	"REQ_SetAddress",
+/*4*/ "REQ_GetDescriptor",
+		"REQ_GetConfiguration",
+/*6*/ "REQ_SetConfiguration",
+		"Unknown EP0 request (request,type,ep#)",
+/*8*/ "Unknown bRequest",
+	"Raw USB packet (Req,Typ,Ndx,MSB,LSB)",
+/*10*/	"Stalling EP (Req,Typ,Ndx,MSB,LSB)",
+	"Request: Get_Interface",
+/*11*/	"Request: Set_Interface",
+};
+
+//
+const char* requests[] = {
+	"REQ_GetStatus 0",
+	"REQ_ClearFeature 1",
+	"Unknown 2",
+	"REQ_SetFeature 3",
+	"Unknown 4",
+	"REQ_SetAddress 5",
+	"REQ_GetDescriptor 6",
+	"REQ_SetDescriptor 7",
+	"REQ_GetConfiguration 8",
+	"REQ_SetConfiguration 9",
+	"REQ_GetInterface 10",
+	"REQ_SetInterface 11",
+	"REQ_SynchFrame 12",
+	"Unknown 13",
+	"Unknown 14"
+};
+
+const char* stall = "stalled previous request!";
+
+//
 void USB_Device_ProcessControlRequest(uint8_t corenum)
 {
 //	USB_ControlRequest.bmRequestType = Endpoint_Read_8();
@@ -56,7 +97,13 @@ void USB_Device_ProcessControlRequest(uint8_t corenum)
 //	USB_ControlRequest.wValue        = Endpoint_Read_16_LE();
 //	USB_ControlRequest.wIndex        = Endpoint_Read_16_LE();
 //	USB_ControlRequest.wLength       = Endpoint_Read_16_LE();
-
+	WordByte wb;
+	uint8_t type = 0;
+	uint8_t request = 0;
+	uint16_t wIndex = 0;
+	uint8_t wValue_lsb = 0;
+	uint8_t wValue_msb = 0;
+	
 	Endpoint_GetSetupPackage(corenum, (uint8_t*) &USB_ControlRequest);
 
 	// call into application code
@@ -64,55 +111,103 @@ void USB_Device_ProcessControlRequest(uint8_t corenum)
 
 	if (Endpoint_IsSETUPReceived(corenum))
 	{
-		uint8_t bmRequestType = USB_ControlRequest.bmRequestType;
+		// Bit 7: Request direction (0=Host to device – Out, 1=Device to host – In).
+		// Bits 5-6: Request type (0=standard, 1=class, 2=vendor, 3=reserved).
+		// Bits 0-4: Recipient (0=device, 1=interface, 2=endpoint,3=other).
+		type = USB_ControlRequest.bmRequestType;
+		
+		// 
+		request = USB_ControlRequest.bRequest;
+		wIndex = USB_ControlRequest.wIndex;
+		wb.wval = USB_ControlRequest.wValue;
+		wValue_lsb = wb.bval.lobyte;
+		wValue_msb = wb.bval.hibyte;
 
 		switch (USB_ControlRequest.bRequest)
 		{
 			case REQ_GetStatus:
-				if ((bmRequestType == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_DEVICE)) ||
-					(bmRequestType == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_ENDPOINT)))
+				if ((type == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_DEVICE)) ||
+					(type == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_ENDPOINT)))
 				{
+//					LogS(psz[0],eREQ_GetStatus,type,corenum);
 					USB_Device_GetStatus(corenum);
 				}
-
 				break;
 			case REQ_ClearFeature:
-			case REQ_SetFeature:
-				if ((bmRequestType == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_DEVICE)) ||
-					(bmRequestType == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_ENDPOINT)))
+				if ((type == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_DEVICE)) ||
+					(type == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_ENDPOINT))
+					)
 				{
+//					LogS(psz[1],USB_ControlRequest.bRequest,type,corenum);
 					USB_Device_ClearSetFeature(corenum);
 				}
-
+				// OSX sends this ... we did not handle it
+				else if (type == (REQDIR_HOSTTODEVICE | REQTYPE_CLASS | REQREC_INTERFACE))
+				{
+					type = 0;
+				}
+				else if (type == (REQDIR_DEVICETOHOST | REQTYPE_CLASS | REQREC_INTERFACE))
+				{
+					type = 0;
+				}
+				else
+				{
+					type = 0;
+				}
+				break;
+			case REQ_SetFeature:
+				if ((type == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_DEVICE)) ||
+					(type == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_ENDPOINT)))
+				{
+//					LogS(psz[2],USB_ControlRequest.bRequest,type,corenum);
+					USB_Device_ClearSetFeature(corenum);
+				}
 				break;
 			case REQ_SetAddress:
-				if (bmRequestType == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_DEVICE))
-				  USB_Device_SetAddress(corenum);
-
+				if (type == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_DEVICE))
+				{
+//					LogS(psz[3],USB_ControlRequest.bRequest,type,corenum);
+					USB_Device_SetAddress(corenum);
+				}
 				break;
 			case REQ_GetDescriptor:
-				if ((bmRequestType == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_DEVICE)) ||
-					(bmRequestType == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_INTERFACE)))
+				if ((type == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_DEVICE)) ||
+					(type == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_INTERFACE)))
 				{
+//					LogS(psz[4],USB_ControlRequest.bRequest,type,corenum);
 					USB_Device_GetDescriptor(corenum);
 				}
-
 				break;
 			case REQ_GetConfiguration:
-				if (bmRequestType == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_DEVICE))
-				  USB_Device_GetConfiguration(corenum);
-
+				if (type == (REQDIR_DEVICETOHOST | REQTYPE_STANDARD | REQREC_DEVICE))
+				{
+//					LogS(psz[5],USB_ControlRequest.bRequest,type,corenum);
+					USB_Device_GetConfiguration(corenum);
+				}
 				break;
 			case REQ_SetConfiguration:
-				if (bmRequestType == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_DEVICE))
-				  USB_Device_SetConfiguration(corenum);
-
+				if (type == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_DEVICE))
+				{
+//					LogS(psz[6],USB_ControlRequest.bRequest,type,corenum);
+					USB_Device_SetConfiguration(corenum);
+				}
 				break;
+			default:
+				;
 		}
 	}
-
+	
+	//
 	if (Endpoint_IsSETUPReceived(corenum))
 	{
+		LogReq(requests[request],
+			request,
+			type,
+			wIndex,
+			wValue_msb,
+			wValue_lsb
+			);
+		Log3(stall,0,0,0);
 		Endpoint_ClearSETUP(corenum);
 		Endpoint_StallTransaction(corenum);
 	}
@@ -134,6 +229,10 @@ static void USB_Device_SetAddress(uint8_t corenum)
 	USB_DeviceState[corenum] = (DeviceAddress) ? DEVICE_STATE_Addressed : DEVICE_STATE_Default;
 	
 	SetGlobalInterruptMask(CurrentGlobalInt);
+
+	// JME
+	Log(eREQ_SetAddress,corenum,DeviceAddress,0);
+
 }
 
 static void USB_Device_SetConfiguration(uint8_t corenum)
@@ -324,14 +423,29 @@ static void USB_Device_GetStatus(uint8_t corenum)
 	Endpoint_ClearStatusStage(corenum);
 }
 
+const char* features[] = {
+"REQREC_DEVICE    (0 << 0)",
+"REQREC_INTERFACE (1 << 0)",
+"REQREC_ENDPOINT  (2 << 0)",
+"REQREC_OTHER     (3 << 0)",
+};
+
+const char* not_handled = "not_handled";
+
 static void USB_Device_ClearSetFeature(uint8_t corenum)
 {
-	switch (USB_ControlRequest.bmRequestType & CONTROL_REQTYPE_RECIPIENT)
+	uint8_t val = (USB_ControlRequest.bmRequestType & CONTROL_REQTYPE_RECIPIENT);
+	//
+	Log3(features[val],val,USB_ControlRequest.bmRequestType,0);
+	//switch (USB_ControlRequest.bmRequestType & CONTROL_REQTYPE_RECIPIENT)
+	switch (val)
 	{
 		#if !defined(NO_DEVICE_REMOTE_WAKEUP)
 		case REQREC_DEVICE:
 			if ((uint8_t)USB_ControlRequest.wValue == FEATURE_SEL_DeviceRemoteWakeup)
+			{
 			  USB_Device_RemoteWakeupEnabled = (USB_ControlRequest.bRequest == REQ_SetFeature);
+			}
 			else
 			  return;
 
@@ -366,6 +480,7 @@ static void USB_Device_ClearSetFeature(uint8_t corenum)
 			break;
 		#endif
 		default:
+			Log3(not_handled,val,USB_ControlRequest.bmRequestType,0);
 			return;
 	}
 

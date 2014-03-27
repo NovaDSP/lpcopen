@@ -723,6 +723,9 @@ struct _S_usb_endpoint_audio_specific_2
 } ATTR_PACKED S_usb_endpoint_audio_specific_2;
 
 //-----------------------------------------------------------------------------
+// #define _USE_ZERO	
+#define _USE_FEATURE_UNIT
+//-----------------------------------------------------------------------------
 typedef
 struct _InterfaceCollectionDescriptor
 {
@@ -748,7 +751,9 @@ typedef
 struct _AppConfigurationDescriptor
 {
 	ConfigurationDescriptor	cfg;
-//	ACInterfaceDescriptor ifc0;
+#ifdef _USE_ZERO	
+	ACInterfaceDescriptor ifc0;
+#endif	
 	InterfaceAssociationDescriptor ifad;
 	ACInterfaceDescriptor acifd;
 	//-------------------------------------------
@@ -779,7 +784,7 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 		KV(ConfigAttributes,USB_CONFIG_ATTR_BUSPOWERED),
 		KV(MaxPower,USB_CONFIG_POWER_MA(200))
 	},
-#if 0
+#ifdef _USE_ZERO
 	// JME audit, this is in the wrong place ...
 	// interface 0 is zero-bandwidth
 	STRUCT(ACInterfaceDescriptor,ifc0)
@@ -801,7 +806,8 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 		KV(bLength,sizeof(InterfaceAssociationDescriptor)),
 		KV(bDescriptorType,DTYPE_InterfaceAssociation),
 		KV(bFirstInterface,FIRST_INTERFACE1),
-		KV(bInterfaceCount,INTERFACE_COUNT),
+		//
+		KV(bInterfaceCount,2),
 		KV(bFunctionClass,AUDIO_FUNCTION),
 		KV(bFunctionSubClass,FUNCTION_SUBCLASS_UNDEFINED),
 		KV(bFunctionProtocol,UAC2),
@@ -815,7 +821,7 @@ const AppConfigurationDescriptor uac2_usb_conf_desc_hs =
 		KV(bDescriptorType,DTYPE_Interface),
 		KV(bInterfaceNumber,INTERFACE_NB1),
 		KV(bAlternateSetting,ALTERNATE_NB1),
-		KV(bNumEndpoints,1),
+		KV(bNumEndpoints,0),
 		KV(bInterfaceClass,AUDIO_CLASS),
 		KV(bInterfaceSubClass,AUDIOCONTROL),
 		KV(bInterfaceProtocol,UAC2),

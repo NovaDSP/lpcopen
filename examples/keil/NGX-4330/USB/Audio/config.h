@@ -16,11 +16,11 @@
 // Mac
 #if 0
 #define USE_FULL_SPEED 1
-#define CHANNEL_COUNT 6
+#define CHANNEL_COUNT 2
 #else
 // Windows/Linux
 #define USE_FULL_SPEED 0
-#define CHANNEL_COUNT 12
+#define CHANNEL_COUNT 2
 #endif
 
 // the default is 12 channels ...

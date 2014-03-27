@@ -1868,6 +1868,13 @@
         </Group>
         <Group>
           <GroupName>includes</GroupName>
+          <Files>
+            <File>
+              <FileName>logger.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\logger.h</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
@@ -3733,6 +3740,13 @@
         </Group>
         <Group>
           <GroupName>includes</GroupName>
+          <Files>
+            <File>
+              <FileName>logger.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\logger.h</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
@@ -5885,6 +5899,13 @@
         </Group>
         <Group>
           <GroupName>includes</GroupName>
+          <Files>
+            <File>
+              <FileName>logger.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\logger.h</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

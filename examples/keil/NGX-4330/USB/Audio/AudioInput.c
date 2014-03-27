@@ -11,6 +11,13 @@
 #include <limits.h>
 #include "apptypes.h"
 
+#ifndef INC_FREERTOS_H
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "task.h"
+#endif
+
+
 /** Audio Class driver interface configuration and state information. This structure is
  *  passed to all Audio Class driver functions, so that multiple instances of the same class
  *  within a device can be differentiated from one another.
@@ -104,7 +111,73 @@ const char* states[MaxStates] =
 	"Other Endpoint Property",
 	"Endpoint configuration",
 	"GetDescriptor",
+	"GetStatus",
+	"REQ_ClearFeature",
+	"REQ_SetFeature",
+	"REQ_SetAddress",
+	"REQ_GetDescriptor",
+	"REQ_GetConfiguration",
+	"REQ_SetConfiguration",
+	"Unknown Get/SetConfiguration",
+	"eGet_DeviceQualifier_Descriptor",
+	"eGet_Unknown_Descriptor"
 };
+
+//-----------------------------------------------------------------------------
+void Log(int index,int v1,int v2, int v3)
+{
+	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	dbg_message dbm = { 0, 0 };
+	dbm.psz = states[index];
+	dbm.v1 = v1;
+	dbm.v2 = v2;
+	dbm.v3 = v3;
+	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+}
+
+//-----------------------------------------------------------------------------
+void LogReq(const char* psz,int v1,int v2, int v3,int v4,int v5)
+{
+	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	dbg_message dbm = { 0, 0 };
+	dbm.psz = psz;
+	dbm.v1 = v1;
+	dbm.v2 = v2;
+	dbm.v3 = v3;
+	dbm.v4 = v4;
+	dbm.v5 = v5;
+	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+}
+
+//-----------------------------------------------------------------------------
+void Log5(const char* psz,int v1,int v2, int v3,int v4,int v5)
+{
+	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	dbg_message dbm = { 0, 0 };
+	dbm.psz = psz;
+	dbm.v1 = v1;
+	dbm.v2 = v2;
+	dbm.v3 = v3;
+	dbm.v4 = v4;
+	dbm.v5 = v5;
+	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+}
+
+//-----------------------------------------------------------------------------
+void Log3(const char* psz,int v1,int v2, int v3)
+{
+	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	dbg_message dbm = { 0, 0 };
+	dbm.psz = psz;
+	dbm.v1 = v1;
+	dbm.v2 = v2;
+	dbm.v3 = v3;
+	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+}
 
 //-----------------------------------------------------------------------------
 // Set up the pre-defined N channel waveform we currently stream to host
@@ -205,7 +278,7 @@ void UARTTask(void* pvParameters)
 	xQueueHandle qh = (xQueueHandle) USBAudioIF.instance_data;
 	
 	//
-	DEBUGOUT("Config size %d\n",GetConfigStructSize());
+	DEBUGOUT("Config size %d 0x%X\n",GetConfigStructSize(),REQDIR_HOSTTODEVICE | REQREC_ENDPOINT);
 	
 	for (;;)
 	{
@@ -214,7 +287,7 @@ void UARTTask(void* pvParameters)
 			dbg_message dbm;
 			while (xQueueReceive(qh,&dbm,0))
 			{
-				DEBUGOUT("[%d] %s %d %d %d\r\n",tickCnt,(dbm.psz ? dbm.psz : "<null>"),dbm.flags, dbm.value, dbm.v2);
+				DEBUGOUT("[%d] %s 0x%X 0x%X 0x%X 0x%X 0x%X\r\n",tickCnt,(dbm.psz ? dbm.psz : "<null>"),dbm.v1, dbm.v2, dbm.v3, dbm.v4, dbm.v5);
 			}
 		}
 		else
@@ -439,7 +512,7 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 	dbg_message dbm = { 0 };
 	xQueueHandle xq = (xQueueHandle)USBAudioIF.instance_data;
 	dbm.psz = states[eConfigureEndpoints];
-	dbm.value = USB_Device_ConfigurationNumber;
+	dbm.v1 = USB_Device_ConfigurationNumber;
 	xQueueSendFromISR(xq,&dbm,&xHigherPriorityTaskWoken);
 }
 
@@ -506,20 +579,20 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 				if (DataLength != NULL)
 				{
 					dbm.psz = states[eSetSampleRate];
-					dbm.flags = *DataLength;
+					dbm.v2 = *DataLength;
 					// Set the new sampling frequency to the value given by the host
 					CurrentAudioSampleFrequency =
 					    (((uint32_t) Data[2] << 16) | ((uint32_t) Data[1] << 8) | (uint32_t) Data[0]);
 					switch (CurrentAudioSampleFrequency)
 					{
 						case 48000:
-							dbm.value = 48000;
+							dbm.v1 = 48000;
 						break;
 						case 44100:
-							dbm.value = 44100;
+							dbm.v1 = 44100;
 						break;
 						default:
-							dbm.value = 999;
+							dbm.v1 = 999;
 						break;
 					}
 				}
@@ -531,12 +604,12 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 				break;
 			case AUDIO_REQ_GetCurrent:
 				// Check if we are just testing for a valid property, or actually reading it
-				dbm.value = CurrentAudioSampleFrequency;
+				dbm.v1 = CurrentAudioSampleFrequency;
 				//
 				if (DataLength != NULL)
 				{
 					dbm.psz = states[eGetSampleRate];
-					dbm.flags = *DataLength;
+					dbm.v2 = *DataLength;
 					*DataLength = 3;
 					Data[2] = (CurrentAudioSampleFrequency >> 16);
 					Data[1] = (CurrentAudioSampleFrequency >> 8);
@@ -550,14 +623,14 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 			break;
 			default:
 				dbm.psz = states[eUnknownEndpointProperty];
-				dbm.value = EndpointProperty;
+				dbm.v1 = EndpointProperty;
 			}
 		}
 		else
 		{
 			// other end point control
 			dbm.psz = states[eOtherEndpointProperty];
-			dbm.value = EndpointControl;
+			dbm.v1 = EndpointControl;
 		}
 	}
 	else
@@ -587,7 +660,7 @@ bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t*
 	xQueueHandle xq = (xQueueHandle)AudioInterfaceInfo->instance_data;
 	dbg_message dbm = { 0, 0 };
 	dbm.psz = states[eGetSetInterfaceProperty];
-	dbm.flags = Parameter;
+	dbm.v2 = Parameter;
 	xQueueSendFromISR(xq,&dbm,&xHigherPriorityTaskWoken);
 	return false;
 }
