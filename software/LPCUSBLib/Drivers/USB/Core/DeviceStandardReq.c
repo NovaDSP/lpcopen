@@ -49,6 +49,7 @@ bool    USB_Device_CurrentlySelfPowered;
 bool    USB_Device_RemoteWakeupEnabled;
 #endif
 
+// JME
 #include <logger.h>
 
 const char* psz[] =

@@ -39,9 +39,11 @@ typedef enum
 	ePCMSamples,
 } LockDelayUnits;
 
+//-----------------------------------------------------------------------------
+// This requires some abtraction too
 typedef void* xQueueHandle;
 extern xQueueHandle logQueueHandle;
-
+extern xQueueHandle usbQueueHandle;
 //-----------------------------------------------------------------------------
 typedef struct _DbgMessage
 {

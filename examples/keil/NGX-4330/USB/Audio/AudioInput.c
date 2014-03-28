@@ -42,6 +42,9 @@ extern USB_Descriptor_Configuration_t ConfigurationDescriptor;
 #define GREENLED 0
 
 //-----------------------------------------------------------------------------
+extern void UARTTask(void* pvParameters);
+
+//-----------------------------------------------------------------------------
 // Max Sample Frequency.
 const uint32_t AUDIO_MAX_SAMPLE_FREQ = 48000;
 /** Current audio sampling frequency of the streaming audio endpoint. */
@@ -282,44 +285,6 @@ void TIMER1_IRQHandler(void)
 
 //-----------------------------------------------------------------------------
 
-
-//-----------------------------------------------------------------------------
-// UART thread. Check queue and see if we got any data from ISR stuff
-// If so format it and push out onto serial port @115K
-void UARTTask(void* pvParameters)
-{
-	int tickCnt = 0;
-	//
-	DEBUGOUT("Config size %d 0x%X\n",GetConfigStructSize(),REQDIR_HOSTTODEVICE | REQREC_ENDPOINT);
-	
-	for (;;)
-	{
-		if (uxQueueMessagesWaiting(logQueueHandle))
-		{
-			dbg_message dbm;
-			while (xQueueReceive(logQueueHandle,&dbm,0))
-			{
-				DEBUGOUT("[%d] %s 0x%X 0x%X 0x%X 0x%X 0x%X\r\n",tickCnt,(dbm.psz ? dbm.psz : "<null>"),dbm.v1, dbm.v2, dbm.v3, dbm.v4, dbm.v5);
-			}
-		}
-
-		if (uxQueueMessagesWaiting(usbQueueHandle))
-		{
-			USBMessage usbm;
-			while (xQueueReceive(usbQueueHandle,&usbm,0))
-			{	
-				// decode the message. agggg.
-				
-				// dump
-				DEBUGOUT("%s(%d) [%d]\r\n",(usbm.file ? usbm.file : "<null>"),usbm.line,tickCnt);
-			}
-		}
-
-		tickCnt++;
-		/* About a 1s delay here */
-		vTaskDelay(configTICK_RATE_HZ);
-	}
-}
 
 //-----------------------------------------------------------------------------
 volatile bool connected = true;

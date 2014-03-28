@@ -40,15 +40,28 @@
 #define  __INCLUDE_FROM_AUDIO_DEVICE_C
 #include "AudioClassDevice.h"
 
+// JME
+#include <logger.h>
+
+const char* audiodevmsgs[] = 
+{
+	"wIndex != Streaming",
+};
+
 void Audio_Device_ProcessControlRequest(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo)
 {
 	if (!(Endpoint_IsSETUPReceived(AudioInterfaceInfo->Config.PortNumber)))
 	  return;
 
+	LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
+
 	if ((USB_ControlRequest.bmRequestType & CONTROL_REQTYPE_RECIPIENT) == REQREC_INTERFACE)
 	{
 		if (USB_ControlRequest.wIndex != AudioInterfaceInfo->Config.StreamingInterfaceNumber)
-		  return;
+		{
+			Log3(audiodevmsgs[0],USB_ControlRequest.bRequest,USB_ControlRequest.bmRequestType,USB_ControlRequest.wIndex);
+			return;
+		}
 	}
 	else if ((USB_ControlRequest.bmRequestType & CONTROL_REQTYPE_RECIPIENT) == REQREC_ENDPOINT)
 	{
@@ -63,6 +76,9 @@ void Audio_Device_ProcessControlRequest(USB_ClassInfo_Audio_Device_t* const Audi
 		if (!(EndpointFilterMatch))
 		  return;
 	}	
+
+	//
+	LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
 
 	switch (USB_ControlRequest.bRequest)
 	{
@@ -90,7 +106,14 @@ void Audio_Device_ProcessControlRequest(USB_ClassInfo_Audio_Device_t* const Audi
 		case AUDIO_REQ_SetMinimum:
 		case AUDIO_REQ_SetMaximum:
 		case AUDIO_REQ_SetResolution:
-			if (USB_ControlRequest.bmRequestType == (REQDIR_HOSTTODEVICE | REQTYPE_CLASS | REQREC_ENDPOINT))
+			// JME
+			if (USB_ControlRequest.bmRequestType == (REQDIR_DEVICETOHOST | REQTYPE_CLASS | REQREC_INTERFACE))
+			{
+				WordByte wb;
+				wb.wval = USB_ControlRequest.wIndex;
+				Log(eGetSetInterfaceProperty,wb.bval.lobyte,wb.bval.hibyte,USB_ControlRequest.bRequest);
+			}
+			else if (USB_ControlRequest.bmRequestType == (REQDIR_HOSTTODEVICE | REQTYPE_CLASS | REQREC_ENDPOINT))
 			{
 				uint8_t EndpointProperty = USB_ControlRequest.bRequest;
 				uint8_t EndpointAddress  = (uint8_t)USB_ControlRequest.wIndex;
