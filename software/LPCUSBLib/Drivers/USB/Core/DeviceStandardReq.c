@@ -140,19 +140,21 @@ void USB_Device_ProcessControlRequest(uint8_t corenum)
 				{
 //					LogS(psz[1],USB_ControlRequest.bRequest,type,corenum);
 					USB_Device_ClearSetFeature(corenum);
+					//
+					LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
 				}
 				// OSX sends this ... we did not handle it
 				else if (type == (REQDIR_HOSTTODEVICE | REQTYPE_CLASS | REQREC_INTERFACE))
 				{
-					type = 0;
+					LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
 				}
 				else if (type == (REQDIR_DEVICETOHOST | REQTYPE_CLASS | REQREC_INTERFACE))
 				{
-					type = 0;
+					LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
 				}
 				else
 				{
-					type = 0;
+					LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
 				}
 				break;
 			case REQ_SetFeature:
@@ -162,6 +164,9 @@ void USB_Device_ProcessControlRequest(uint8_t corenum)
 //					LogS(psz[2],USB_ControlRequest.bRequest,type,corenum);
 					USB_Device_ClearSetFeature(corenum);
 				}
+				//
+				LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
+				// 
 				break;
 			case REQ_SetAddress:
 				if (type == (REQDIR_HOSTTODEVICE | REQTYPE_STANDARD | REQREC_DEVICE))

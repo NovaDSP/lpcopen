@@ -40,7 +40,7 @@ typedef enum
 } LockDelayUnits;
 
 typedef void* xQueueHandle;
-extern xQueueHandle xqh;
+extern xQueueHandle logQueueHandle;
 
 //-----------------------------------------------------------------------------
 typedef struct _DbgMessage
@@ -55,6 +55,15 @@ typedef struct _DbgMessage
 } DbgMessage;
 
 typedef DbgMessage dbg_message;
+
+//-----------------------------------------------------------------------------
+typedef struct _USBMessage
+{
+	const char* file;
+	int line;
+	USB_Request_Header_t request;
+	
+} USBMessage;
 
 //-----------------------------------------------------------------------------
 //

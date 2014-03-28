@@ -640,7 +640,7 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 			dbm.psz = descriptors[DescriptorType];
 			dbm.v1 = DescriptorType;
 			dbm.v2 = DescriptorNumber;
-			xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+			xQueueSendFromISR(logQueueHandle,&dbm,&xHigherPriorityTaskWoken);
 		}
 	}
 	// queue the details for later logging

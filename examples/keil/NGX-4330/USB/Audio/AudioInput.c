@@ -71,7 +71,8 @@ int iso_packets = 0;
 int iso_index = 0;
 //-----------------------------------------------------------------------------
 //
-xQueueHandle xqh = 0;
+xQueueHandle logQueueHandle = 0;
+xQueueHandle usbQueueHandle = 0;
 //-----------------------------------------------------------------------------
 // we assume that on SOF interrput we send N channels * sizeof sample to isoch EP
 #ifdef FULL_SPEED
@@ -133,7 +134,7 @@ void Log(int index,int v1,int v2, int v3)
 	dbm.v1 = v1;
 	dbm.v2 = v2;
 	dbm.v3 = v3;
-	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+	xQueueSendFromISR(logQueueHandle,&dbm,&xHigherPriorityTaskWoken);
 }
 
 //-----------------------------------------------------------------------------
@@ -148,7 +149,7 @@ void LogReq(const char* psz,int v1,int v2, int v3,int v4,int v5)
 	dbm.v3 = v3;
 	dbm.v4 = v4;
 	dbm.v5 = v5;
-	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+	xQueueSendFromISR(logQueueHandle,&dbm,&xHigherPriorityTaskWoken);
 }
 
 //-----------------------------------------------------------------------------
@@ -163,7 +164,7 @@ void Log5(const char* psz,int v1,int v2, int v3,int v4,int v5)
 	dbm.v3 = v3;
 	dbm.v4 = v4;
 	dbm.v5 = v5;
-	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+	xQueueSendFromISR(logQueueHandle,&dbm,&xHigherPriorityTaskWoken);
 }
 
 //-----------------------------------------------------------------------------
@@ -176,7 +177,20 @@ void Log3(const char* psz,int v1,int v2, int v3)
 	dbm.v1 = v1;
 	dbm.v2 = v2;
 	dbm.v3 = v3;
-	xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+	xQueueSendFromISR(logQueueHandle,&dbm,&xHigherPriorityTaskWoken);
+}
+
+//-----------------------------------------------------------------------------
+// USB packet logger
+void LogUSB(const char* file,int line,void* packet,int packet_size)
+{
+	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	USBMessage um = { 0 };
+	um.file = file;
+	um.line = line;
+	memcpy(&um.request,packet,packet_size);
+	xQueueSendFromISR(usbQueueHandle,&um,&xHigherPriorityTaskWoken);
 }
 
 //-----------------------------------------------------------------------------
@@ -275,25 +289,32 @@ void TIMER1_IRQHandler(void)
 void UARTTask(void* pvParameters)
 {
 	int tickCnt = 0;
-	xQueueHandle qh = (xQueueHandle) USBAudioIF.instance_data;
-	
 	//
 	DEBUGOUT("Config size %d 0x%X\n",GetConfigStructSize(),REQDIR_HOSTTODEVICE | REQREC_ENDPOINT);
 	
 	for (;;)
 	{
-		if (uxQueueMessagesWaiting(qh))
+		if (uxQueueMessagesWaiting(logQueueHandle))
 		{
 			dbg_message dbm;
-			while (xQueueReceive(qh,&dbm,0))
+			while (xQueueReceive(logQueueHandle,&dbm,0))
 			{
 				DEBUGOUT("[%d] %s 0x%X 0x%X 0x%X 0x%X 0x%X\r\n",tickCnt,(dbm.psz ? dbm.psz : "<null>"),dbm.v1, dbm.v2, dbm.v3, dbm.v4, dbm.v5);
 			}
 		}
-		else
+
+		if (uxQueueMessagesWaiting(usbQueueHandle))
 		{
-			// DEBUGOUT("[%d]\r\n", tickCnt);
+			USBMessage usbm;
+			while (xQueueReceive(usbQueueHandle,&usbm,0))
+			{	
+				// decode the message. agggg.
+				
+				// dump
+				DEBUGOUT("%s(%d) [%d]\r\n",(usbm.file ? usbm.file : "<null>"),usbm.line,tickCnt);
+			}
 		}
+
 		tickCnt++;
 		/* About a 1s delay here */
 		vTaskDelay(configTICK_RATE_HZ);
@@ -441,8 +462,11 @@ int main(void)
 	Board_UARTPutSTR(states[eTarget]);
 
 	// create the ISR safe qeueue	
-	xqh = xQueueCreate(64,sizeof(DbgMessage));
-	USBAudioIF.instance_data = xqh;
+	logQueueHandle = xQueueCreate(64,sizeof(DbgMessage));
+	// another ISR safe queue for USB packets so we can decode completely
+	usbQueueHandle = xQueueCreate(64,sizeof(USBMessage));
+	//
+	USBAudioIF.instance_data = logQueueHandle;
 	
 	// create the audio test. this currently polls, should eventually be
 	// modified so it waits correctly (power)

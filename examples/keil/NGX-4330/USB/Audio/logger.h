@@ -74,10 +74,15 @@ extern const char* states[MaxStates];
 #define OUT_CL_INTERFACE	(DRD_OUT | DRT_CLASS | DRR_INTERFACE)	// Request made to class interface,
 #define IN_CL_INTERFACE		(DRD_IN  | DRT_CLASS | DRR_INTERFACE)	// Request made to class interface,
 
+
 //-----------------------------------------------------------------------------
 extern void Log(int index,int v1,int v2, int v3);
 extern void LogReq(const char* psz,int v1,int v2, int v3,int v4,int v5);
 extern void Log5(const char* psz,int v1,int v2, int v3,int v4,int v5);
 extern void Log3(const char* psz,int v1,int v2, int v3);
+
+//-----------------------------------------------------------------------------
+// for USB packet logging queue
+extern void LogUSB(const char* file,int line,void* packet,int packet_size);
 
 #endif
