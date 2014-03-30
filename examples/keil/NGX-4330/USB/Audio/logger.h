@@ -23,6 +23,7 @@ typedef enum _state_index
 	eSetSampleRateNoData,
 	eGetSetInterfaceProperty,
 	eUnknownEndpointProperty,
+	eUnknownInterfaceProperty,
 	eOtherEndpointProperty,
 	eConfigureEndpoints,
 	eGetDescriptor,
@@ -78,6 +79,7 @@ extern const char* states[MaxStates];
 //-----------------------------------------------------------------------------
 extern void Log(int index,int v1,int v2, int v3);
 extern void LogReq(const char* psz,int v1,int v2, int v3,int v4,int v5);
+extern void Log5F(const char* file,int line,const char* psz,int v1,int v2, int v3,int v4,int v5);
 extern void Log5(const char* psz,int v1,int v2, int v3,int v4,int v5);
 extern void Log3(const char* psz,int v1,int v2, int v3);
 

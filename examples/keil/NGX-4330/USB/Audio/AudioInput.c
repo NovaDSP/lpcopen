@@ -112,6 +112,7 @@ const char* states[MaxStates] =
 	"set sample rate no data",
 	"GetSetInterfaceProperty",
 	"Unknown Endpoint Property",
+	"Unknown Interface Property",
 	"Other Endpoint Property",
 	"Endpoint configuration",
 	"GetDescriptor",
@@ -155,6 +156,22 @@ void LogReq(const char* psz,int v1,int v2, int v3,int v4,int v5)
 	xQueueSendFromISR(logQueueHandle,&dbm,&xHigherPriorityTaskWoken);
 }
 
+//-----------------------------------------------------------------------------
+void Log5F(const char* file,int line,const char* psz,int v1,int v2, int v3,int v4,int v5)
+{
+	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
+	portBASE_TYPE xHigherPriorityTaskWoken;
+	dbg_message dbm = { 0, 0 };
+	dbm.file = file;
+	dbm.line = line;
+	dbm.psz = psz;
+	dbm.v1 = v1;
+	dbm.v2 = v2;
+	dbm.v3 = v3;
+	dbm.v4 = v4;
+	dbm.v5 = v5;
+	xQueueSendFromISR(logQueueHandle,&dbm,&xHigherPriorityTaskWoken);
+}
 //-----------------------------------------------------------------------------
 void Log5(const char* psz,int v1,int v2, int v3,int v4,int v5)
 {
@@ -536,6 +553,26 @@ void EVENT_Audio_Device_StreamStartStop(USB_ClassInfo_Audio_Device_t* const Audi
 }
 
 //-----------------------------------------------------------------------------
+// JME added to support UAC2
+bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
+												   const uint8_t InterfaceIndex,
+												   const uint8_t EntityIndex,
+												   const uint8_t ControlIndex,
+												   uint16_t* const DataLength,
+												   uint8_t* Data)
+{
+	static const char* psz = "CALLBACK_Audio_Device_GetSetInterfaceProperty";
+	Log5(psz,(uint8_t)InterfaceIndex,(uint8_t)ControlIndex,(uint8_t)EntityIndex,0,0);
+	bool ret = false;
+	/* Check the requested control to see if a supported control is being manipulated */
+	if (ControlIndex == AUDIO_EPCONTROL_SamplingFreq)
+	{
+		ret = true;
+	}
+	return ret;
+}
+
+//-----------------------------------------------------------------------------
 // Audio class driver callback for the setting and retrieval of streaming endpoint properties. 
 // This callback must be implemented in the user application to 
 // handle property manipulations on streaming audio endpoints.
@@ -632,24 +669,3 @@ CALLBACK_Audio_Device_GetSetEndpointProperty(
 	return ret;
 }
 
-//-----------------------------------------------------------------------------
-// Audio class driver callback for the setting and retrieval of streaming interface properties. 
-// This callback must be implemented in the user application to handle property 
-// manipulations on streaming audio interfaces.
-//
-bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
-        const uint8_t Property,
-        const uint8_t EntityAddress,
-        const uint16_t Parameter,
-        uint16_t* const DataLength,
-        uint8_t* Data)
-{
-	/* No audio interface entities in the device descriptor, thus no properties to get or set. */
-	portBASE_TYPE xHigherPriorityTaskWoken;
-	xQueueHandle xq = (xQueueHandle)AudioInterfaceInfo->instance_data;
-	dbg_message dbm = { 0, 0 };
-	dbm.psz = states[eGetSetInterfaceProperty];
-	dbm.v2 = Parameter;
-	xQueueSendFromISR(xq,&dbm,&xHigherPriorityTaskWoken);
-	return false;
-}

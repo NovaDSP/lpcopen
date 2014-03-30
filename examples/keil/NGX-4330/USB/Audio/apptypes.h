@@ -32,6 +32,17 @@ typedef struct _WordByte
 } ATTR_PACKED WordByte;
 
 //-----------------------------------------------------------------------------
+//
+typedef struct _LongByte
+{
+	union
+	{
+		uint8_t bval[4];
+		uint32_t lval;
+	};
+} ATTR_PACKED LongByte;
+
+//-----------------------------------------------------------------------------
 typedef enum
 {
 	eUndefined,
@@ -47,6 +58,8 @@ extern xQueueHandle usbQueueHandle;
 //-----------------------------------------------------------------------------
 typedef struct _DbgMessage
 {
+	const char* file;
+	int line;
 	// pointer to const string
 	const char* psz;
 	uint32_t v1;

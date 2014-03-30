@@ -621,7 +621,7 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 			Size    = pgm_read_byte(&p->Header.Size);
 		}
 		break;
-/*		
+/*
 	case DTYPE_DeviceQualifier:
 		{
 			Address = &DeviceQualifier;
@@ -630,7 +630,7 @@ uint16_t CALLBACK_USB_GetDescriptor(uint8_t corenum,
 			dbm.v1 = DescriptorType;
 			dbm.v2 = DescriptorNumber;
 			dbm.v3 = Size;
-			xQueueSendFromISR(xqh,&dbm,&xHigherPriorityTaskWoken);
+			xQueueSendFromISR(logQueueHandle,&dbm,&xHigherPriorityTaskWoken);
 		}
 		break;
 */

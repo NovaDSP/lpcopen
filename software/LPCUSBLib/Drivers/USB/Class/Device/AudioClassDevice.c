@@ -46,6 +46,8 @@
 const char* audiodevmsgs[] = 
 {
 	"wIndex != Streaming",
+	"GetSetInterfaceProperty",
+	"SetCurrent (REQDIR_DEVICETOHOST | REQTYPE_CLASS | REQREC_INTERFACE)",
 };
 
 void Audio_Device_ProcessControlRequest(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo)
@@ -53,15 +55,18 @@ void Audio_Device_ProcessControlRequest(USB_ClassInfo_Audio_Device_t* const Audi
 	if (!(Endpoint_IsSETUPReceived(AudioInterfaceInfo->Config.PortNumber)))
 	  return;
 
-	LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
+	// LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
 
 	if ((USB_ControlRequest.bmRequestType & CONTROL_REQTYPE_RECIPIENT) == REQREC_INTERFACE)
 	{
+		// JME. this is not right -
+/*
 		if (USB_ControlRequest.wIndex != AudioInterfaceInfo->Config.StreamingInterfaceNumber)
 		{
 			Log3(audiodevmsgs[0],USB_ControlRequest.bRequest,USB_ControlRequest.bmRequestType,USB_ControlRequest.wIndex);
 			return;
 		}
+*/
 	}
 	else if ((USB_ControlRequest.bmRequestType & CONTROL_REQTYPE_RECIPIENT) == REQREC_ENDPOINT)
 	{
@@ -78,7 +83,7 @@ void Audio_Device_ProcessControlRequest(USB_ClassInfo_Audio_Device_t* const Audi
 	}	
 
 	//
-	LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
+	// LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
 
 	switch (USB_ControlRequest.bRequest)
 	{
@@ -111,14 +116,54 @@ void Audio_Device_ProcessControlRequest(USB_ClassInfo_Audio_Device_t* const Audi
 			{
 				WordByte wb;
 				wb.wval = USB_ControlRequest.wIndex;
-				Log(eGetSetInterfaceProperty,wb.bval.lobyte,wb.bval.hibyte,USB_ControlRequest.bRequest);
+				Log5F(__FILE__,__LINE__,audiodevmsgs[1],wb.bval.lobyte,wb.bval.hibyte,USB_ControlRequest.bRequest,USB_ControlRequest.wValue,USB_ControlRequest.wLength);
+				uint16_t ValueLength = USB_ControlRequest.wLength;
+
+				// this is device to host, we *have* to be writing something back up the pipe, even if it is ZLP
+#if 1
+				// hack ...s
+				uint8_t  Value[ValueLength];
+				Endpoint_ClearSETUP(AudioInterfaceInfo->Config.PortNumber);
+				if (ValueLength == 4)
+				{
+					LongByte lb;
+					lb.lval = 48000;
+					Endpoint_Write_Control_Stream_LE(AudioInterfaceInfo->Config.PortNumber, (void*) &lb.bval[0], ValueLength);
+				}
+				else if (ValueLength == 0x0E)
+				{
+					memset(&Value[0],0,ValueLength);
+					Value[0] = 1;
+					Endpoint_Write_Control_Stream_LE(AudioInterfaceInfo->Config.PortNumber, &Value[0], ValueLength);
+				}
+				else
+				{
+					Endpoint_Write_Control_Stream_LE(AudioInterfaceInfo->Config.PortNumber, (void*) Value, ValueLength);
+				}
+				Endpoint_ClearOUT(AudioInterfaceInfo->Config.PortNumber);					
+#else				
+				// first call checks fr
+				if (CALLBACK_Audio_Device_GetSetInterfaceProperty(AudioInterfaceInfo, wb.bval.lobyte, wb.bval.hibyte,
+					USB_ControlRequest.wValue, NULL, NULL))
+				{
+					Endpoint_ClearSETUP(AudioInterfaceInfo->Config.PortNumber);
+					Endpoint_Read_Control_Stream_LE(AudioInterfaceInfo->Config.PortNumber, Value, ValueLength);
+					Endpoint_ClearIN(AudioInterfaceInfo->Config.PortNumber);
+					CALLBACK_Audio_Device_GetSetInterfaceProperty(AudioInterfaceInfo, wb.bval.lobyte, wb.bval.hibyte,
+						USB_ControlRequest.wValue, &ValueLength, Value);
+					// should be the sample rate?
+					Log5F(__FILE__,__LINE__,audiodevmsgs[2],Value[0],Value[1],Value[2],Value[3],ValueLength);
+
+				}				
+#endif				
 			}
 			else if (USB_ControlRequest.bmRequestType == (REQDIR_HOSTTODEVICE | REQTYPE_CLASS | REQREC_ENDPOINT))
 			{
 				uint8_t EndpointProperty = USB_ControlRequest.bRequest;
 				uint8_t EndpointAddress  = (uint8_t)USB_ControlRequest.wIndex;
 				uint8_t EndpointControl  = (USB_ControlRequest.wValue >> 8);
-			
+
+				// first call checks fr
 				if (CALLBACK_Audio_Device_GetSetEndpointProperty(AudioInterfaceInfo, EndpointProperty, EndpointAddress,
 				                                                 EndpointControl, NULL, NULL))
 				{

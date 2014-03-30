@@ -11,6 +11,15 @@
 // abstract as much as possible
 #include "logger.h"
 
+typedef enum 
+{
+	eTIDNoTerminal,
+	eTIDInput,
+	eTIDOutput,
+	eTIDClock = 9,
+	
+} TerminalID;
+
 //-----------------------------------------------------------------------------
 //
 typedef enum 

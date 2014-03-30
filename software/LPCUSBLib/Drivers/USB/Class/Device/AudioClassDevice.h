@@ -162,6 +162,14 @@
 			                                                  uint16_t* const DataLength,
 			                                                  uint8_t* Data);
 
+			// JME a
+			bool CALLBACK_Audio_Device_GetSetInterfaceProperty(USB_ClassInfo_Audio_Device_t* const AudioInterfaceInfo,
+				const uint8_t InterfaceIndex,	// 1-based interace index
+				const uint8_t EntityIndex,		// i.e inputTerminal,OutputTerminal,ClockSource
+				const uint8_t ControlIndex,		// i.e. sample rate
+				uint16_t* const DataLength,
+				uint8_t* Data);
+
 			/**
 			 * @brief	Audio class driver event for an Audio Stream start/stop change. This event fires each time the device receives a stream enable or
 			 *  disable control request from the host, to start and stop the audio stream. The current state of the stream can be determined by the

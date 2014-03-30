@@ -186,7 +186,17 @@ void UARTTask(void* pvParameters)
 			dbg_message dbm;
 			while (xQueueReceive(logQueueHandle, &dbm, 0))
 			{
-				DEBUGOUT("[%d] %s 0x%X 0x%X 0x%X 0x%X 0x%X\r\n", tickCnt, (dbm.psz ? dbm.psz : "<null>"), dbm.v1, dbm.v2, dbm.v3, dbm.v4, dbm.v5);
+				if (dbm.file)
+				{
+					DEBUGOUT("%s(%d) [%d] %s 0x%X 0x%X 0x%X 0x%X 0x%X\r\n", 
+						dbm.file,
+						dbm.line,
+						tickCnt, (dbm.psz ? dbm.psz : "<null>"), dbm.v1, dbm.v2, dbm.v3, dbm.v4, dbm.v5);
+				}
+				else
+				{
+					DEBUGOUT("[%d] %s 0x%X 0x%X 0x%X 0x%X 0x%X\r\n", tickCnt, (dbm.psz ? dbm.psz : "<null>"), dbm.v1, dbm.v2, dbm.v3, dbm.v4, dbm.v5);
+				}
 			}
 		}
 		if (uxQueueMessagesWaiting(usbQueueHandle))

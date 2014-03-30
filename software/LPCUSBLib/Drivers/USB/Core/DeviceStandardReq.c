@@ -152,6 +152,7 @@ void USB_Device_ProcessControlRequest(uint8_t corenum)
 				else if (type == (REQDIR_DEVICETOHOST | REQTYPE_CLASS | REQREC_INTERFACE))
 				{
 					LogUSB(__FILE__,__LINE__,&USB_ControlRequest,sizeof(USB_ControlRequest));
+					USB_Device_ClearSetFeature(corenum);
 				}
 				else
 				{
