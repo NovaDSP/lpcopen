@@ -41,6 +41,77 @@ extern USB_Descriptor_Configuration_t ConfigurationDescriptor;
 #define BLUELED 1
 #define GREENLED 0
 
+// SSP
+#define LPC_SSP           LPC_SSP1
+#define SSP_IRQ           SSP1_IRQn
+#define LPC_GPDMA_SSP_TX  GPDMA_CONN_SSP1_Tx
+#define LPC_GPDMA_SSP_RX  GPDMA_CONN_SSP1_Rx
+#define BUFFER_SIZE                         (0x100)
+#define SSP_DATA_BITS                       (SSP_BITS_8)
+#define SSP_DATA_BIT_NUM(databits)          (databits+1)
+#define SSP_DATA_BYTES(databits)            (((databits) > SSP_BITS_8) ? 2:1)
+#define SSP_LO_BYTE_MSK(databits)           ((SSP_DATA_BYTES(databits) > 1) ? 0xFF:(0xFF>>(8-SSP_DATA_BIT_NUM(databits))))
+#define SSP_HI_BYTE_MSK(databits)           ((SSP_DATA_BYTES(databits) > 1) ? (0xFF>>(16-SSP_DATA_BIT_NUM(databits))):0)
+
+#define SSP_MODE_SEL                        (0x31)
+#define SSP_TRANSFER_MODE_SEL               (0x32)
+#define SSP_MASTER_MODE_SEL                 (0x31)
+#define SSP_SLAVE_MODE_SEL                  (0x32)
+#define SSP_POLLING_SEL                     (0x31)
+#define SSP_INTERRUPT_SEL                   (0x32)
+#define SSP_DMA_SEL                         (0x33)
+
+/* Tx buffer */
+static uint8_t Tx_Buf[BUFFER_SIZE];
+
+/* Rx buffer */
+static uint8_t Rx_Buf[BUFFER_SIZE];
+
+static SSP_ConfigFormat ssp_format;
+static Chip_SSP_DATA_SETUP_T xf_setup;
+static volatile uint8_t  isXferCompleted = 0;
+
+/* Initialize buffer */
+static void Buffer_Init(void)
+{
+	uint16_t i;
+	uint8_t ch = 0;
+
+	for (i = 0; i < BUFFER_SIZE; i++) {
+		Tx_Buf[i] = ch++;
+		Rx_Buf[i] = 0xAA;
+	}
+}
+
+/* Verify buffer after transfer */
+static uint8_t Buffer_Verify(void)
+{
+	uint16_t i;
+	uint8_t *src_addr = (uint8_t *) &Tx_Buf[0];
+	uint8_t *dest_addr = (uint8_t *) &Rx_Buf[0];
+
+	for ( i = 0; i < BUFFER_SIZE; i++ ) {
+
+		if (((*src_addr) & SSP_LO_BYTE_MSK(ssp_format.bits)) != 
+				((*dest_addr) & SSP_LO_BYTE_MSK(ssp_format.bits))) {
+				return 1;
+		}
+		src_addr++;
+		dest_addr++;
+			
+		if (SSP_DATA_BYTES(ssp_format.bits) == 2) {
+			if (((*src_addr) & SSP_HI_BYTE_MSK(ssp_format.bits)) != 
+				  ((*dest_addr) & SSP_HI_BYTE_MSK(ssp_format.bits))) {
+					return 1;
+			}
+			src_addr++;
+			dest_addr++;
+			i++;
+		}
+	}
+	return 0;
+}
+
 //-----------------------------------------------------------------------------
 extern void UARTTask(void* pvParameters);
 
@@ -344,6 +415,32 @@ void AudioTask(void* pvParameters)
 
 		Board_UARTPutSTR("Device is connected to host\n");
 
+		
+		// SSP initialization
+		Board_SSP_Init(LPC_SSP);
+
+		Chip_SSP_Init(LPC_SSP);
+
+		ssp_format.frameFormat = CHIP_SSP_FRAME_FORMAT_TI; // SSP_FRAMEFORMAT_SPI;
+		ssp_format.bits = SSP_BITS_16;
+		ssp_format.clockMode = SSP_CLOCK_MODE0;
+		Chip_SSP_SetFormat(LPC_SSP, &ssp_format);
+
+		Chip_SSP_Enable(LPC_SSP);
+	
+		xf_setup.length = 2;
+		xf_setup.tx_data = Tx_Buf;
+		xf_setup.rx_data = Rx_Buf;
+		Buffer_Init();
+		Chip_SSP_SetMaster(LPC_SSP, 1);
+		
+		IP_SSP_SendFrame(LPC_SSP,0x0D00);
+		while (IP_SSP_GetStatus(LPC_SSP,SSP_STAT_RNE) != SET) 
+		{
+		}
+		uint16_t rxw = IP_SSP_ReceiveFrame(LPC_SSP);
+
+		
 		// JME audit:polled
 		while (connected == true)
 		{

@@ -8,8 +8,8 @@
 #define CONFIG_H
 
 // test vendor specific stuff
-#define VS
-#define _USE_AC2
+// #define VS
+// #define _USE_AC2
 // if 1 then we will set to full-speed (12MBS) 
 // if 0 then we run at default hispeed (480MBS)
 
@@ -20,7 +20,7 @@
 #else
 // Windows/Linux
 #define USE_FULL_SPEED 0
-#define CHANNEL_COUNT 2
+#define CHANNEL_COUNT 6
 #endif
 
 // the default is 12 channels ...
