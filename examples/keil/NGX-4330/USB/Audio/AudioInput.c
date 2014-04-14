@@ -428,12 +428,10 @@ void AudioTask(void* pvParameters)
 
 		Chip_SSP_Enable(LPC_SSP);
 	
-		xf_setup.length = 2;
-		xf_setup.tx_data = Tx_Buf;
-		xf_setup.rx_data = Rx_Buf;
-		Buffer_Init();
+	
 		Chip_SSP_SetMaster(LPC_SSP, 1);
 		
+		// this is the write/wait/read idiom
 		IP_SSP_SendFrame(LPC_SSP,0x0D00);
 		while (IP_SSP_GetStatus(LPC_SSP,SSP_STAT_RNE) != SET) 
 		{
