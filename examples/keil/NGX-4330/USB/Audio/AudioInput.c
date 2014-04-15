@@ -447,6 +447,7 @@ void AudioTask(void* pvParameters)
 			rxw = IP_SSP_ReceiveFrame(LPC_SSP);
 			// optional ~1s wait . comment out to disable
 			// vTaskDelay(configTICK_RATE_HZ);
+			int z = rxw;
 		}
 		
 		// JME audit:polled

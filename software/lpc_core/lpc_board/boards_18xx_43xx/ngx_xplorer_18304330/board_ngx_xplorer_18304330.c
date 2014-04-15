@@ -336,11 +336,19 @@ void Board_SSP_Init(LPC_SSP_T *pSSP)
 	if (pSSP == LPC_SSP1) {
 		/* Set up clock and power for SSP1 module */
 		/* Configure SSP1 pins*/
+		//this is for 4330 xplorer board
 		/* SCLK comes out pin CLK0 */
-		Chip_SCU_ClockPinMuxSet(0, (SCU_PINIO_FAST | SCU_MODE_FUNC6));		/* CLK0 connected to CLK	SCU_MODE_FUNC6=SSP1 CLK1  */
-		Chip_SCU_PinMuxSet(0x1, 5, (SCU_PINIO_FAST | SCU_MODE_FUNC5));			/* P1.5 connected to nCS	SCU_MODE_FUNC5=SSP1 SSEL1 */
-		Chip_SCU_PinMuxSet(0x1, 3, (SCU_MODE_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC5));/* P1.3 connected to SO		SCU_MODE_FUNC5=SSP1 MISO1 */
-		Chip_SCU_PinMuxSet(0x1, 4, (SCU_MODE_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC5));/* P1.4 connected to nSI	SCU_MODE_FUNC5=SSP1 MOSI1 */
+		//Chip_SCU_ClockPinMuxSet(0, (SCU_PINIO_FAST | SCU_MODE_FUNC6));		/* CLK0 connected to CLK	SCU_MODE_FUNC6=SSP1 CLK1  */
+		//Chip_SCU_PinMuxSet(0x1, 5, (SCU_PINIO_FAST | SCU_MODE_FUNC5));			/* P1.5 connected to nCS	SCU_MODE_FUNC5=SSP1 SSEL1 */
+		//Chip_SCU_PinMuxSet(0x1, 3, (SCU_MODE_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC5));/* P1.3 connected to SO		SCU_MODE_FUNC5=SSP1 MISO1 */
+		//Chip_SCU_PinMuxSet(0x1, 4, (SCU_MODE_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC5));/* P1.4 connected to nSI	SCU_MODE_FUNC5=SSP1 MOSI1 */
+
+		//this is for 4357 xplorer board
+		//Chip_SCU_ClockPinMuxSet(0, (SCU_PINIO_FAST | SCU_MODE_FUNC6));		/* CLK0 connected to CLK	SCU_MODE_FUNC6=SSP1 CLK1  */
+		Chip_SCU_PinMuxSet(0xf, 4, (SCU_PINIO_FAST | SCU_MODE_FUNC0));			/* D10, Pf.4 connected to CLK	SCU_MODE_FUNC0=SSP1 CLK1  */
+		Chip_SCU_PinMuxSet(0xf, 5, (SCU_PINIO_FAST | SCU_MODE_FUNC2));			/* E9, Pf.5 connected to nCS	SCU_MODE_FUNC5=SSP1 SSEL1 */
+		Chip_SCU_PinMuxSet(0x1, 4, (SCU_PINIO_FAST | SCU_MODE_FUNC5));			/* T3, P1.4 connected to nSI	SCU_MODE_FUNC5=SSP1 MOSI1 */
+		Chip_SCU_PinMuxSet(0xf, 6, (SCU_MODE_MODE_PULLUP | SCU_MODE_INBUFF_EN | SCU_MODE_ZIF_DIS | SCU_MODE_FUNC2));/* E7, Pf.6 connected to SO		SCU_MODE_FUNC2=SSP1 MISO1 */
 	}
 	else {
 		return;
