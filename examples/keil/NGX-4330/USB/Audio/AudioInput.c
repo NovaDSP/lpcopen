@@ -430,14 +430,24 @@ void AudioTask(void* pvParameters)
 	
 	
 		Chip_SSP_SetMaster(LPC_SSP, 1);
-		
-		// this is the write/wait/read idiom
-		IP_SSP_SendFrame(LPC_SSP,0x0D00);
-		while (IP_SSP_GetStatus(LPC_SSP,SSP_STAT_RNE) != SET) 
-		{
-		}
-		uint16_t rxw = IP_SSP_ReceiveFrame(LPC_SSP);
 
+
+		// this is the write/wait/read idiom
+		//  loop forver
+		uint16_t rxw = 0;
+		for (;;)
+		{
+				// send
+			IP_SSP_SendFrame(LPC_SSP,0x0D00);
+			// check status
+			while (IP_SSP_GetStatus(LPC_SSP,SSP_STAT_RNE) != SET) 
+			{
+			}
+			// read
+			rxw = IP_SSP_ReceiveFrame(LPC_SSP);
+			// optional ~1s wait . comment out to disable
+			// vTaskDelay(configTICK_RATE_HZ);
+		}
 		
 		// JME audit:polled
 		while (connected == true)
