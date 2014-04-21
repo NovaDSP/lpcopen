@@ -1,0 +1,16 @@
+snd_usb_parse_audio_interface
+	get interface descriptor
+	check audio class | class vendor etc
+	check isochronous
+	check endpoint for capture | playback
+	get uac2_as_header_descriptor (4.9.2) controls/channels
+	get input terminal link from uac2_as_header_descriptor
+	get bCSourceID from input_term | get bCSourceID from output_term
+	get format descriptor
+	parse audio format
+	init_pitch (only if endpoint has UAC_EP_CS_ATTR_PITCH_CONTROL set)
+	init_sample_rate (make sure UAC_EP_CS_ATTR_SAMPLE_RATE is set in bmFormat for endpoint)
+		find clock source
+		set sample rate
+		get sample rate
+	set interface and claim it

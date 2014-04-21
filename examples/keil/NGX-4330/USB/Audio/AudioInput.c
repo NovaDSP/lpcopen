@@ -61,56 +61,9 @@ extern USB_Descriptor_Configuration_t ConfigurationDescriptor;
 #define SSP_INTERRUPT_SEL                   (0x32)
 #define SSP_DMA_SEL                         (0x33)
 
-/* Tx buffer */
-static uint8_t Tx_Buf[BUFFER_SIZE];
-
-/* Rx buffer */
-static uint8_t Rx_Buf[BUFFER_SIZE];
-
+//-----------------------------------------------------------------------------
+// Defines SSP/SPI data format
 static SSP_ConfigFormat ssp_format;
-static Chip_SSP_DATA_SETUP_T xf_setup;
-static volatile uint8_t  isXferCompleted = 0;
-
-/* Initialize buffer */
-static void Buffer_Init(void)
-{
-	uint16_t i;
-	uint8_t ch = 0;
-
-	for (i = 0; i < BUFFER_SIZE; i++) {
-		Tx_Buf[i] = ch++;
-		Rx_Buf[i] = 0xAA;
-	}
-}
-
-/* Verify buffer after transfer */
-static uint8_t Buffer_Verify(void)
-{
-	uint16_t i;
-	uint8_t *src_addr = (uint8_t *) &Tx_Buf[0];
-	uint8_t *dest_addr = (uint8_t *) &Rx_Buf[0];
-
-	for ( i = 0; i < BUFFER_SIZE; i++ ) {
-
-		if (((*src_addr) & SSP_LO_BYTE_MSK(ssp_format.bits)) != 
-				((*dest_addr) & SSP_LO_BYTE_MSK(ssp_format.bits))) {
-				return 1;
-		}
-		src_addr++;
-		dest_addr++;
-			
-		if (SSP_DATA_BYTES(ssp_format.bits) == 2) {
-			if (((*src_addr) & SSP_HI_BYTE_MSK(ssp_format.bits)) != 
-				  ((*dest_addr) & SSP_HI_BYTE_MSK(ssp_format.bits))) {
-					return 1;
-			}
-			src_addr++;
-			dest_addr++;
-			i++;
-		}
-	}
-	return 0;
-}
 
 //-----------------------------------------------------------------------------
 extern void UARTTask(void* pvParameters);
@@ -170,7 +123,7 @@ const char* states[MaxStates] =
 #ifdef _USE_AC2
 	"\n---------NGX 4357 AC2 target---------\n",
 	#else
-	"\n---------NGX 4357 target---------\n",
+	"\n---NGX 4357 target with SPI console--\n",
 #endif	
 #else
 	"\n---------NGX 4330 target---------\n",
@@ -372,16 +325,136 @@ void TIMER1_IRQHandler(void)
 }
 
 //-----------------------------------------------------------------------------
+const int spiBufferSize = 255;
+//
+typedef struct _SPITaskData
+{	
+	char ipBuffer[spiBufferSize];
+	char opBuffer[spiBufferSize];
+} SPITaskData;
 
+SPITaskData sptid = { 0, 0 };
+
+//-----------------------------------------------------------------------------
+//
+int UARTReadString()
+{
+	int ret = -1;
+	int index = 0;
+	while (index < spiBufferSize - 1)
+	{
+		ret = Board_UARTGetChar();
+		if (ret != EOF)
+		{
+			if (ret == '\r' || ret == '\n')
+			{
+				break;
+			}
+			else
+			{
+				sptid.ipBuffer[index++] = (char) ret;
+			}
+		}
+	}
+	// ensure always terminated
+	sptid.ipBuffer[index] = '\0';
+	//
+	return index;
+}
+
+//-----------------------------------------------------------------------------
+uint8_t fromHex(const char ch)
+{
+	uint8_t ret = 0;
+	if (ch >= '0' && ch <= '9')
+	{
+		ret = ch - '0';
+	}
+	else if (ch >= 'A' && ch <= 'F')
+	{
+		ret = ch - 'A' + 10;
+	}
+	else if (ch >= 'a' && ch <= 'f')
+	{
+		ret = ch - 'a' + 10;
+	}
+	return ret;
+}
+
+//-----------------------------------------------------------------------------
+// i.e 'F''F' -> 0xFF
+uint8_t fromHex2(const char hb,const char lb)
+{
+	uint8_t ret = fromHex(hb);
+	ret <<= 4;
+	ret = ret + fromHex(lb);
+	return ret;
+}
+
+//-----------------------------------------------------------------------------
+// Read from UART and dispatch to the SPI ...
+void SPITask(void* pvParameters)
+{
+	// SSP initialization
+	Board_SSP_Init(LPC_SSP);
+
+	Chip_SSP_Init(LPC_SSP);
+
+	// make sure we have the correct format and clock(s)
+	ssp_format.frameFormat = CHIP_SSP_FRAME_FORMAT_TI;
+	ssp_format.bits = SSP_BITS_16;
+	ssp_format.clockMode = SSP_CLOCK_MODE0;
+	Chip_SSP_SetFormat(LPC_SSP, &ssp_format);
+	
+	// enable the IP
+	Chip_SSP_Enable(LPC_SSP);
+
+	// we are the SSP/SPI master
+	Chip_SSP_SetMaster(LPC_SSP, true);
+
+	// this is the write/wait/read idiom
+	//  loop forever
+	uint16_t rxw = 0;
+	int index = 0;
+	for (;;)
+	{
+		//int ipch = Board_UARTGetChar();
+		//if (ipch != EOF)
+		int chars = UARTReadString();
+		if (chars >= 4)
+		{
+			// get address and data from string
+			uint8_t addr = fromHex2(sptid.ipBuffer[0],sptid.ipBuffer[1]);
+			uint8_t data = fromHex2(sptid.ipBuffer[2],sptid.ipBuffer[3]);
+			// create the 16bit frame
+			uint16_t frame = addr << 8;
+			frame |= data;
+			// send
+			//IP_SSP_SendFrame(LPC_SSP,0x0D00);
+			IP_SSP_SendFrame(LPC_SSP,data);
+			// check status
+			while (IP_SSP_GetStatus(LPC_SSP,SSP_STAT_RNE) != SET) 
+			{
+			}
+			// read
+			rxw = IP_SSP_ReceiveFrame(LPC_SSP);
+			// format the message
+			sprintf(sptid.opBuffer,"[%03d] SPI: %s (0x%04X) => 0x%04X\n",index,sptid.ipBuffer,frame,rxw);
+			// write down the pipe
+			Board_UARTPutSTR(sptid.opBuffer);
+			//
+			index++;
+		}
+	}
+}
 
 //-----------------------------------------------------------------------------
 volatile bool connected = true;
+
 //-----------------------------------------------------------------------------
 // This polls the USB registers for state change. Not ideal but works for now
 void AudioTask(void* pvParameters)
 {
-	// we loop at startup until SW2 is pressed
-	uint32_t Button_State = 0;
 	// switch off green LED
 	Board_LED_Set(GREENLED, false);
 
@@ -415,41 +488,6 @@ void AudioTask(void* pvParameters)
 
 		Board_UARTPutSTR("Device is connected to host\n");
 
-		
-		// SSP initialization
-		Board_SSP_Init(LPC_SSP);
-
-		Chip_SSP_Init(LPC_SSP);
-
-		ssp_format.frameFormat = CHIP_SSP_FRAME_FORMAT_TI; // SSP_FRAMEFORMAT_SPI;
-		ssp_format.bits = SSP_BITS_16;
-		ssp_format.clockMode = SSP_CLOCK_MODE0;
-		Chip_SSP_SetFormat(LPC_SSP, &ssp_format);
-
-		Chip_SSP_Enable(LPC_SSP);
-	
-	
-		Chip_SSP_SetMaster(LPC_SSP, 1);
-
-
-		// this is the write/wait/read idiom
-		//  loop forver
-		uint16_t rxw = 0;
-		for (;;)
-		{
-				// send
-			IP_SSP_SendFrame(LPC_SSP,0x0D00);
-			// check status
-			while (IP_SSP_GetStatus(LPC_SSP,SSP_STAT_RNE) != SET) 
-			{
-			}
-			// read
-			rxw = IP_SSP_ReceiveFrame(LPC_SSP);
-			// optional ~1s wait . comment out to disable
-			// vTaskDelay(configTICK_RATE_HZ);
-			int z = rxw;
-		}
-		
 		// JME audit:polled
 		while (connected == true)
 		{
@@ -474,6 +512,7 @@ void AudioTask(void* pvParameters)
 }
 
 //-----------------------------------------------------------------------------
+// Check User button. Flip mode as required. Acts as a very crude debouncer for SW2
 void SwitchTask(void* pvParameters)
 {
 	for (;;)
@@ -569,6 +608,11 @@ int main(void)
 
 	//  switch thread checks user switch and does de-bouncing (!)
 	xTaskCreate(SwitchTask, (signed char *) "SwitchTask",
+		configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
+		(xTaskHandle *) NULL);
+
+	//  check incoming for SPI commands (!)
+	xTaskCreate(SPITask, (signed char *) "SPITask",
 		configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
 		(xTaskHandle *) NULL);
 

@@ -178,7 +178,7 @@ void UARTTask(void* pvParameters)
 {
 	int tickCnt = 0;
 	//
-	DEBUGOUT("Config size %d 0x%X\n", GetConfigStructSize(), REQDIR_HOSTTODEVICE | REQREC_ENDPOINT);
+	// DEBUGOUT("Config size %d 0x%X\n", GetConfigStructSize(), REQDIR_HOSTTODEVICE | REQREC_ENDPOINT);
 	for (;;)
 	{
 		if (uxQueueMessagesWaiting(logQueueHandle))
