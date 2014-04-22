@@ -431,7 +431,7 @@ void SPITask(void* pvParameters)
 			frame |= data;
 			// send
 			//IP_SSP_SendFrame(LPC_SSP,0x0D00);
-			IP_SSP_SendFrame(LPC_SSP,data);
+			IP_SSP_SendFrame(LPC_SSP,frame);
 			// check status
 			while (IP_SSP_GetStatus(LPC_SSP,SSP_STAT_RNE) != SET) 
 			{
