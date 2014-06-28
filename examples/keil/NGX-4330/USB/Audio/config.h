@@ -14,9 +14,9 @@
 // if 0 then we run at default hispeed (480MBS)
 
 // Mac
-#if 0
+#if 1
 #define USE_FULL_SPEED 1
-#define CHANNEL_COUNT 2
+#define CHANNEL_COUNT 6
 #else
 // Windows/Linux
 #define USE_FULL_SPEED 0
